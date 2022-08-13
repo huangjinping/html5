@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ng-app</title>
+    <script src="node_modules/angular/angular.js"></script>
+</head>
+<body ng-app="allApp">
+<div ng-controller="hController">
+    <p><input type="text" ng-model="name"></p>
+    <p ng-click="do2()">{{name}}</p>
+
+</div>
+
+<div ng-controller="mController">
+    <p><input type="text" ng-model="name"></p>
+    <p ng-click="do1()">{{name}}</p>
+</div>
+
+
+<script type="text/javascript">
+    var hAppModule = angular.module("hApp", []);
+    hAppModule.controller("hController", ["$scope", function ($scope) {
+        $scope.name = "hController";
+        console.log("ddddd");
+        $scope.do2 = function () {
+            console.log("hAppModule");
+        }
+    }]);
+
+    var mAppModule = angular.module("mApp", []);
+    mAppModule.controller("mController", ["$scope", function ($scope) {
+        $scope.name = "mController";
+        $scope.do1 = function () {
+            console.log("mAppModule");
+        }
+    }]);
+    angular.module("allApp", ["hApp", "mApp"]);
+
+</script>
+</body>
+</html>

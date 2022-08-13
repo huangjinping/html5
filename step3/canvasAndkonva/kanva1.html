@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../bower_components/konva/konva.js"></script>
+</head>
+<body>
+<div id="container">
+
+</div>
+<script>
+    var stage = new Konva.Stage({
+        container: "container",
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
+    var layer = new Konva.Layer();
+    stage.add(layer);
+    var rect = new Konva.Rect({
+        x: 100,
+        y: 100,
+        width: 200,
+        height: 200,
+        fill: "red",
+        stroke: "green",
+        draggable: true,
+        rotation: 20
+    });
+    layer.add(rect);
+
+
+    var circle = new Konva.Circle({
+        x: 300,
+        y: 300,
+        fill:'#f40',
+        radius:100,
+    });
+    layer.add(circle);
+    layer.draw();
+</script>
+
+</body>
+</html>

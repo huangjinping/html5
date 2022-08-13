@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        input[type=checkbox] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 55px;
+            height: 55px;
+            position: relative;
+        }
+
+        input[type=checkbox]:after {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            top: 0;
+            content: " ";
+            background-color: #fff;
+            color: #ffff00;
+            display: inline-block;
+            visibility: visible;
+            border: 1px solid grey;
+            padding: 5px 5px;
+            border-radius: 3px;
+        }
+
+        input[type=checkbox]:checked:after {
+            background-color: #f40;
+            content: "✓";
+            font-size: 55px;
+            line-height: 55px;
+        }
+
+        input[type=checkbox]:disabled:after {
+            width: 10px;
+            height: 15px;
+            top: 0;
+            color: #ffff00;
+            display: inline-block;
+            visibility: visible;
+            border: 1px solid grey;
+            padding: 0 3px;
+            border-radius: 3px;
+            background-color: #E9E7E3;
+            content: "✓";
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<label for="ye1"><input id="ye1" type="checkbox"/>点我看看1</label>
+<label for="ye2"><input id="ye2" type="checkbox"/>点我看看2</label>
+<label for="ye3"><input id="ye3" type="checkbox"/>点我看看3</label>
+
+<p><input type="text" id="nan"><label for="nan">是的是的</label></p>
+</body>
+</html>

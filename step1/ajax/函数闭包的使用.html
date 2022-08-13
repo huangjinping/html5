@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        function get() {
+            var n = 0;
+
+            function add() {
+                n++;
+                console.log(n);
+            }
+
+            return add;
+        }
+        var fn = get();
+
+        for (var j = 0; j < 10; j++) {
+            fn();
+        }
+        fn = get();
+        fn();
+        fn();
+        fn();
+        
+        //*闭包能够产生私有的内存空间来保存其本身和作用域中的数据内容；
+        //下面的data 主要的是因为js 没有块级别的作用域；所以i 是全局作用域的
+        var data = [];
+        for (var i = 0; i < 10; i++) {
+            data[i] = function () {
+                console.log("==" + i);
+            }
+        }
+        console.log("======>>>" + i);
+        data[0]();
+        data[1]();
+        data[5]();
+    </script>
+</head>
+<body>
+
+</body>
+</html>

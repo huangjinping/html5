@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            onLoad();
+        });
+
+        function onLoad() {
+            //jsonp解决跨域(访问远程服务器)问题
+            $.ajax({
+                //url:"http://服务器地址：端口号/服务器文件路径
+                //服务器地址要注意是ipv4的，ipv6测试暂时没成功。
+                url: "getThrUrl",
+                //get/post都可以的请求方式
+                type: "POST",
+                //是否同步，false为异步加载
+                async: false,
+                //设置返回数据类型jsonp
+                dataType: "json",
+                //jsonp的字段，服务器返回的前缀要和这个一样
+                jsonp: "_jsonp",
+                //data: {name:"Lily"},
+                success: function (json) {
+                    //装在获取的数据
+                    console.log(json);
+
+                },
+                error: function () {
+                    //访问出错弹出
+                    alert('fail');
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+<input type="button" id="btn_city">
+<div id="result"></div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #container {
+            background-color: #cccccc;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .item {
+            height: 100px;
+            width: 100px;
+            text-align: center;
+
+        }
+
+        .item1 {
+            flex-grow: 1;
+            background-color: #f40;
+
+        }
+
+        .item2 {
+            flex-grow: 1;
+            background-color: #040;
+            align-self: flex-end;
+
+        }
+
+        .item3 {
+            background-color: #0f4;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div class="item item1">1</div>
+    <div class="item item2">2</div>
+    <div class="item item3">3</div>
+</div>
+
+
+
+</body>
+</html>

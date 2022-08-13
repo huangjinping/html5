@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<svg width="400" height="400">
+    <circle cx="100" cy="100" r="50" style="fill: #00FFFF">
+        <animate
+                id="a1"
+                attributeName="r"
+                attributeType="XML"
+                values="50;80;50"
+                begin="0s"
+                dur="2s"
+                fill="freeze"
+                repeatCount="indefinite"
+        >
+        </animate>
+        <animate
+                attributeName="fill-opacity"
+                attributeType="css"
+                values="1;0.1;1"
+                begin="0s"
+                dur="2s"
+                repeatCount="indefinite"
+        >
+        </animate>
+    </circle>
+    <circle cx="200" cy="200" r="50" style="fill: #8A2BE2">
+        <animate
+                attributeName="r"
+                attributeType="XML"
+                values="50;80;50"
+                begin="a1.end"
+                dur="2s"
+                fill="freeze"
+                repeatCount="indefinite"
+        >
+        </animate>
+        <animate
+                attributeName="fill-opacity"
+                attributeType="css"
+                values="1;0.1;1"
+                begin="0s"
+                dur="2s"
+                repeatCount="indefinite"
+        >
+        </animate>
+    </circle>
+</svg>
+<p></p>
+<svg width="400" height="400">
+    <polygon points="122 59,72 205,194 114,49 114,171 205" style="fill: #ff6600">
+        <animateMotion
+                dur="6s"
+                repeatCount="indefinite"
+                path="M100 100, A120 120, -45 0 1, 300 300 A120 120, -45 0 1, 100 100"
+                rotate="auto"
+        />
+    </polygon>
+</svg>
+</body>
+</html>

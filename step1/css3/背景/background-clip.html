@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body html {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            width: 100px;
+            height: 100px;
+            background-color: skyblue;
+            border: 10px solid #cccccc;
+            padding: 10px;
+        }
+
+        li:nth-child(1) {
+            background-clip: content-box;
+        }
+
+    </style>
+</head>
+<body>
+<!--background-color:yellow;-->
+<!--background-clip:content-box;-->
+<!--规定背景的绘制区域：-->
+background-clip：设置背景区域的范围；padding-box 设置默认的背景范围是padding-box 的范围
+<ul>
+    <li>背景1</li>
+    <li>背景2</li>
+    <li>背景3</li>
+</ul>
+</body>
+</html>

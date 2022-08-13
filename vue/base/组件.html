@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <todo-item v-bind:todo="myTitle"></todo-item>
+</div>
+<div id="app2">
+    <order-item v-for="item in orderList" v-bind:data="item" v-bind:key="item.id"></order-item>
+</div>
+</body>
+<script>
+
+    Vue.component('todo-item', {
+        props: ['todo'],
+        template: '<li>{{todo}}</li>'
+    });
+    Vue.component('order-item', {
+        props: ['data'],
+        template: '<span>{{data.name}}</span>'
+    });
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            myTitle: "啊实打实的",
+        }
+    });
+    
+    var vue2 = new Vue({
+        el: '#app2',
+        data: {
+            orderList: [
+                {id: 1, name: "第一个"},
+                {id: 2, name: "第二个"},
+                {id: 3, name: "第三个"},
+            ]
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,48 @@
+
+.container {
+    max-width: 600px;
+    min-width: 300px;
+    height: 100%;
+    margin: 0 auto;
+    background: red;
+}
+
+.product_header img {
+    width: 40px;
+    height: 40px;
+}
+
+.left {
+    height: 100%;
+    width: 90px;
+    background-color: skyblue;
+    float: left;
+}
+
+.right {
+    height: 100%;
+    width: 100%;
+    background: rebeccapurple;
+    margin-left: 90px;
+
+}
+.right div{
+    width: 100px;
+    height: 100px;
+    background-color: black;
+}
+.right  ul{
+    height: 50px;
+    background:darkblue;
+}
+
+.right  ul  li{
+    float: left;
+    width: 100px;
+}
+
+.right div{
+    width: 100px;
+    background-color: black;
+    height: 100px;
+}

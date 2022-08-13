@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        li::before {
+            content: "123"
+        }
+
+        .title6::after {
+            content: "小明同学";
+        }
+
+        ::selection {
+            color: #ff0000;
+        }
+
+        ::-moz-selection {
+            color: #ff0000;
+        }
+
+        /*.selection::-moz-selection {*/
+        /*color: red;*/
+        /*}*/
+
+        /*.selection::selection {*/
+        /*color: red;*/
+        /*}*/
+
+        input[type="text"]::-webkit-input-placeholder {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li>标题1</li>
+    <li class="selection">标题2</li>
+    <li>标题3</li>
+    <li>标题4 <input type="text" placeholder="我就是个小标签"></li>
+    <li>标题5</li>
+    <li class="title6">标题6</li>
+</ul>
+
+
+</body>
+</html>

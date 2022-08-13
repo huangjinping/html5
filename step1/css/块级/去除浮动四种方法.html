@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style type="text/css">
+        div{
+            width: 800px;
+
+        }
+
+        .box1{
+            width: 100px;
+            height: 200px;
+            background-color:skyblue;
+            clear: both;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+
+
+<>
+去除浮动影响的四种方式
+1.设置父标签的宽度；
+2.在浮动影响的标签下设置clear：both,影响界面的margin 属性失去作用
+3.外墙法；在悬浮标签的外下方设置一个&lt;div&gt;属相设置为clear:both；浮动的父标签没有背景；因为其height属性变成了0
+4.内墙法；在悬浮标签的内部设置一个&lt;div&gt;属相设置为clear:both；浮动的父标签可以设置背景了；他的heignt属性有值了
+5.overflow:hidden  实现的效果和4 差不多哈哈
+
+
+<div>
+    <P class="box1">1</P>
+    <P class="box2">2</P>
+    <P class="box3">3</P>
+</div>
+
+</body>
+</html>

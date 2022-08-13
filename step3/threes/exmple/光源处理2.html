@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>光源处理</title>
+    <script src="../js/three.js"></script>
+    <script src="../js/dat.gui.js"></script>
+    <style>
+        div#canvas-frame {
+            width: 100%;
+            height: 600px;
+            cursor: pointer;
+            background-color: #EEEEEE;
+            border: none;
+        }
+    </style>
+    <script>
+        var renderer;
+        var width;
+        var height;
+        function initThree() {
+            width = document.getElementById("canvas-frame").clientWidth;
+            height = document.getElementById("canvas-frame").clientHeight;
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setSize(width, height);
+            document.getElementById("canvas-frame").appendChild(renderer.domElement);
+            renderer.setClearColor(0xFFFFFF, 1.0);
+        }
+        var camera;
+        function initCamera() {
+            camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+            camera.position.x = 0;
+            camera.position.y = 200;
+            camera.position.z = 600;
+            camera.up.x = 0;
+            camera.up.y = 0;
+            camera.up.z = 1;
+            //010正面成像，100躺成像，001
+
+            //快门方向只是表示方向并不是表示坐标；每个参数为1即可。
+            //快门方向永远与lookAt方向垂直；否则显示不正常
+            camera.lookAt({
+                x: 0,
+                y: 0,
+                z: 0,
+            });
+        }
+        var scene;
+        function initScene() {
+            scene = new THREE.Scene();
+        }
+
+        var light;
+        function initLight() {
+            //环境光
+//            light = new THREE.AmbientLight(0xff0000);
+//            light.position.set(0, 0, 0);
+//            scene.add(light);
+
+            //方向
+//            light = new THREE.DirectionalLight(0xff0000, 1);
+//            light.position.set(0, 0, 100);
+//            scene.add(light);
+
+            //点光源
+            light = new THREE.PointLight(0xff0000, 1, 10000, 1);
+            light.position.set(600, 0, 0);
+            scene.add(light);
+
+        }
+
+        var cube;
+
+        function initObject() {
+            //画出立方体控件
+//            var geometry = new THREE.CubeGeometry(100, 100, 100, 20, 20, 20);
+//            var material = new THREE.MeshLambertMaterial({color: 0x000000});
+            var geometry = new THREE.CubeGeometry(200, 100, 100, 100, 100, 100);
+            var material = new THREE.MeshLambertMaterial({color: 0xffffff});
+            var mesh = new THREE.Mesh(geometry, material);
+            mesh.position = new THREE.Vector3(0, 0, 0);
+            scene.add(mesh);
+
+            //画出来圆柱形控件
+            var geometry = new THREE.CylinderGeometry(200, 11, 200, 200, 200);
+            var material = new THREE.MeshLambertMaterial();
+            var mesh = new THREE.Mesh(geometry, material);
+            mesh.position = new THREE.Vector3(0, 0, 0);
+            scene.add(mesh);
+
+            //画出来直线
+            var geometry = new THREE.Geometry();
+            geometry.vertices.push(new THREE.Vector3(-100, 0, 0));
+            geometry.vertices.push(new THREE.Vector3(100, 0, 0));
+            geometry.vertices.push(new THREE.Vector3(100, 100, 0));
+            geometry.vertices.push(new THREE.Vector3(0, 100, 100));
+
+            var material = new THREE.LineBasicMaterial({color: 0xff0000});
+            var line = new THREE.Line(geometry, material, THREE.LinePieces);
+            line.position.z = 0;
+            line.rotation.x = 180 * Math.PI / 180;
+            scene.add(line);
+
+            var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({color: 0x00ff00, opacity: 0.2}));
+            line.position.x = 100;
+            line.rotation.y = 90 * Math.PI / 180;
+            scene.add(line);
+            
+        }
+
+        function threeStart() {
+            initThree();
+            initCamera();
+            initScene();
+            initLight();
+            initObject();
+            renderer.render(scene, camera);
+        }
+
+    </script>
+</head>
+<body onload="threeStart();">
+<div id="canvas-frame"></div>
+</body>
+</html>

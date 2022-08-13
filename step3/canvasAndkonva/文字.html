@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<canvas id="canvEml">
+</canvas>
+<script>
+    (function () {
+        var canvas = document.getElementById("canvEml");
+        var ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style = '1px ';
+        ctx.beginPath();
+        ctx.font = '20px "微软雅黑"';
+        ctx.fillStyle = "green";
+        ctx.textBaseline = 'top';
+        ctx.fillText("文件", 0, 0);
+        ctx.stroke();
+        //信息
+        ctx.beginPath();
+        ctx.moveTo(0, 100);
+        ctx.lineTo(200, 100);
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+    })();
+</script>
+</body>
+</html>

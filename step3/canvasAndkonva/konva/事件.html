@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>konva事件</title>
+    <script src="../../bower_components/konva/konva.js"></script>
+</head>
+<body>
+<div id="container">
+</div>
+<script>
+    var stage = new Konva.Stage({
+        container: 'container',
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
+    var layer = new Konva.Layer();
+    stage.add(layer);
+    var rect = new Konva.Rect({
+        x: 100,
+        y: 100,
+        width: 200,
+        height: 200,
+        fill: "#ccc",
+    });
+    layer.add(rect);
+    layer.draw();
+
+    stage.on('contentTouchmove  contentMousemove', function (e) {
+        console.log(e);
+    });
+
+    stage.on('contentTouchstart contentMousedown', function (e) {
+        console.log(e);
+    });
+
+    var student = {
+        add: function () {
+            console.log(this);
+            return 123;
+        },
+    };
+    var person = {
+        max: function (a, b) {
+            return a + b;
+        }
+    }
+    console.log(student.add.call(person));
+    //    console.log(person.max.call(student, 1, 3));
+
+
+</script>
+</body>
+</html>

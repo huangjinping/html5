@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>伸缩布局5</title>
+    <style>
+        #container {
+            width: 300px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-content: center;
+            height: 600px;
+            background-color: grey;
+            justify-content: center;
+            list-style: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        .item {
+            height: 30px;
+            width: 100px;
+            background-color: red;
+            border: 5px solid grey;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        .item:nth-child(3n+1) {
+            background-color: #0f4;
+        }
+    </style>
+</head>
+<body>
+
+<ul id="container">
+    <li class="item">1</li>
+    <li class="item">2</li>
+    <li class="item">3</li>
+    <li class="item">4</li>
+    <li class="item">5</li>
+    <li class="item">6</li>
+    <li class="item">7</li>
+    <li class="item">8</li>
+</ul>
+</body>
+</html>

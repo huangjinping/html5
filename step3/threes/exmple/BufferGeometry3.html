@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>buffergeometry</title>
+    <script src="../src/three.js"></script>
+    <!--主要性能是BufferGeometry在内存中是连续的控件-->
+    <style>
+        div#canvas-frame {
+            border: none;
+            width: 100%;
+            height: 600px;
+            cursor: pointer;
+            background-color: #EEEEEE;
+        }
+    </style>
+    <script>
+        var renderer;
+        var width;
+        var height;
+        var scene;
+        var camera;
+        function init() {
+            width = document.getElementById("canvas-frame").clientWidth;
+            height = document.getElementById("canvas-frame").clientHeight;
+            renderer = new THREE.WebGLRenderer({antialias: true});
+            renderer.setClearColor(0xEEEEEE, 1);
+            renderer.setSize(width, height);
+            document.getElementById("canvas-frame").appendChild(renderer.domElement);
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+            camera.position.x = 2;
+            camera.position.y = 0;
+            camera.position.z = 5;
+            camera.up.x = 0;
+            camera.up.y = 0;
+            camera.up.z = 0;
+            camera.lookAt({
+                x: 0,
+                y: 0,
+                z: 0,
+            });
+
+            var light = new THREE.DirectionalLight(0xff0000, 1);
+            light.position.x = 0;
+            light.position.y = 0;
+            light.position.z = 600;
+            scene.add(light);
+
+//            var geometry = new THREE.PlaneGeometry(100, 100, 2, 2);
+//            var material = new THREE.MeshLambertMaterial();
+//            var mesh = new THREE.Mesh(geometry, material);
+//            scene.add(mesh);
+//
+//            renderer.render(scene, camera);
+//            console.log(renderer);
+
+
+            var geometry = new THREE.BufferGeometry();
+
+            var vertices = new Float32Array([
+                -1.0, -1.0, 1.0,
+                1.0, -1.0, 1.0,
+                1.0, 1.0, 1.0,
+            ]);
+
+            var colors = new Float32Array(3 * 3 * 3);
+            for (var i = 0; i < colors.length; i += 3) {
+                colors[i] = Math.random();
+                colors[i + 1] = Math.random();
+                colors[i + 2] = Math.random();
+            }
+
+
+            console.log(colors);
+
+            geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+            geometry.addAttribute('color', new THREE.BufferAttribute(vertices, 3));
+//            color — 线条的十六进制颜色。缺省值为 0xffffff。
+//specular — 设置高亮颜色，缺省为 0x111111 .
+//                shininess — 设置亮度，缺省为 30.
+//            map — 设置纹理贴图。缺省为null。
+//lightMap — 设置光照贴图。缺省为null。
+//lightMapIntensity — 设置光照贴图强度。缺省值为1。
+//aoMap — 设置环境遮挡贴图（ao = ambient occlusion）。缺省为null。
+//aoMapIntensity — 设置环境遮挡贴图强度。缺省为1。
+//emissive - 设置放射光颜色。默认是0x000000.
+//                emissiveMap — 设置放射光贴图。缺省为null。
+//emissiveIntensity — 设置放射光贴图强度。缺省值为1。
+//bumpMap — 设置凸凹贴图，缺省为null。
+//bumpScale — 设置凸凹贴图比例，缺省为1。
+//normalMap — 设置法线贴图，缺省为null。
+//normalScale — 设置法线贴图比例，缺省为 (1, 1)。
+//displacementMap — 设置置换贴图。缺省为null。
+//displacementScale — 设置置换比例。缺省为1.
+//                displacementBias — 设置置换偏移。缺省为0.
+//                specularMap — 设置镜面贴图（也称高光贴图）。缺省为null。
+//alphaMap — 设置阿尔法贴图。默认为null。
+//envMap — 设置环境贴图。默认为null。
+//combine — 设置组合操作。默认值是THREE.MultiplyOperation.
+//                reflectivity — 设置反射率。默认值是 1.
+//            refractionRatio — 设置折射率。默认值是 0.98.
+//                fog — 定义材质颜色是否受全局雾设置的影响。默认是true。
+//shading — 定义着色类型。缺省为 THREE.SmoothShading。
+//wireframe — 渲染模型为线框。默认是false。
+//wireframeLinewidth — 线框线宽。默认是1。
+//wireframeLinecap — 定义线端的外观。默认值是 'round'.
+//                wireframeLinejoin — 定义线连接节点的外观。默认值是 'round'.
+//                vertexColors — 定义顶点如何着色。默认值是 THREE.NoColors.
+//                skinning — 定义材料是否使用皮肤。默认值是false.
+//                morphTargets — 定义材料是否使用 morphTargets。默认值是 false。
+//morphNormals — 定义材料是否使用morphNormals。默认是false。
+            var material = new THREE.MeshBasicMaterial({
+                color: 0xaaaaaa, specular: 0xffffff, shininess: 250,
+                side: THREE.FrontSide, vertexColors: THREE.VertexColors
+            });
+            var mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+            renderer.render(scene, camera);
+
+        }
+        function threeStart() {
+            init();
+        }
+    </script>
+</head>
+<body onload="threeStart();">
+<div id="canvas-frame">
+</div>
+</body>
+</html>

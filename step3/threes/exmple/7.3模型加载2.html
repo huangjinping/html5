@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../src/three.js"></script>
+    <style>
+        div#container {
+            width: 100%;
+            height: 600px;
+            border: none;
+            background-color: #EEEEEE;
+        }
+    </style>
+    <script>
+        var renderer;
+        var scene;
+        var width;
+        var height;
+        var camera;
+        var container;
+        var mesh;
+        function init() {
+            container = document.getElementById("container");
+            width = container.clientWidth;
+            height = container.clientHeight;
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setClearColor(0xeeeeee, 1);
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(45, width / height, 1, 10);
+            camera.position.set(0, 0, 10);
+
+            var light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(0, 0, 10);
+            scene.add(light);
+
+//            var  geometry=new THREE.OctahedronGeometry(3);
+//            var geometry = new THREE.TetrahedronGeometry(3);
+            var geometry =  new THREE.TorusKnotGeometry(2, 0.5, 32, 8)
+            var material = new THREE.MeshLambertMaterial({vertexColors: THREE.VertexColors});
+
+            for (var i=0;i<geometry.faces.length;i++){
+                var hex = Math.random() * 0xffffff;
+                geometry.faces[i].color.setHex(hex);
+            }
+
+            mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+
+
+        }
+
+        function threeStart() {
+            init();
+            animate()
+        }
+    </script>
+</head>
+<body onload="threeStart()">
+<div id="container"></div>
+</body>
+</html>

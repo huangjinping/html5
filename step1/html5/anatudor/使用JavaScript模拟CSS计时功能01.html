@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        /*:root {*/
+        /*    --main-bg-color: pink;*/
+        /*    --stop: 0%;*/
+        /*}*/
+
+        /*        body {*/
+        /*            background-color: var(--main-bg-color);*/
+        /*        }*/
+
+
+        body {
+            background-image: linear-gradient(80deg, #f40 var(--stop, 0%), #f0efed 0%);
+            background-position: 10px  40px;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    (function init() {
+        const NF = 80; // number of frames transition happens over
+        let rID = null, f = 0, dir = -1;
+
+        function stopAni() {
+            cancelAnimationFrame(rID);
+            rID = null;
+        };
+
+        function update() {
+            f += dir; // update current frame index
+            let k = f / NF; // compute progress
+            console.log(`${+(k * 100).toFixed(1)}%`);
+            document.body.style.setProperty('--stop', `${+(k * 100).toFixed(2)}%`);
+            if (!(f % NF)) {
+                stopAni();
+                return
+            }
+
+            rID = requestAnimationFrame(update)
+        };
+
+        addEventListener('click', e => {
+            if (rID) stopAni(); // if an animation is already running, stop it
+            dir *= -1; // change animation direction
+            update();
+        }, false)
+    })();
+</script>
+</body>
+</html>

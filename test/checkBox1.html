@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    input[type="checkbox"]+label>i {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #bbb;
+        background: #bbb;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    input[type="checkbox"]:checked+label>i {
+        position: relative;
+    }
+
+    input[type="checkbox"]:checked+label>i::before {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 18px;
+        color: black;
+        border-bottom: 1px solid green;
+        border-right: 1px solid green;
+        left: 50%;
+        top: 20%;
+        transform-origin: center;
+        transform: translate(-50%, -30%) rotate(40deg);
+        -webkit-transform: translate(-50%, -30%) rotate(40deg);
+    }
+</style>
+<body>
+<form>
+    <input id="select_all" name="select_all" type="checkbox">
+    <label for="select_all"> <i></i>选择</label>
+</form>
+
+</body>
+</html>

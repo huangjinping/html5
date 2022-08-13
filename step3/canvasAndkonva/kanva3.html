@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>九星公转</title>
+    <script src="../bower_components/konva/konva.js"></script>
+</head>
+<body>
+<div id="container">
+</div>
+<script>
+    var stage = new Konva.Stage({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        container: 'container'
+    });
+    var layer = new Konva.Layer();
+    stage.add(layer);
+    var rect = new Konva.Rect({
+        x: 100,
+        y: 100,
+        width: 100,
+        height: 100,
+        stroke: "blue",
+        fill: 'red',
+        cornerRadius: 50,
+    });
+
+    var innerRect = new Konva.Rect({
+        x: 50,
+        y: 50,
+        width: 50,
+        height: 20,
+        fill: "yellow",
+    });
+
+    var group = new Konva.Group();
+    group.add(rect);
+    group.add(innerRect);
+    layer.add(group);
+    layer.draw();
+
+</script>
+</body>
+</html>

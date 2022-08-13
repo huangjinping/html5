@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+<!--<div id="app">-->
+    <!--<div>{{message}}</div>-->
+    <!--<input type="text" v-model="message">-->
+    <!--<p>=====</p>-->
+    <!--<p>{{b}}</p>-->
+    <!--<p>=====</p>-->
+
+<!--</div>-->
+
+<div id="example">{{message}}</div>
+
+<script>
+//    var  vm=new Vue({
+//        el:"#app",
+//        data:{
+//            message:'11',
+//            b:1
+//        },
+//    });
+//    Vue.set(vm.data,'b',2);
+//    vm.message='hello';
+
+
+//
+//    var vm = new Vue({
+//        el: '#example',
+//        data: {
+//            message: '123'
+//        }
+//    })
+//    vm.message = 'new message' // 更改数据
+//    vm.$el.textContent === 'new 1message' // false
+//    Vue.nextTick(function () {
+//        vm.$el.textContent === 'new 2message' // true
+//    })
+
+
+
+Vue.component('example', {
+    template: '<span>{{ message }}</span>',
+    data: function () {
+        return {
+            message: '没有更新'
+        }
+    },
+    methods: {
+        updateMessage: function () {
+            this.message = '更新完成'
+            console.log(this.$el.textContent) // => '没有更新'
+            this.$nextTick(function () {
+                console.log(this.$el.textContent) // => '更新完成'
+            })
+        }
+    }
+})
+</script>
+</body>
+</html>

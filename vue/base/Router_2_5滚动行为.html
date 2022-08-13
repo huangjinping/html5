@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <style>
+
+        ul {
+            list-style: none;
+        }
+
+        .fooUl li {
+            height: 15rem;
+            font-size: 14rem;
+            line-height: 15rem;
+            color: cadetblue;
+        }
+
+        .barUl li {
+            height: 10rem;
+            font-size: 9rem;
+            line-height: 10rem;
+            color: antiquewhite;
+        }
+
+        .container_view {
+            height: 30rem;
+            border: 1px solid salmon;
+            overflow: hidden;
+            overflow-y: scroll;
+        }
+    </style>
+
+</head>
+<body>
+<div id="app">
+    <h1>滚动行为</h1>
+    <router-link to="/foo">foo</router-link>
+    <router-link to="/bar">bar</router-link>
+    <div class="container_view">
+        <router-view></router-view>
+    </div>
+</div>
+<script>
+
+    var foo = {
+        template: `<div><ul class="fooUl">
+        <li>FOO1</li>
+        <li>FOO2</li>
+        <li>FOO3</li>
+        <li>FOO4</li>
+        <li>FOO5</li>
+        <li>FOO6</li>
+        <li>FOO7</li>
+        <li>FOO8</li>
+        <li>FOO9</li>
+        <li>FOO10</li>
+        </ul>
+        </div>`
+    }
+    var bar = {
+        template: `<div><ul class="barUl">
+        <li>Bar1</li>
+        <li>Bar2</li>
+        <li>Bar3</li>
+        <li>Bar4</li>
+        <li>Bar5</li>
+        <li>Bar6</li>
+        <li>Bar7</li>
+        <li>Bar8</li>
+        <li>Bar9</li>
+        <li>Bar10</li>
+        </ul></div>`
+    }
+    var routes = [{
+        path: "/",
+        component: bar
+    }, {
+        path: "/foo",
+        name: "myFoo",
+        component: foo
+    }, {
+        path: "/bar",
+        name: "myBar",
+        component: bar
+    }];
+
+    var router = new VueRouter({
+        routes,
+        scrollBehavior (to, from, savedPosition) {
+            // return 期望滚动到哪个的位置
+            console.log("scrollBehavior");
+            console.log(to);
+            console.log(from);
+            console.log(savedPosition)
+
+            if (savedPosition) {
+                return savedPosition
+            } else {
+                return { x: 0, y: 0 }
+            }
+        }
+    });
+
+    var app = new Vue({
+        el: "#app",
+        router
+    });
+
+
+</script>
+</body>
+</html>

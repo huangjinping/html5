@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+
+<script>
+    var value = {
+        bankCardId: "6493752954310362113",
+        paymentId: "6493752951042999297",
+        phone: "13611290917"
+    };
+    var params = {
+        applyId: "6492658227141936129",
+        commodityName: "沃夫测试商品第1期",
+        idName: "黄金平",
+        idNo: "410211198904083033",
+        payType: "1",
+        paymentFee: "0.00",
+        psInstmAmt: "0.1",
+        repayAmt: "0.10"
+    }
+
+    for (var  key  in  value){
+        params[key] = value[key];
+    }
+    console.log(params);
+
+</script>
+</html>

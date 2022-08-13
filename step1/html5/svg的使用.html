@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+          var src=  $("svg").data("src");
+          alert(src);
+            $.get(src,function (data) {
+                data.document
+                //TODO AJAX之后处理这个问题
+                
+            })
+        });
+    </script>
+</head>
+
+<body>
+三种方式加载svg的方式
+1.ifragme
+<iframe src="svg/fire4.svg" frameborder="0"></iframe>
+<div></div>
+2.object
+<div></div>
+<object data="svg/fire4.svg"></object>
+3.embed
+<div></div>
+<embed src="svg/fenfujun.svg"/>
+4.根据ajax访问服务器上面的svg
+<svg  data-src="svg/fire4.svg">
+</svg>
+
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>懒加载插件</title>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script src="../lib/jquery-lazyload/jquery.lazyload.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+//            $("img.lazy").lazyload();
+//            默认图片加载
+            $("img").lazyload({
+                placeholder : "images/ic_service_user.jpg",
+                effect: "fadeIn"
+            });
+        });
+    </script>
+    <style type="text/css">
+        .top {
+            height: 10px;
+            background-color: inherit;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top">
+</div>
+
+<img class="lazy" data-original="http://ic.daiyutech.com/hd-merchant-web/mobile/picture/down?file=/upload/19/05/29/12c3d8df64c84104bd81ebc4aeee876b.jpg" width="380px" height="168px"/>
+</body>
+</html>

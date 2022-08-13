@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/angular/angular.js"></script>
+
+</head>
+<body ng-app="hApp" ng-controller="hController">
+<ul>
+    <li><input type="checkbox"  ng-model="checked"/> 全选/反选</li>
+</ul>
+<ul>
+    <lu><input type="checkbox"  ng-model="checked">1</lu>
+    <lu><input type="checkbox"  ng-model="checked">2</lu>
+    <lu><input type="checkbox"  ng-model="checked">3</lu>
+    <lu><input type="checkbox"  ng-model="checked">4</lu>
+    <lu><input type="checkbox"  ng-model="checked">5</lu>
+    <lu><input type="checkbox" ng-model="checked">6</lu>
+</ul>
+
+<script type="text/javascript">
+    var hApp = angular.module("hApp", []);
+    hApp.controller("hController", function () {
+
+    });
+</script>
+</body>
+</html>

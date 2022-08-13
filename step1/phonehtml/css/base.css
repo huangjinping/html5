@@ -1,0 +1,25 @@
+*, ::after, ::before {
+    content: "";
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+ul {
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+}
+.clearfix::after,
+.clearfix::before{
+    clear: both;
+    content: '.';
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    display: block;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>微信登录</title>
+</head>
+
+<body>
+<script>
+
+
+             function GetQueryString(name) {
+                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                 var r = window.location.search.substr(1).match(reg);
+                 if (r != null)return unescape(r[2]);
+                 return null;
+             }
+
+             $(function () {
+                 var code = GetQueryString("code");
+                 var state = GetQueryString("state");
+                 var REDIRECT_URI = location.href;
+                 // console.log(code)
+                 // console.log(state)
+                 // console.log(REDIRECT_URI)
+                 if (code == null) {
+                     // console.log(encodeURIComponent(REDIRECT_URI))
+                     window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf9662b31e6191d1a&redirect_uri=" + encodeURIComponent(REDIRECT_URI) + "&response_type=code&scope=snsapi_base&state=daiyutech#wechat_redirect";
+                 } else {
+                     // console.log(code);
+                     // console.log(state);
+                     test();
+                     // alert(code)
+                 }
+             })
+             function test() {
+                 //获取用户的openId
+                 var LoginTokenA = JSON.parse(localStorage.getItem('register'));
+
+                 var jsData = {};
+                 jsData.jsCode = GetQueryString("code");
+                 jsData.type = '01'
+                 jsData.token = LoginTokenA.token;
+                 jsData.id = LoginTokenA.id;
+                 $.ajax({
+                     url: https + "mobile/payment/getWxOpenid",
+                     dataType: "text",
+                     type: "POST",
+                     data: jsData,
+                     success: function (data) {
+                         var resdataH = eval('(' + data + ')');
+                         // var resdataH = data
+                         // alert(resdataH.code)
+                         // alert(resdataH.result.openId)
+                         if (resdataH.code == 0) {
+             var openIdA = resdataH.result.openId;
+             localStorage.setItem('openIdAH',openIdA)
+                          }
+                     }
+                 })
+             }
+
+</script>
+</body>
+
+</html>

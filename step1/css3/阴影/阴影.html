@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            width: 100px;
+            height: 100px;
+            background-color: white;
+        }
+
+        /*阴影设置问题*/
+        /*1.下角度 2.左右角度 3.曝光率  4.扩展 */
+        /*.content {*/
+        /*box-shadow:10px 10px  black;*/
+        /*}*/
+
+        /**
+        内阴影设置
+         */
+        /*.content{*/
+        /*box-shadow: inset 10px 10px 10px black;*/
+        /*width: 100px;*/
+        /*height: 100px;*/
+        /*background-color: whitesmoke;*/
+        /*}*/
+
+        /*牛逼阴影内阴影加上外阴影*/
+        .content{
+            box-shadow: inset 10px 10px 10px black , 10px 10px 10px black
+        }
+        /*终极的渐变色*/
+        .content{
+            box-shadow: inset 5px 5px 10px white , inset 10px 10px 10px black, 5px 5px 10px red ,  10px 10px 10px black
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div class="content">
+   阴影组合的话用，号隔开
+</div>
+
+</body>
+</html>

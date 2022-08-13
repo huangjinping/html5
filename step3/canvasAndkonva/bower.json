@@ -1,0 +1,20 @@
+{
+  "name": "canvasAndkonva",
+  "authors": [
+    "harrishuang <huangjinping1000@163.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "konva": "^2.5.1"
+  }
+}

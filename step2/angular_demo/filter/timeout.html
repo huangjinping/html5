@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>timaout</title>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-app="mApp" ng-controller="mController">
+
+<script type="text/javascript">
+    var module = angular.module("mApp", []);
+    module.controller("mController", ["$scope", "$timeout","$interval", function ($scope, $timeout,$interval) {
+        console.log($scope);
+        console.log($timeout);
+        $timeout(function () {
+//            console.log("$timeout");
+        },2000)
+        $interval(function () {
+//            console.log("$interval");
+        },2000);
+    }]);
+</script>
+</body>
+</html>

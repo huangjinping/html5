@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>动画的过度</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<style>
+    /* div的初始状态*/
+    .h {
+        width: 100px;
+        height: 100px;
+        background-color: aqua;
+    }
+
+    /**
+   * 定义进入动画和退出动画的过程
+   * 代表关注的是height的变化，动画的时间是5
+   */
+    .fade-enter-active, .fade-leave-active {
+        transition: height 10s;
+    }
+
+    /* 定义进入动画的初始状态*/
+    .fade-enter {
+        height: 0;
+    }
+
+    /* 定义进入动画的结束状态*/
+    .fade-enter-to {
+        height: 200px;
+    }
+
+    /* 定义离开动画的初始状态*/
+    .fade-leave {
+        height: 200px;
+    }
+
+    /* 定义离开动画的结束状态*/
+    .fade-leave-to {
+        height: 0;
+    }
+</style>
+<body>
+<div id="app">
+    <button @click="show=!show"></button>
+    <transition name="fade">
+        <div class="h" v-if="show">hello world</div>
+    </transition>
+</div>
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            show: true
+        }
+    });
+</script>
+</html>

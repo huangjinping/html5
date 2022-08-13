@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canEml">
+</canvas>
+<script>
+    (function () {
+
+        console.log("======>>>>>>>");
+        var canvas = document.querySelector("#canEml");
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px solid red";
+        var ctx = canvas.getContext('2d');
+        var image = new Image();
+        image.src = "./ic_operator.png";
+        image.onload = function () {
+            console.log("======>>>>>>>>");
+            var pat = ctx.createPattern(image, "repeat-x");
+            ctx.rect(0, 0, 400, 400);
+            ctx.fillStyle = pat;
+            ctx.fill();
+            ctx.beginPath();
+            ctx.scale(2, 2);
+        }
+
+
+    })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绝对</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+
+        .box1 {
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+            position: absolute;
+            left: 110px;
+            top: 110px;
+            max-width: 10px;
+        }
+        
+        .box2 {
+            width: 100px;
+            height: 10000px;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+
+1.自绝父相是比较常用的原则
+2.绝对布局是在父辈设置postion 之后就把父的盒子起点当成自己的起点
+3.脱标
+4.默认情况下相对于首屏的起点开始绝对的。但是当父辈有东西的时候就有从父原则
+
+<div class="box"></div>
+<div class="box1"></div>
+<div class="box2"></div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .right {
+            color: green;
+            border: 1px solid green;
+        }
+
+        .wrong {
+            color: red;
+            border: 1px solid red;
+        }
+
+        .password1 {
+
+            background-color: grey;
+        }
+
+        .password2 {
+            background-color: green;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var check = document.getElementById("check");
+            var username = document.getElementById("username");
+            var password = document.getElementById("password");
+            password.onmouseover = function () {
+                password.className = "password1";
+            }
+//            password.onmousemove=function () {
+//                password.className = "password2";
+//            }
+            password.onmouseout = function () {
+                password.className = "password2";
+
+            }
+
+            username.onblur = function () {
+                if (this.value.length == 0) {
+                    check.innerHTML = "请输入信息"
+                    check.className = "wrong";
+                } else {
+                    check.innerHTML = "输入正确"
+                    check.className = "right";
+                }
+            }
+
+
+        }
+    </script>
+</head>
+<body>
+<div><input id="username" type="text"> <span id="check"></span></div>
+
+<div class="box"><input type="text" id="password"></div>
+</body>
+</html>

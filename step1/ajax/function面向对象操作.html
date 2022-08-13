@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>f
+    <script type="text/javascript">
+        function fruitsMchine(fruits) {
+            this.fruite = fruits;
+            this.juicer = function () {
+                console.log(fruits + "果汁");
+            }
+        }
+
+        fruitsMchine.brand = "ddd";
+        console.log(fruitsMchine.brand);
+
+
+        var apple = new fruitsMchine("苹果");
+        apple.juicer();
+
+
+        var or = new fruitsMchine("橘子");
+        or.juicer();
+
+
+        function Cat() {
+
+        }
+        Cat.prototype={
+            eat:function () {
+                console.log('Cat.prototype');
+            }
+        }
+      var  cat=  new Cat();
+        console.log(cat);
+
+        cat.eat();
+        console.log(cat.eat);
+
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+            
+    <meta charset="utf-8"/>
+            <title>绘制矢量图</title>
+            
+    <script type="text/javascript" src="svg.js"></script>
+        
+</head>
+    
+<body>
+        
+<div id="drawing"></div>
+    
+    
+</body>
+    
+<script type="text/javascript">
+    var draw = SVG('drawing')
+    draw.rect(100,100).animate().fill('#f03').move(100,100)
+</script>
+</html>

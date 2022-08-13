@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>九星运转</title>
+    <script src="./bower_components/konva/konva.js"></script>
+</head>
+<body>
+<div id="container">
+</div>
+<script>
+    var stage = new Konva.Stage({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        container: 'container'
+    });
+
+    var layer = new Konva.Layer();
+    stage.add(layer);
+
+
+    var radius = 100;
+    var x0 = stage.width() / 2;
+    var y0 = stage.height() / 2;
+    var group = new Konva.Group({
+        x: x0,
+        y: y0,
+    });
+    var rect = new Konva.Rect({
+        x: Math.cos(Math.PI * 60 / 180) * radius,
+        y: Math.sin(Math.PI * 60 / 180) * radius,
+        width: 50,
+        height: 50,
+        stroke: "blue",
+        fill: "red"
+    });
+    group.add(rect);
+    layer.add(group);
+    layer.batchDraw();
+
+    var angle_m = 30;
+    var animation = new Konva.Animation(function (frame) {
+        console.log("=========" + frame.timeDiff);
+        group.rotate(angle_m * frame.timeDiff / 1000);
+    }, layer);
+    animation.start();
+
+
+</script>
+</body>
+</html>

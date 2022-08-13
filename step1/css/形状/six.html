@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<style>
+    .itemContainer {
+        width: 60px;
+        height: 104px;
+        position: relative;
+        margin: 10px auto;
+    }
+
+    .itemView {
+        width: 100%;
+        height: 100%;
+        background: blue;
+        position: absolute;
+        top: 0;
+        left: 0;
+        visibility: hidden;
+        overflow: hidden;
+    }
+
+    .hexagon__item_left {
+        transform: rotate(-60deg);
+    }
+
+    .hexagon__item_right {
+        transform: rotate(60deg);
+    }
+
+    .itemView:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: "";
+        height: 100%;
+        width: 120px;
+        visibility: visible;
+        background: url('https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=13897784,1115290966&fm=58') no-repeat;
+        background-size: cover;
+        transform-origin: 0 0;
+    }
+    .hexagon__item_left:before {
+        transform: rotate(60deg) translateY(-50%);
+    }
+
+    .hexagon__item_right:before {
+        transform: rotate(-60deg) translateX(-75%);
+    }
+
+    .hexagon__item_center:before {
+        transform: translateX(-25%);
+    }
+
+    .denidView{
+        width: 200px;
+        height: 100px;
+        background-color: dimgray;
+        transform: rotate(2deg) translateX(4%);
+    }
+
+</style>
+<body>
+
+<div class="itemContainer">
+    <div class="itemView hexagon__item_left"></div>
+    <div class="itemView hexagon__item_center"></div>
+    <div class="itemView hexagon__item_right"></div>
+</div>
+
+<div class="denidView"></div>
+
+</body>
+</html>

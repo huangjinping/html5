@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>页面问题</title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <!--<script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>-->
+    <!--<script src="https://apps.bdimg.com/libs/angular-route/1.3.13/angular-route.js"></script>-->
+</head>
+<body ng-app="hApp">
+
+
+<ul>
+    <li><a href="#!/a">打开数据1</a></li>
+    <li><a href="#!/b">打开数据2</a></li>
+    <li><a href="#!/c">打开数据3</a></li>
+</ul>
+
+<div ng-view></div>
+<script src="movie/controller.js"></script>
+<script src="movie_detail/controller.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+
+
+        ul {
+            list-style: none;
+            display: flex;
+            flex-direction: row;
+        }
+
+        li {
+            width: 300px;
+            height: 200px;
+            background-color: skyblue;
+            margin: 10px;
+
+        }
+
+        li:nth-of-type(1) {
+            /*flex-grow: 1;*/
+            /*flex-shrink:1;*/
+            flex-basis: 10px;
+        }
+
+        li:nth-of-type(2) {
+            /*flex-grow: 2;*/
+            /*flex-shrink:0;*/
+            flex-basis: auto;
+            /*height: 100px;*/
+            /*align-self: flex-end;*/
+        }
+
+        li:nth-of-type(3) {
+            /*flex-grow: 1;*/
+            /*flex-shrink:1;*/
+            flex-basis: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<!--grow-->
+<!--放大的占有比重-->
+<!--shrink-->
+<!--缩小的意思-->
+<!--缩小的占有比重-->
+<!--要是哪个为0 其他为1；当空间缩小的时候为0的不缩小；-->
+<!--flex-basis：-->
+<!--flex-basis属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。-->
+<!--flex=flex-grow+flex-shrink+flex-basis-->
+
+<div>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+
+    </ul>
+</div>
+
+</body>
+</html>

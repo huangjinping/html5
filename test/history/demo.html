@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试</title>
+    <script type="text/javascript" src="jquery.min.js"></script>
+</head>
+
+<body>
+<button onclick="doPushState()">pushState</button>
+<button onclick="count()">count</button>
+
+<script>
+    var index=1;
+
+
+
+    //添加popstate事件
+    $(window).on("popstate",function(){
+       console.log("======>popstate>>>>>>>");
+    });
+    $(function(){
+        alert(location.href);
+    });
+
+    function doPushState(){
+        history.pushState({}, "newtitle","test"+(index++)+".html");
+    }
+
+    function count(){
+        alert(window.history.length);
+    }
+</script>
+</body>
+
+</html>

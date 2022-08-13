@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提交信息</title>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.ajax(
+                {
+                    url: "mobile/order/getThrUrl",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        id: getParameter("applyId"),
+                    },
+                    success: function (result) {
+
+                        window.location=result.url;
+                    },
+                    error: function (xhr, status, p3, p4) {
+
+                    }
+                });
+        });
+
+        function getParameter(name) {
+            var quary = window.location.search;
+            var len = quary.length;
+            var start = quary.indexOf(name);
+            if (start == -1) {
+                return "";
+            }
+            var end = quary.indexOf("&", start);
+            if (end == -1) {
+                var param = quary.substring(start);
+                return param.split("=")[1];
+            }
+            var param = quary.substring(start, end);
+            return param.split("=")[1];
+        }
+    </script>
+</head>
+<body>
+
+
+
+</body>
+</html>

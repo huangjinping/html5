@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="scripts/product.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var product = new Product();
+            product.price = 123;
+            product.account=12;
+            product.bindDom();
+            product.init();
+        });
+    </script>
+</head>
+<body>
+
+<div>
+    <span>商品价格</span><span id="price"></span>
+</div>
+<div>
+    <span>商品数量</span><span id="account"></span>
+</div>
+</body>
+</html>

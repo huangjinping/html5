@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body>
+<div ng-app="hApp" ng-controller="hController">
+    <select ng-model="name">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+    </select>
+    <ul ng-switch="name">
+        <li ng-switch-when="1">1</li>
+        <li ng-switch-when="2">2</li>
+        <li ng-switch-when="3">3</li>
+    </ul>
+</div>
+<script type="text/javascript">
+    var hApp = angular.module("hApp", []);
+    hApp.controller("hController", ["$scope", function ($scope) {
+        $scope.name = 2;
+    }]);
+</script>
+</body>
+</html>

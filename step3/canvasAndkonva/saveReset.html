@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>保存重置</title>
+</head>
+<body>
+<canvas id="canEml"></canvas>
+<script>
+    var start = 0;
+    (function () {
+        var canvas = document.querySelector("#canEml");
+        var ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px solid  red";
+        ctx.fillRect(100, 50, 100, 50);
+        var angle = 0;
+        function render() {
+            window.requestAnimationFrame(render);
+            start++
+            if (start > 10) {
+                ctx.save();
+                angle+=10;
+                ctx.translate(1,0);
+                ctx.rect(100,50,100,50);
+                ctx.restore();
+            }
+        }
+
+        render();
+    })();
+</script>
+</body>
+</html>

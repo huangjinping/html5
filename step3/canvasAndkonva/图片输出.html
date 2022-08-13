@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片输出</title>
+</head>
+<body>
+<canvas id="canEml"></canvas>
+<img src="" alt="我是图片" id="myIcon">
+<script>
+    (function () {
+        var canvas = document.querySelector("#canEml");
+        var ctx = canvas.getContext("2d");
+        canvas.height = 400;
+        canvas.width = 400;
+        canvas.style.border = "1px solid  red";
+        ctx.arc(100, 100, 50, Math.PI * -90 / 180, 0);
+        ctx.stroke();
+        var img = document.querySelector("#myIcon");
+        img.src = canvas.toDataURL("image/png");
+        
+        ctx.moveTo(50, 50);
+        ctx.lineTo(200, 200);
+        ctx.stroke();
+    })();
+</script>
+</body>
+</html>

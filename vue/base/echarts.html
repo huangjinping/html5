@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="../js/echarts-all.js"></script>
+    <script src="../js/data.js"></script>
+</head>
+<body>
+<div id="app">
+    <p>{{message}}</p>
+    <div id="your_div"></div>
+</div>
+<script>
+
+    var  data=allData;
+    console.log(data);
+
+    var app = new Vue({
+        data(){
+            return {
+                message: "123123123"
+            }
+        },
+        mounted: function () {
+            echarts.init(document.getElementById('your_div'))
+
+        }
+    }).$mount("#app");
+
+</script>
+</body>
+</html>

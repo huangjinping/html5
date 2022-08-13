@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>旋转1</title>
+    <script src="../src/three.js"></script>
+    <style>
+        div#canvas-frame {
+            border: none;
+            background-color: #EEEEEE;
+            width: 100%;
+            height: 600px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+
+        var renderer;
+        var width;
+        var height;
+        var scene;
+        var camera;
+        var group;
+        var axis1;
+
+        function init() {
+            width = document.getElementById("canvas-frame").clientWidth;
+            height = document.getElementById("canvas-frame").clientHeight;
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setClearColor(0xEEEEEE, 1);
+            renderer.setSize(width, height);
+            document.getElementById("canvas-frame").appendChild(renderer.domElement);
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+            camera.position.x = 300;
+            camera.position.y = 300;
+            camera.position.z = 600;
+            camera.up.x = 0;
+            camera.up.y = 1;
+            camera.up.z = 0;
+            camera.lookAt({
+                x: 0,
+                y: 0,
+                z: 0
+            });
+
+            var light = new THREE.AmbientLight(0xFF0000);
+            light.position.set(100, 100, 200);
+            scene.add(light);
+//            scene.add(light);
+//
+//            var light2 = new THREE.AmbientLight(0xffffff);
+//            scene.add(light2);
+
+
+            var geometry = new THREE.BoxGeometry(100, 100, 200);
+            var material = new THREE.MeshLambertMaterial({color: 0x0ff0f0});
+
+
+            mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(200, 0, 0);
+
+
+            // 辅助坐标
+
+
+
+
+
+            group = new THREE.Group();
+            group.add(mesh);
+
+
+            axis1 = new THREE.AxisHelper(100);
+            axis1.position.copy( mesh.position );
+            scene.add( axis1 );
+
+
+            scene.add(group);
+
+            // new THREE.Object3D();
+
+
+        }
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+
+            var timer = Date.now() * 0.001;
+            //围绕x轴旋转
+//            mesh.rotation.x = timer * 0.5;
+            //围绕y轴旋转
+//            mesh.rotation.y = timer * 0.5;
+
+            group.rotation.y = timer * 0.5;
+//            group.rotation.x = timer * 0.5;
+
+        }
+
+        function initGrid() {
+            var helper = new THREE.GridHelper(1000, 50);
+            helper.setColors(0x0000ff, 0x808080);
+            scene.add(helper);
+        }
+
+        animate();
+        function threeStart() {
+            init();
+            initGrid();
+
+
+        }
+    </script>
+</head>
+<body onload="threeStart()">
+<div id="canvas-frame"></div>
+</body>
+</html>

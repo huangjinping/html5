@@ -1,0 +1,169 @@
+
+html {
+
+}
+
+p.subTitle {
+    color: #666666;
+    font-size: 0.15rem;
+    margin: 0.3rem 0.2rem 0.2rem 0.2rem;
+    line-height: 0.2rem;
+}
+
+.list_container {
+}
+
+.list_container .list_item {
+    font-size: 0.1rem;
+    padding: 0.2rem;
+    border-radius: 0.1rem;
+    margin: 0.2rem;
+    box-shadow: 0 0 0.3em 0.3em #ccc;
+    -moz-box-shadow: 0 0 .3em .3em #ccc;
+    -webkit-box-shadow: 0 0 .3em .3em #ccc;
+    -o-box-shadow: 0 0 .3em .3em #ccc;
+    position: relative;
+}
+
+.list_container .list_item input[type="checkbox"]:checked {
+
+    background-position: 0;
+
+}
+
+input[type="checkbox"] {
+    height: 22px;
+    width: 22px;
+    margin-right: 10px;
+    display: none;
+}
+
+input[type="checkbox"] + label::before {
+    content: "\a0"; /*不换行空格*/
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 18px;
+    width: 39px;
+    height: 39px;
+    margin-right: 10px;
+    /*border-radius: 50%;*/
+    /*border: 1px solid #003c66;*/
+    /*background: #fff;*/
+    background: url('../images/ic_uncheced.png') left no-repeat;
+
+    line-height: 22px;
+    box-sizing: border-box;
+}
+
+input[type="checkbox"]:checked + label::before {
+    /*background-color: #003c66;*/
+    /*background-clip: content-box;*/
+    background: url('../images/ic_checed.png') left no-repeat;
+
+    padding: 3px;
+}
+
+.list_container .list_item label {
+    color: #333333;
+    font-size: 0.2rem;
+    margin-left: 0.1rem;
+}
+
+.list_container .list_item span {
+    color: #333333;
+    font-size: 0.2rem;
+    margin-left: 0.4rem;
+}
+
+.btn_container {
+    padding: 0.2rem;
+}
+
+#btn_submit {
+    background-color: #4987ee;
+    color: white;
+    padding: 0.1rem;
+    font-size: 0.2rem;
+    border-color: #4987ee;
+    width: 100%;
+    border-radius: 0.2rem;
+
+}
+
+#progressView {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+
+}
+
+#progressView img {
+    width: 100px;
+    height: 100px;
+    vertical-align: middle;
+
+}
+
+#progressView span {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+
+}
+
+.mark {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: .5;
+    position: absolute;
+    z-index: 9999;
+}
+
+.dialog {
+    width: 75%;
+    height: 3.5rem;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 99999;
+}
+
+.pa-01 {
+    text-align: center;
+    line-height: 1rem;
+    font-size: .3rem;
+    color: #8a8282;
+}
+
+.pa-02 {
+    text-align: center;
+    font-size: .25rem;
+    color: #8a8282;
+}
+
+.btn2 {
+    position: absolute;
+    bottom: .5rem;
+    left: 30%;
+    text-align: center;
+}
+
+.btn2 button {
+    width: 2rem;
+    height: .7rem;
+    font-size: .33rem;
+    border-radius: 0.1rem;
+    border: none;
+    background: skyblue;
+    color: #fff;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .warper {
+            background-color: gray;
+            text-align: center;
+        }
+
+        .warper div {
+            height: 100px;
+            width: 100px;
+            background-color: white;
+            display: inline-block;
+            margin: 20px;
+        }
+        .redis1{
+            border-radius: 50% 30% ;
+        }
+        .warper div:nth-child(2){
+
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        .warper div:nth-child(3){
+
+            width: 50px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        .warper div:nth-child(4){
+
+            height: 50px;
+            background-color: red;
+            border-radius: 50px/100px;
+        }
+        .warper div:nth-child(5){
+
+            height: 25px;
+            background-color: red;
+            border-radius:  100px 100px  0  0/50px 50px 0 0;
+        }
+
+        .warper div:nth-child(6){
+
+            width: 25px;
+            background-color: red;
+            border-radius: 50px 0  0  50px/100px  0 0 100px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="warper">
+    <div class="redis1"></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+</body>
+</html>

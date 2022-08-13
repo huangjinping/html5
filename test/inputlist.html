@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .headerView {
+            position: fixed;
+            width: 100%;
+            height: 100px;
+            left: 0;
+            z-index: 1000;
+            top: 0;
+            background-color: #c0bfc4;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="headerView">
+
+</div>
+<div style="position: relative;z-index: 0">
+
+    <div><input type="text"></div>
+    <div><input type="text"></div>
+    <div><input type="text"></div>
+    <div><input type="text"></div>
+    <div><input type="text"></div>
+    <div><input type="text"></div>
+    <button id="open">open</button>
+</div>
+</body>
+<script>
+    (function () {
+        var open = document.getElementById("open");
+        open.addEventListener('click',function () {
+            console.log("dddd");
+            window.open('http://www.baidu.com');
+        })
+    })();
+</script>
+</html>

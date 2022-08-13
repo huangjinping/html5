@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/three.js"></script>
+    <script src="../js/renderers/CSS3DRenderer.js"></script>
+    <style>
+        div#container {
+            width: 100%;
+            height: 600px;
+            background-color: #fff;
+            border: none;
+        }
+
+        .element {
+            width: 120px;
+            height: 160px;
+            box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.5);
+            border: 1px solid rgba(127, 255, 255, 0.25);
+            text-align: center;
+            cursor: default;
+        }
+
+        .element:hover {
+            box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.75);
+            border: 1px solid rgba(127, 255, 255, 0.75);
+        }
+
+        .element .number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: rgba(127, 255, 255, 0.75);
+        }
+
+        .element .symbol {
+            position: absolute;
+            top: 40px;
+            left: 0px;
+            right: 0px;
+            font-size: 60px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.75);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.95);
+        }
+
+        .element .details {
+            position: absolute;
+            bottom: 15px;
+            left: 0px;
+            right: 0px;
+            font-size: 12px;
+            color: rgba(127, 255, 255, 0.75);
+        }
+
+    </style>
+    <script>
+        var renderer;
+        var width;
+        var height;
+        var scene;
+        var camera;
+        function init() {
+            container = document.getElementById("container");
+            width = container.clientWidth;
+            height = container.clientHeight;
+//            renderer = new THREE.CSS3DRenderer({
+//                antialias: true
+//            });
+            renderer = new THREE.CSS3DRenderer();
+
+
+//            renderer.setClearColor(0xEEEEEE, 1);
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(45, width / height, 1, 3000);
+            camera.position.set(0, 0, 3000);
+
+            var light = new THREE.DirectionalLight(0xff0000, 1);
+            light.position.set(0, 0, 3000);
+            scene.add(light);
+
+            var geometry = new THREE.PlaneGeometry(100, 100);
+            var material = new THREE.MeshLambertMaterial();
+            var mesh = new THREE.Mesh(geometry, material);
+//            scene.add(mesh);
+
+            var element = document.createElement('div');
+            element.className = 'element';
+            element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
+            var object = new THREE.CSS3DObject(element);
+            object.position.x = 1;
+            object.position.y = 1;
+            object.position.z = 1;
+            scene.add(object);
+
+            var matrix = new THREE.Matrix4();
+
+            console.log(matrix);
+
+        }
+
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        function threeStart() {
+            init();
+            animate();
+        }
+    </script>
+</head>
+<body onload="threeStart()">
+<div id="container"></div>
+</body>
+</html>

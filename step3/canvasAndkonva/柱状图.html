@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>柱状图</title>
+</head>
+<body>
+<canvas id="canEml">
+</canvas>
+
+<script>
+    var data = [{value: 123, color: "red"}, {value: 568, color: "green"}, {value: 987, color: "gary"}, {
+        value: 678,
+        color: "blue"
+    }, {value: 389, color: "black"}, {value: 80, color: "yellow"}];
+
+
+    (function () {
+        var canvas = document.getElementById("canEml");
+        canvas.height = 600;
+        canvas.width = 600;
+        canvas.style.border = "1px  solid  red";
+        var ctx = canvas.getContext("2d");
+
+        var x0 = 200;
+        var y0 = 300;
+        var v_h = 200;
+        var h_w = 350;
+
+        //象限
+        ctx.beginPath()
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x0, y0 - v_h)
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x0 + h_w, y0);
+        ctx.stroke();
+
+        //纵坐标
+        ctx.beginPath();
+        var v_len = v_h / 5;
+        for (var i = 0; i < 6; i++) {
+            var title = i * 200;
+            ctx.fillText(title, x0 - 30, y0 - (v_len * i));
+        }
+        //横坐标
+        var h_len = 50;
+        for (var i = 1; i < 7; i++) {
+            ctx.beginPath();
+            var title = i
+            ctx.fillText(title, x0 + (h_len * i), y0 + 20);
+            ctx.moveTo(x0 + (h_len * i), y0);
+            ctx.lineWidth = 40;
+            ctx.strokeStyle = data[i - 1].color;
+            ctx.lineTo(x0 + (h_len * i), y0 - (data[i - 1].value * 200) / 1000);
+            var title_w = ctx.measureText(data[i - 1].value);
+            console.log(title_w.width);
+            ctx.fillStyle = data[i - 1].color;
+
+            ctx.fillText(data[i - 1].value - 5, x0 + (h_len * i) - (title_w.width / 2), y0 - (data[i - 1].value * 200) / 1000 - 10);
+            ctx.stroke();
+        }
+
+    })();
+
+
+</script>
+</body>
+</html>

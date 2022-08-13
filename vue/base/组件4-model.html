@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <base-checkbox  v-model="lovingVue"  v-on:change="change"></base-checkbox>
+</div>
+</body>
+<script>
+    Vue.component("base-checkbox", {
+        model: {
+            prop: 'checked',
+            event: "change"
+        },
+        props: {
+            checked: Boolean
+        },
+        template: '<div><input type="checkbox" v-bind:checked="checked" v-on:change="mychange($event.target.checked)" value="1000"/></div>',
+//        template: '<div><button v-on:click="change1()">测试后</button></div>',
+        methods: {
+            mychange: function (e) {
+                console.log("ddddddd");
+                console.log(e);
+                this.$emit("change", e);
+            },
+        }
+    });
+    var vm = new Vue({
+        el: "#app",
+        props:{
+            lovingVue:true
+        },
+        methods: {
+            change: function (e) {
+                console.log(this.lovingVue);
+                console.log(e);
+            }
+        }
+    });
+</script>
+</html>

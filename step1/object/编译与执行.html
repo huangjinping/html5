@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    //    alert(w);
+    //    alert('ok');
+    //    w = 2;
+    //    报错：w is not defined
+
+
+    //    alert(w);
+    //    alert('ok');
+    //    var w = 2;
+    //    依次弹出undefined和ok。预编译的时候，声明了变量w；执行到alert(w)这行代码的时候，t尚未被赋值，所以弹出undefined。
+
+
+    //    a();
+    //    function a() {
+    //    }
+    //    alert('ok');
+    //    弹出ok。预编译的时候，解析了定义式函数语句function a() {}，顺利执行。
+
+
+    //    b();
+    //    var b = function() {};
+    //    alert('ok');
+    //    b不是函数，执行报错。预编译的时候，声明了变量b = undefined；执行到b()时，a还等于undefined，不是函数，所以执行b()会报错。
+
+//    console.log(typeof as);
+//    console.log(typeof w);
+//    var w = 12;
+
+
+</script>
+
+<!--<script type="text/javascript">-->
+<!--c();-->
+<!--alert('first');-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+<!--alert('second');-->
+<!--</script>-->
+
+
+<!--弹出second。因为javascript是一段一段执行的，第一段执行到c()的时候报错，整个第一段都不会再执行，第二段正常执行。-->
+</body>
+</html>

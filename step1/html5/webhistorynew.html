@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        /*这种以后不建议使用；因为必要的系统样式还是需要的*/
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            padding: 0
+        }
+
+        aside {
+            background-color: #e0e0e0;
+            float: left;
+            height: 100%;
+            width: 220px;
+        }
+
+        article {
+            background-color: #f5f5f5;
+            height: 100%;
+            margin-left: 220px;
+            margin-right: 10px;
+
+        }
+
+        article > p {
+            line-height: 2;
+            font-size: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul > li {
+            font-size: 18px;
+            line-height: 50px;
+            margin: 5px 0;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        ul > li::before {
+            content: '🍋';
+            margin-right: 5px;
+        }
+
+        ul > li:hover {
+            background-color: #c0c0c0;
+        }
+
+    </style>
+</head>
+<body>
+<aside>
+    <ul id="list"></ul>
+</aside>
+<article>
+   sssssssss
+
+</article>
+</body>
+<script type="text/javascript">
+    var content = document.querySelector(".content");
+    var lis = document.querySelectorAll("li");
+    for (var i = 0; i < lis.length; i++) {
+        lis[i].addEventListener("click", function () {
+            var text=this.innerText;;
+            content.innerText=text;
+            if (window.history){
+                window.history.pushState("text","?t="+text,"");
+
+            }
+        });
+    }
+</script>
+</html>

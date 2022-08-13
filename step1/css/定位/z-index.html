@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style type="text/css">
+
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+
+        .box1 {
+            width: 100px;
+            height: 110px;
+            background-color: yellow;
+            position: absolute;
+            z-index: 21;
+            float: left;
+        }
+
+        .box2 {
+            width: 110px;
+            height: 100px;
+            background-color: blue;
+            z-index: 11;
+
+            position: relative;
+
+        }
+    </style>
+</head>
+<body>
+
+行内元素脱标之后也能出现就能设置宽高了
+行内和块级的概念只是在标准文档流起到作用别的没作用
+
+
+
+<div class="box"></div>
+<div class="box1"></div>
+<div class="box2"></div>
+
+1.Z-index 默认的情况下都是0
+2.只有设置position的才能是起到作用
+3.与其他的属性没有关系
+4.若是父辈的z-index  比较小；孩子辈怎么设置就不会大
+
+
+
+
+</body>
+</html>

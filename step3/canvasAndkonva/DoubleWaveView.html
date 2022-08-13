@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<canvas id="canEml"></canvas>
+<script>
+//    var canvas = document.getElementById("canEml");
+//    canvas.height = 400;
+//    canvas.width = 400;
+//    canvas.style.border = "1px solid  red";
+//    var ctx = canvas.getContext("2d");
+//    var lines = ["rgba(0,222,255, 0.2)",
+//        "rgba(0,168,255, 0.2)"];
+//    var step = 0;
+//    /**
+//     * 浪高
+//     * @type {number}
+//     */
+//    var waveHeight = 50;
+//
+//
+//    function loop() {
+//
+//
+//
+////        ctx.clearRect(0,0,canvas.width,canvas.height);
+////        step++;
+////        //画3个不同颜色的矩形
+////        for(var j = lines.length - 1; j >= 0; j--) {
+////            ctx.fillStyle = lines[j];
+////            //每个矩形的角度都不同，每个之间相差45度
+////            var angle = (step+j*45)*Math.PI/180;
+////            var deltaHeight   = Math.sin(angle) * waveHeight;
+////            var deltaHeightRight   = Math.cos(angle) * waveHeight;
+////            console.log(j+"deltaHeight"+deltaHeight);
+////            console.log(j+"deltaHeightRight"+deltaHeightRight);
+////            ctx.beginPath();
+////            ctx.moveTo(0, canvas.height/2+deltaHeight);
+////            ctx.bezierCurveTo(canvas.width /2, canvas.height/2+deltaHeight-50, canvas.width / 2, canvas.height/2+deltaHeightRight-50, canvas.width, canvas.height/2+deltaHeightRight);
+////            ctx.lineTo(canvas.width, canvas.height);
+////            ctx.lineTo(0, canvas.height);
+////            ctx.lineTo(0, canvas.height/2+deltaHeight);
+////            ctx.closePath();
+////            ctx.fill();
+////        }
+//
+//
+//    }
+//    function startAnimation() {
+//        loop();
+////        requestAnimationFrame(startAnimation);
+//
+//    }
+//    startAnimation();
+
+
+    var waveWidth = 1000,
+        offset = 0,
+        waveHeight = 8,
+        waveCount = 5,
+        startX = -100,
+        startY = 208,
+        progress = 0,
+        progressStep = 1,
+        d2 = waveWidth / waveCount,
+        d = d2 / 2,
+        hd = d / 2,
+        c = document.getElementById("canEml"),
+        ctx = c.getContext("2d");
+
+    function tick() {
+//        offset -= 5;
+        progress += progressStep;
+        if (progress > 220 || progress < 0) progressStep *= -1;
+
+        if (-1 * offset === d2) offset = 0;
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.beginPath();
+        var offsetY = startY - progress;
+        ctx.moveTo(startX - offset, offsetY);
+
+        for (var i = 0; i < waveCount; i++) {
+            var dx = i * d2;
+            var offsetX = dx + startX - offset;
+            ctx.quadraticCurveTo(offsetX + hd, offsetY + waveHeight, offsetX + d, offsetY);
+            ctx.quadraticCurveTo(offsetX + hd + d, offsetY - waveHeight, offsetX + d2, offsetY);
+        }
+        ctx.lineTo(startX + waveWidth, 300);
+        ctx.lineTo(startX, 300);
+        ctx.fill();
+
+        requestAnimationFrame(tick);
+    }
+
+    tick();
+    
+    
+    
+</script>
+</body>
+</html>

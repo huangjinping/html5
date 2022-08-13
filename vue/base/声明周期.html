@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>声明周期钩子</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app"></div>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            a: 1
+        },
+        created: function () {
+            console.log("created");
+        },
+        mounted: function () {
+            console.log("mounted");
+        },
+        updated: function () {
+            console.log("updated");
+        },
+        destroyed: function () {
+            console.log("destroyed");
+
+        }
+    });
+</script>
+</body>
+</html>

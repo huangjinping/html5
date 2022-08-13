@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+
+    </style>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+//1绑定参数
+//            $("li").bind("click mouseenter", function () {
+//                alert('ss');
+//
+//
+//            });
+
+//            2处理不同的时间
+//            $("li").bind({
+//                "click":function () {
+//                    alert("dd");
+//                },
+//                "mouseenter":function () {
+//                    alert("mouseenter");
+//                }
+//            });
+
+//            3传递数据问题
+//            $("li").bind("click","我是数据",function (e) {
+//                alert("ddd"+e.data);
+//            })
+//            4传递多个数据
+//            $("li").bind("click", {name: "name"}, function (e) {
+//                alert("ddd" + e.data.name);
+//            })
+//            5只绑定一次数据
+//            $("li").one("click", function () {
+//                alert("我是one 事件" + $(this).html());
+//            });
+
+//            6代理模式
+//            $("ul").delegate("li","click",function () {
+//                alert($(this).html());
+//            })
+//            7代理模式
+//            $("ul").on("click", "li", function () {
+//                alert($(this).html());
+//            });
+            $(".warp").on("click","h1:eq(1)",function () {
+                alert($(this).html());
+            })
+
+        });
+    </script>
+</head>
+<body>
+
+
+<div class="warp">
+
+    <h1>1</h1>
+    <h1>2</h1>
+    <h1>3</h1>
+    <ul>
+        <li><a href="#">菜单1</a></li>
+        <li><a href="#">菜单2</a></li>
+        <li><a href="#">菜单3</a></li>
+        <li><a href="#">菜单4</a></li>
+        <li><a href="#">菜单5</a></li>
+        <li><a href="#">菜单6</a></li>
+    </ul>
+</div>
+</body>
+</html>

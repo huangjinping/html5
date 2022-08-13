@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>konva open arc</title>
+    <script src="bower_components/konva/konva.js">
+    </script>
+</head>
+<body>
+<div id="container">
+</div>
+<script type="text/javascript">
+
+    //第一步： 创建舞台
+    var stage = new Konva.Stage({
+        container: 'container', //设置当前舞台的容器
+        width: window.innerWidth,//设置舞台的宽高全屏
+        height: window.innerHeight
+    });
+
+    var cenX = stage.width() / 2;
+    var cenY = stage.height() / 2;
+
+    var layer = new Konva.Layer({});
+    stage.add(layer);
+    var group = new Konva.Group({
+        x: cenX,  //组内的 x，y坐标。
+        y: cenY
+
+    });
+    var circle = new Konva.Circle({
+        x: 0,
+        y: 0,
+        radius: 100,
+        fill: '#f0f0f0',
+        stroke: '#cccccc'
+    });
+    group.add(circle);
+
+    var cenText = new Konva.Text({
+        x: -100,
+        y: -15,
+        width: 200,
+        text: "分付君",
+        fontSize: 30,
+        align: "center",
+        fontStyle: "bold",
+    });
+    group.add(cenText)
+    layer.add(group);
+    layer.draw();
+    var rotateAnglPerSecond = 1;
+    var anim = new Konva.Animation(function (frame) {
+//        var dist = velocity * (frame.timeDiff / 1000);
+        group.rotate(rotateAnglPerSecond);
+    }, layer);
+    anim.start();
+
+    layer.on("mouseover", function () {
+        rotateAnglPerSecond = 0.1;
+    });
+
+    layer.on("mouseout", function () {
+        rotateAnglPerSecond = 1;
+    })
+
+
+</script>
+</body>
+</html>

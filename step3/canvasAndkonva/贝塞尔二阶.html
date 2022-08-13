@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvEmla">
+</canvas>
+<script>
+    (function init() {
+        var canvas = document.getElementById("canvEmla");
+        canvas.width = 600;
+        canvas.height = 600;
+        var ctx = canvas.getContext("2d");
+        // ctx.rect(100, 100, 100, 100);
+        ctx.beginPath();
+        //二次贝塞尔曲线，一个控制点
+        ctx.moveTo(75, 250);           //从点（75,200）开始
+        ctx.quadraticCurveTo(125, 200, 175, 250);    //画一条以一直到到点（175,250）结束的曲线
+        ctx.fillRect(100 - 3, 200 - 3, 6, 6);        //标记控制点（100,200）
+        ctx.stroke();
+
+
+        ctx.moveTo(200, 250);      //从点（200,250）开始
+        ctx.bezierCurveTo(220, 220, 280, 280, 300, 220);   //画一条以一直到点（300,250）结束的曲线
+        ctx.fillRect(200 - 3, 220 - 3, 6, 6);        //标记控制点
+        ctx.fillRect(280 - 3, 280 - 3, 6, 6);
+        ctx.stroke();
+
+
+    })();
+</script>
+</body>
+</html>

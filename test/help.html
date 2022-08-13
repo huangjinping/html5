@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>帮助中心</title>
+    <script>
+        function isIOS() {
+            if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad)/i)))
+                return true;
+            else
+                return false;
+        }
+
+        if (isIOS())
+            window.location.href = "http://wepay.daiyutech.com/homePage/mobile/manual.html";
+    </script>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout:none;  /*系统默认菜单被禁用*/
+            -webkit-user-select:none; /*webkit浏览器*/
+            -khtml-user-select:none; /*早期浏览器*/
+            -moz-user-select:none;/*火狐*/
+            -ms-user-select:none; /*IE10*/
+            user-select:none;
+            background-color: #f0f0f0;
+        }
+        /* 移动端定义字体的代码 */
+        body{
+            overflow: auto;
+            font-family:Helvetica;
+        }
+        #main{
+            width: 100%;
+            height: 100%;
+        }
+        li{
+            margin-top: 1rem;
+        }
+        .item{
+            color: red;
+            padding: 1em 1em ;
+            border-bottom:1px #f0f0f0 solid;
+            border-top:1px #f0f0f0 solid;
+        }
+        li *{
+            background-color: #ffffff;
+        }
+        .item img{
+            float: right;
+        }
+        .item span{
+            color: #4279D6;
+            font-size: 1rem;
+        }
+
+        .item_content{
+            color: gray;
+            padding: 1rem;
+            display: none;
+        }
+        .upImg{
+            float: right;
+            display: inline-block;
+            width: 11px;
+            height: 6px;
+            margin-top: 0.5rem;
+            margin-right: 14px;
+        }
+        .activeImg{
+            animation: bian 0.5s linear ;
+            -webkit-animation: bian 0.5s linear ;
+            animation-fill-mode: forwards;
+            -webkit-animation-fill-mode:forwards;
+        }
+        @-webkit-keyframes bian {
+            0% {
+                -webkit-transform:rotate(0deg);
+            }
+            25% {
+                -webkit-transform:rotate(36deg);
+            }
+            50% {
+                -webkit-transform:rotate(90deg);
+            }
+            75% {
+                -webkit-transform:rotate(135deg);
+            }
+            100% {
+                -webkit-transform:rotate(180deg);
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+<!--header id="header">信用分帮助</header-->
+<div id="main">
+
+
+    <p class="group_title">热门问题</p>
+    <ul>
+        <li>
+            <p class="item">
+                <span>审核需要多久？</span>
+                <img class="upImg activeImg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMCAYAAABm+U3GAAAAAXNSR0IArs4c6QAAAflJREFUOBGlks9LVFEUx7/nPt+MlqalFQlBUCC9lxYhRYr15g8osB+LFoEwi6IWYZPjMyhaBPoGEaJoUZug0QQVCqJFRe8REQVlTPq2QbipwFrEVNR4T/caL6ZpNMqzOfd8z/d87nk/yHGnHGL66HtbclhitJzOLW+oMG8wuFEIEhNEdG9P7/TepXDb049r6ivMayB0Kk5eyDkcZZAwhMgm3OkD/wN3Us8bYsaq60Q4zMzDs4XCPhFk7HFVdDLjg9p8xHHDY/8Cb09PNpJZNUHAfsW4MpN/k3w1uDWv6p/h9ITbyKBRJWySjFTgWRej3kLZcV9uIMSH1aZtLHno/Wv0hWP2N+3/BdZFIp1rgmFmldgKibMPPeuC1stFRyq0zBjdVL0W9cRn/IExDzgvI+9vYC3uPjW13ogZo3oLCR74NPvl3Iurrd+jAZ0TvaENgXEwNYHh+p6VKe7rsygVHg01zxS+fj6otnggQG7tymUZ+1AYi3wdPbntauq2Am4kxolyUO39Y+MIsKPvWX0118z/Pvqj8NN3J8XOtW0sOKvGVkNy0vfskchfmhcEa6NzPKwWK3AJRF0KHhDxZgbiDHkk6G++UworrhcFz8O7/Epat+YygZLq9bxVlyT9futuMaTc+a9gPbSr+0lVZbxukCXuBxnrVjlQqfYDm7CqP/EiMXUAAAAASUVORK5CYII=">
+            </p>
+            <p class="item_content">
+                信用分是使用分付君进行分期消费的主要依据，信用分越高，可以获得的消费额度越大，同时享有更多的特权及优惠。
+            </p>
+        </li>
+        <li>
+            <p class="item">
+                <span>如何领取红包？</span>
+                <img class="upImg activeImg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMCAYAAABm+U3GAAAAAXNSR0IArs4c6QAAAflJREFUOBGlks9LVFEUx7/nPt+MlqalFQlBUCC9lxYhRYr15g8osB+LFoEwi6IWYZPjMyhaBPoGEaJoUZug0QQVCqJFRe8REQVlTPq2QbipwFrEVNR4T/caL6ZpNMqzOfd8z/d87nk/yHGnHGL66HtbclhitJzOLW+oMG8wuFEIEhNEdG9P7/TepXDb049r6ivMayB0Kk5eyDkcZZAwhMgm3OkD/wN3Us8bYsaq60Q4zMzDs4XCPhFk7HFVdDLjg9p8xHHDY/8Cb09PNpJZNUHAfsW4MpN/k3w1uDWv6p/h9ITbyKBRJWySjFTgWRej3kLZcV9uIMSH1aZtLHno/Wv0hWP2N+3/BdZFIp1rgmFmldgKibMPPeuC1stFRyq0zBjdVL0W9cRn/IExDzgvI+9vYC3uPjW13ogZo3oLCR74NPvl3Iurrd+jAZ0TvaENgXEwNYHh+p6VKe7rsygVHg01zxS+fj6otnggQG7tymUZ+1AYi3wdPbntauq2Am4kxolyUO39Y+MIsKPvWX0118z/Pvqj8NN3J8XOtW0sOKvGVkNy0vfskchfmhcEa6NzPKwWK3AJRF0KHhDxZgbiDHkk6G++UworrhcFz8O7/Epat+YygZLq9bxVlyT9futuMaTc+a9gPbSr+0lVZbxukCXuBxnrVjlQqfYDm7CqP/EiMXUAAAAASUVORK5CYII=">
+            </p>
+            <p class="item_content">
+                关注微信号DDX2019，完成任务后在微信领取红包
+            </p>
+        </li>
+        <li>
+            <p class="item">
+                <span>不下款怎么办？</span>
+                <img class="upImg activeImg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMCAYAAABm+U3GAAAAAXNSR0IArs4c6QAAAflJREFUOBGlks9LVFEUx7/nPt+MlqalFQlBUCC9lxYhRYr15g8osB+LFoEwi6IWYZPjMyhaBPoGEaJoUZug0QQVCqJFRe8REQVlTPq2QbipwFrEVNR4T/caL6ZpNMqzOfd8z/d87nk/yHGnHGL66HtbclhitJzOLW+oMG8wuFEIEhNEdG9P7/TepXDb049r6ivMayB0Kk5eyDkcZZAwhMgm3OkD/wN3Us8bYsaq60Q4zMzDs4XCPhFk7HFVdDLjg9p8xHHDY/8Cb09PNpJZNUHAfsW4MpN/k3w1uDWv6p/h9ITbyKBRJWySjFTgWRej3kLZcV9uIMSH1aZtLHno/Wv0hWP2N+3/BdZFIp1rgmFmldgKibMPPeuC1stFRyq0zBjdVL0W9cRn/IExDzgvI+9vYC3uPjW13ogZo3oLCR74NPvl3Iurrd+jAZ0TvaENgXEwNYHh+p6VKe7rsygVHg01zxS+fj6otnggQG7tymUZ+1AYi3wdPbntauq2Am4kxolyUO39Y+MIsKPvWX0118z/Pvqj8NN3J8XOtW0sOKvGVkNy0vfskchfmhcEa6NzPKwWK3AJRF0KHhDxZgbiDHkk6G++UworrhcFz8O7/Epat+YygZLq9bxVlyT9futuMaTc+a9gPbSr+0lVZbxukCXuBxnrVjlQqfYDm7CqP/EiMXUAAAAASUVORK5CYII=">
+            </p>
+            <p class="item_content">
+                关注微信号DDX2019，完成任务后在微信领取红包
+            </p>
+        </li>
+
+    </ul>
+    <p class="group_title">借款相关</p>
+    <ul>
+        <li>
+            <p class="item">
+                <span>审核需要多久？</span>
+                <img class="upImg activeImg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMCAYAAABm+U3GAAAAAXNSR0IArs4c6QAAAflJREFUOBGlks9LVFEUx7/nPt+MlqalFQlBUCC9lxYhRYr15g8osB+LFoEwi6IWYZPjMyhaBPoGEaJoUZug0QQVCqJFRe8REQVlTPq2QbipwFrEVNR4T/caL6ZpNMqzOfd8z/d87nk/yHGnHGL66HtbclhitJzOLW+oMG8wuFEIEhNEdG9P7/TepXDb049r6ivMayB0Kk5eyDkcZZAwhMgm3OkD/wN3Us8bYsaq60Q4zMzDs4XCPhFk7HFVdDLjg9p8xHHDY/8Cb09PNpJZNUHAfsW4MpN/k3w1uDWv6p/h9ITbyKBRJWySjFTgWRej3kLZcV9uIMSH1aZtLHno/Wv0hWP2N+3/BdZFIp1rgmFmldgKibMPPeuC1stFRyq0zBjdVL0W9cRn/IExDzgvI+9vYC3uPjW13ogZo3oLCR74NPvl3Iurrd+jAZ0TvaENgXEwNYHh+p6VKe7rsygVHg01zxS+fj6otnggQG7tymUZ+1AYi3wdPbntauq2Am4kxolyUO39Y+MIsKPvWX0118z/Pvqj8NN3J8XOtW0sOKvGVkNy0vfskchfmhcEa6NzPKwWK3AJRF0KHhDxZgbiDHkk6G++UworrhcFz8O7/Epat+YygZLq9bxVlyT9futuMaTc+a9gPbSr+0lVZbxukCXuBxnrVjlQqfYDm7CqP/EiMXUAAAAASUVORK5CYII=">
+            </p>
+            <p class="item_content">
+                信用分是使用分付君进行分期消费的主要依据，信用分越高，可以获得的消费额度越大，同时享有更多的特权及优惠。
+            </p>
+        </li>
+        <li>
+            <p class="item">
+                <span>如何领取红包？</span>
+                <img class="upImg activeImg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMCAYAAABm+U3GAAAAAXNSR0IArs4c6QAAAflJREFUOBGlks9LVFEUx7/nPt+MlqalFQlBUCC9lxYhRYr15g8osB+LFoEwi6IWYZPjMyhaBPoGEaJoUZug0QQVCqJFRe8REQVlTPq2QbipwFrEVNR4T/caL6ZpNMqzOfd8z/d87nk/yHGnHGL66HtbclhitJzOLW+oMG8wuFEIEhNEdG9P7/TepXDb049r6ivMayB0Kk5eyDkcZZAwhMgm3OkD/wN3Us8bYsaq60Q4zMzDs4XCPhFk7HFVdDLjg9p8xHHDY/8Cb09PNpJZNUHAfsW4MpN/k3w1uDWv6p/h9ITbyKBRJWySjFTgWRej3kLZcV9uIMSH1aZtLHno/Wv0hWP2N+3/BdZFIp1rgmFmldgKibMPPeuC1stFRyq0zBjdVL0W9cRn/IExDzgvI+9vYC3uPjW13ogZo3oLCR74NPvl3Iurrd+jAZ0TvaENgXEwNYHh+p6VKe7rsygVHg01zxS+fj6otnggQG7tymUZ+1AYi3wdPbntauq2Am4kxolyUO39Y+MIsKPvWX0118z/Pvqj8NN3J8XOtW0sOKvGVkNy0vfskchfmhcEa6NzPKwWK3AJRF0KHhDxZgbiDHkk6G++UworrhcFz8O7/Epat+YygZLq9bxVlyT9futuMaTc+a9gPbSr+0lVZbxukCXuBxnrVjlQqfYDm7CqP/EiMXUAAAAASUVORK5CYII=">
+            </p>
+            <p class="item_content">
+                关注微信号DDX2019，完成任务后在微信领取红包
+            </p>
+        </li>
+        <li>
+            <p class="item">
+                <span>不下款怎么办？</span>
+                <img class="upImg activeImg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMCAYAAABm+U3GAAAAAXNSR0IArs4c6QAAAflJREFUOBGlks9LVFEUx7/nPt+MlqalFQlBUCC9lxYhRYr15g8osB+LFoEwi6IWYZPjMyhaBPoGEaJoUZug0QQVCqJFRe8REQVlTPq2QbipwFrEVNR4T/caL6ZpNMqzOfd8z/d87nk/yHGnHGL66HtbclhitJzOLW+oMG8wuFEIEhNEdG9P7/TepXDb049r6ivMayB0Kk5eyDkcZZAwhMgm3OkD/wN3Us8bYsaq60Q4zMzDs4XCPhFk7HFVdDLjg9p8xHHDY/8Cb09PNpJZNUHAfsW4MpN/k3w1uDWv6p/h9ITbyKBRJWySjFTgWRej3kLZcV9uIMSH1aZtLHno/Wv0hWP2N+3/BdZFIp1rgmFmldgKibMPPeuC1stFRyq0zBjdVL0W9cRn/IExDzgvI+9vYC3uPjW13ogZo3oLCR74NPvl3Iurrd+jAZ0TvaENgXEwNYHh+p6VKe7rsygVHg01zxS+fj6otnggQG7tymUZ+1AYi3wdPbntauq2Am4kxolyUO39Y+MIsKPvWX0118z/Pvqj8NN3J8XOtW0sOKvGVkNy0vfskchfmhcEa6NzPKwWK3AJRF0KHhDxZgbiDHkk6G++UworrhcFz8O7/Epat+YygZLq9bxVlyT9futuMaTc+a9gPbSr+0lVZbxukCXuBxnrVjlQqfYDm7CqP/EiMXUAAAAASUVORK5CYII=">
+            </p>
+            <p class="item_content">
+                关注微信号DDX2019，完成任务后在微信领取红包
+            </p>
+        </li>
+
+    </ul></p>
+    <ul>
+        <li>
+            <p class="item">
+                <span>审核需要多久？</span>
+                <img class="upImg activeImg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMCAYAAABm+U3GAAAAAXNSR0IArs4c6QAAAflJREFUOBGlks9LVFEUx7/nPt+MlqalFQlBUCC9lxYhRYr15g8osB+LFoEwi6IWYZPjMyhaBPoGEaJoUZug0QQVCqJFRe8REQVlTPq2QbipwFrEVNR4T/caL6ZpNMqzOfd8z/d87nk/yHGnHGL66HtbclhitJzOLW+oMG8wuFEIEhNEdG9P7/TepXDb049r6ivMayB0Kk5eyDkcZZAwhMgm3OkD/wN3Us8bYsaq60Q4zMzDs4XCPhFk7HFVdDLjg9p8xHHDY/8Cb09PNpJZNUHAfsW4MpN/k3w1uDWv6p/h9ITbyKBRJWySjFTgWRej3kLZcV9uIMSH1aZtLHno/Wv0hWP2N+3/BdZFIp1rgmFmldgKibMPPeuC1stFRyq0zBjdVL0W9cRn/IExDzgvI+9vYC3uPjW13ogZo3oLCR74NPvl3Iurrd+jAZ0TvaENgXEwNYHh+p6VKe7rsygVHg01zxS+fj6otnggQG7tymUZ+1AYi3wdPbntauq2Am4kxolyUO39Y+MIsKPvWX0118z/Pvqj8NN3J8XOtW0sOKvGVkNy0vfskchfmhcEa6NzPKwWK3AJRF0KHhDxZgbiDHkk6G++UworrhcFz8O7/Epat+YygZLq9bxVlyT9futuMaTc+a9gPbSr+0lVZbxukCXuBxnrVjlQqfYDm7CqP/EiMXUAAAAASUVORK5CYII=">
+            </p>
+            <p class="item_content">
+                信用分是使用分付君进行分期消费的主要依据，信用分越高，可以获得的消费额度越大，同时享有更多的特权及优惠。
+            </p>
+        </li>
+        <li>
+            <p class="item">
+                <span>如何领取红包？</span>
+                <img class="upImg activeImg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMCAYAAABm+U3GAAAAAXNSR0IArs4c6QAAAflJREFUOBGlks9LVFEUx7/nPt+MlqalFQlBUCC9lxYhRYr15g8osB+LFoEwi6IWYZPjMyhaBPoGEaJoUZug0QQVCqJFRe8REQVlTPq2QbipwFrEVNR4T/caL6ZpNMqzOfd8z/d87nk/yHGnHGL66HtbclhitJzOLW+oMG8wuFEIEhNEdG9P7/TepXDb049r6ivMayB0Kk5eyDkcZZAwhMgm3OkD/wN3Us8bYsaq60Q4zMzDs4XCPhFk7HFVdDLjg9p8xHHDY/8Cb09PNpJZNUHAfsW4MpN/k3w1uDWv6p/h9ITbyKBRJWySjFTgWRej3kLZcV9uIMSH1aZtLHno/Wv0hWP2N+3/BdZFIp1rgmFmldgKibMPPeuC1stFRyq0zBjdVL0W9cRn/IExDzgvI+9vYC3uPjW13ogZo3oLCR74NPvl3Iurrd+jAZ0TvaENgXEwNYHh+p6VKe7rsygVHg01zxS+fj6otnggQG7tymUZ+1AYi3wdPbntauq2Am4kxolyUO39Y+MIsKPvWX0118z/Pvqj8NN3J8XOtW0sOKvGVkNy0vfskchfmhcEa6NzPKwWK3AJRF0KHhDxZgbiDHkk6G++UworrhcFz8O7/Epat+YygZLq9bxVlyT9futuMaTc+a9gPbSr+0lVZbxukCXuBxnrVjlQqfYDm7CqP/EiMXUAAAAASUVORK5CYII=">
+            </p>
+            <p class="item_content">
+                关注微信号DDX2019，完成任务后在微信领取红包
+            </p>
+        </li>
+        <li>
+            <p class="item">
+                <span>不下款怎么办？</span>
+                <img class="upImg activeImg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAMCAYAAABm+U3GAAAAAXNSR0IArs4c6QAAAflJREFUOBGlks9LVFEUx7/nPt+MlqalFQlBUCC9lxYhRYr15g8osB+LFoEwi6IWYZPjMyhaBPoGEaJoUZug0QQVCqJFRe8REQVlTPq2QbipwFrEVNR4T/caL6ZpNMqzOfd8z/d87nk/yHGnHGL66HtbclhitJzOLW+oMG8wuFEIEhNEdG9P7/TepXDb049r6ivMayB0Kk5eyDkcZZAwhMgm3OkD/wN3Us8bYsaq60Q4zMzDs4XCPhFk7HFVdDLjg9p8xHHDY/8Cb09PNpJZNUHAfsW4MpN/k3w1uDWv6p/h9ITbyKBRJWySjFTgWRej3kLZcV9uIMSH1aZtLHno/Wv0hWP2N+3/BdZFIp1rgmFmldgKibMPPeuC1stFRyq0zBjdVL0W9cRn/IExDzgvI+9vYC3uPjW13ogZo3oLCR74NPvl3Iurrd+jAZ0TvaENgXEwNYHh+p6VKe7rsygVHg01zxS+fj6otnggQG7tymUZ+1AYi3wdPbntauq2Am4kxolyUO39Y+MIsKPvWX0118z/Pvqj8NN3J8XOtW0sOKvGVkNy0vfskchfmhcEa6NzPKwWK3AJRF0KHhDxZgbiDHkk6G++UworrhcFz8O7/Epat+YygZLq9bxVlyT9futuMaTc+a9gPbSr+0lVZbxukCXuBxnrVjlQqfYDm7CqP/EiMXUAAAAASUVORK5CYII=">
+            </p>
+            <p class="item_content">
+                关注微信号DDX2019，完成任务后在微信领取红包
+            </p>
+        </li>
+
+    </ul>
+
+</div>
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+
+
+    $(function(){
+        //弹性拉下菜单
+        $(".item").on("touchstart",function(){
+            //判断是否为打开状态
+            var kai= $(this).next(".item_content").css("display");
+
+            if(kai=="none"){
+                $("#main").find(".upImg").removeClass("activeImg");
+                $(this).children(".upImg").addClass("activeImg");
+                $(this).next(".item_content").slideDown();
+                $(this).parent('li').siblings().children(".item_content").slideUp();
+            }else {
+                $("#main").find(".upImg").removeClass("activeImg");
+                $(this).children(".upImg").removeClass("activeImg");
+                $(this).next(".item_content").slideUp();
+            }
+        });
+    });
+</script>
+</body>
+</html>
+

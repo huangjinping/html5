@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js过滤器</title>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-app="mApp" ng-controller="mController">
+
+    <h1>{{text}}</h1>
+    <h2>{{textName}}</h2>
+<script type="text/javascript">
+    var module = angular.module('mApp', []);
+       module.controller("mController",["$scope","$filter",function ($scope,$filter) {
+           $scope.text="abcdefg";
+           $scope.textName=$filter('uppercase')($scope.text);
+       }]);
+</script>
+</body>
+</html>

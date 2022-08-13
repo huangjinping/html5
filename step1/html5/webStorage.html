@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<textarea cols="10" rows="10">
+
+</textarea>
+
+1.localStorage 自己不删除的话就会一直存在
+
+<div>
+    <input type="button" value="getLocal" onclick="getLocal()"/>
+    <input type="button" value="setLocal" onclick="setLocation()">
+</div>
+
+2.sessionStorage 临时存在的，只要是
+<div>
+    <input type="button" value="getSession" onclick="getSession()"/>
+    <input type="button" value="setSession" onclick="setSession()">
+</div>
+
+<script type="text/javascript">
+    function getLocal() {
+        var userName = localStorage.getItem("username");
+        alert("==>" + userName);
+    }
+    function setLocation() {
+        localStorage.setItem("username", new Date());
+    }
+    function setSession() {
+        sessionStorage.setItem("userAge", "标准文档流");
+    }
+    function getSession() {
+        var item = sessionStorage["userAge"];
+        alert(item);
+//        alert(sessionStorage.getItem("userAge"));
+    }
+</script>
+</body>
+</html>

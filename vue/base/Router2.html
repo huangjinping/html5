@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>路由2</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{$router.name}}</h1>
+    <div>
+        <p>
+            <router-link to="/foo">Foo</router-link>
+            <router-link to="/bar">Bar</router-link>
+        </p>
+    </div>
+    <router-view></router-view>
+</div>
+<script>
+    var Foo = {template: "<div>Foo</div>"}
+    var Bar = {template: "<div>Bar</div>"}
+    const routes = [{name:"myFoo",path: "/foo", component: Foo}, {name:"myBar",path: "/bar", component: Bar}];
+    var router = new VueRouter({
+        routes
+    });
+    var app = new Vue({
+        router
+    }).$mount("#app");
+
+    var params = {
+        name: "redis",
+        value: "zdr"
+    }
+    var myData = {
+        params
+    }
+    var myData1 = {
+        params: params
+    }
+    console.log(myData);
+    console.log(myData1);
+</script>
+</body>
+</html>

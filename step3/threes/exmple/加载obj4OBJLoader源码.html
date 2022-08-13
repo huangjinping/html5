@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        var request = new XMLHttpRequest();
+        request.open('GET', "../obj/male02/male02.obj", true);
+        console.log(request);
+        request.addEventListener('load', function (event) {
+            var response = event.target.response;
+            console.log(response);
+//            THREE.Cache.add(url, response);
+//
+//            if (onLoad) onLoad(response);
+//
+//            scope.manager.itemEnd(url);
+
+        }, false);
+        request.addEventListener('progress', function (event) {
+            console.log("================progress========================");
+            console.log(parseInt(event.loaded / event.total * 100) + "%");
+        }, false);
+        request.send(null);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

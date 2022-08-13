@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+
+    </style>
+    <script src="../jquery-1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        /**
+         * 1.原生的window.onload 会在程序加载完成之后才能执行初始化；这时候的标签的宽高都已经能够获取出来
+         * 2.jquery的加载速度是非常宽的；在程序没有加载完全之前就已经开始执行初始化了
+         *
+         * */
+//                window.onload = function () {
+//                    var img1 = document.getElementById("icon");
+//                    //这是与jquery的区别；能够获取程序的宽高
+//                    window.alert(img1.clientWidth + "====>>>" + img1.offsetWidth);
+//
+//                }
+        $(function () {
+            $("#icon").click(function () {
+                alert("dd"+this.clientWidth);
+            });
+
+            $("#icon").css("width","100px");
+            /**
+             * 这就是与原生js 的入口区别
+             */
+            alert("dd"+$("#icon").clientWidth);
+        });
+
+    </script>
+</head>
+<body>
+
+
+<div>
+    <img id="icon" src="images/ic_service_user.jpg" alt="测试数据">
+
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery-1.9.1/jquery.min.js"></script>
+
+</head>
+<body>
+<img  id="mImgView" />
+
+<script>
+    (function () {
+        // var  url="https://hdfex.com/hd-merchant-web/mobile/picture/down?file=upload/6397707134044655617/6404175823519089665/2018052111482016335115.jpg";
+        //
+        // $("#mImgView").attr("src",url);
+        // $("#mImgView").load(function () {
+        //     console.log("=========>>>>>");
+        //     console.log($("#mImgView").width());
+        // });
+
+
+            $.ajax({
+                type: "POST",
+                url: "https://www.nice911.com/web/jdmobile/cate/video/videoList",
+                dataType: "text",
+                data: {},
+                error: function (msg) {
+                    console.log(msg)
+                },
+                success: function (data) {
+                    var result = eval('(' + data + ')');
+                    console.log(result)
+
+                }
+            })
+
+    })();
+
+</script>
+</body>
+</html>

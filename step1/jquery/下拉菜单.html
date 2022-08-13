@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下拉菜单</title>
+    <script src="../jquery-1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".menu ul li").click(function () {
+                $("")
+
+            });
+
+        });
+    </script>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+
+        }
+
+        .menu {
+            width: 330px;
+            height: 34px;
+            margin: 100px auto 0px;
+            background-color: skyblue;
+        }
+
+        .menu ul {
+            margin: 2px 5px;
+            background-color: rebeccapurple;
+            overflow: hidden;
+        }
+
+        .menu ul li {
+            float: left;
+            width: 100px;
+            margin-top: 2px;
+            background-color:skyblue;
+            margin-left: 5px;
+        }
+
+        .menu ul li a {
+            text-decoration: none;
+            height: 30px;
+            width: 100px;
+            display: block;
+            line-height: 30px;
+            text-align: center;
+            background-color: red;
+        }
+        .menu ul li ul{
+            display: none;
+        }
+    </style>
+
+
+
+
+
+</head>
+<body>
+
+<div class="menu">
+    <ul>
+        <li><a href="#">一级菜单1</a>
+            <ul>
+                <li><a href="">二级菜单1</a></li>
+                <li><a href="">二级菜单2</a></li>
+                <li><a href="">二级菜单3</a></li>
+                <li><a href="">二级菜单4</a></li>
+                <li><a href="">二级菜单5</a></li>
+                <li><a href="">二级菜单6</a></li>
+                <li><a href="">二级菜单7</a></li>
+            </ul>
+        </li>
+        <li><a href="#">一级菜单2</a>
+            <ul>
+                <li><a href="">二级菜单1</a></li>
+                <li><a href="">二级菜单2</a></li>
+                <li><a href="">二级菜单3</a></li>
+                <li><a href="">二级菜单4</a></li>
+                <li><a href="">二级菜单5</a></li>
+                <li><a href="">二级菜单6</a></li>
+                <li><a href="">二级菜单7</a></li>
+            </ul>
+        </li>
+        <li><a href="#">一级菜单3</a>
+            <ul>
+                <li><a href="">二级菜单1</a></li>
+                <li><a href="">二级菜单2</a></li>
+                <li><a href="">二级菜单3</a></li>
+                <li><a href="">二级菜单4</a></li>
+                <li><a href="">二级菜单5</a></li>
+                <li><a href="">二级菜单6</a></li>
+                <li><a href="">二级菜单7</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

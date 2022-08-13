@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试登录</title>
+    <script src="js/jquery-1.11.1.js"></script>
+</head>
+<script>
+    (function () {
+        document.addEventListener('DOMContentLoaded', function () {
+            var html = document.documentElement;
+            var windowWidth = html.clientWidth;
+            html.style.fontSize = windowWidth / 7.5 + 'px';
+            // 等价于html.style.fontSize = windowWidth / 640 * 100 + 'px';
+        }, false);
+    })();
+</script>
+<body>
+<button id="btnlogin" style="width: 3cm;height: 1rem">
+    点击登录
+</button>
+
+<p style="text-align: center"><iframe class="video_iframe" style="z-index:1;" src="http://v.qq.com/iframe/player.html?vid=w0841yabw4y&amp;width=500&amp;height=375&amp;auto=0" allowfullscreen="" frameborder="0" height="375" width="500"></iframe></p>
+
+
+<script>
+    (function () {
+
+
+        var  loginAppid="wx777391a39dbbbd03";
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+
+        $("#btnlogin").click(function (e) {
+            console.log("btnlogin");
+            weChatLogin();
+
+        });
+
+
+
+
+        function weChatLogin() {
+            var code = GetQueryString("code");
+            var state = GetQueryString("state");
+            var REDIRECT_URI = location.href;
+            if (code == null) {
+                // window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + loginAppid + "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) + "&response_type=code&scope=snsapi_userinfo&state=daiyutech#wechat_redirect";
+                window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + loginAppid + "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) + "&response_type=code&scope=snsapi_base&state=daiyutech#wechat_redirect";
+            } else {
+                var timer = setTimeout(function () {
+                    window.clearTimeout(timer);
+                    getWxOpenid();
+                }, 1000);
+            }
+        }
+
+
+        //获取用户的openId
+        function getWxOpenid() {
+            //获取用户的openId
+            var jsData = {};
+            jsData.type = '02'
+            jsData.jsCode = GetQueryString("code");
+
+            console.log(jsData);
+
+            // $.ajax({
+            //     url: https + "mobile/payment/getWxOpenid",
+            //     dataType: "text",
+            //     type: "POST",
+            //     data: jsData,
+            //     success: function (data) {
+            //         console.log("===================getWxOpenid===========+++>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            //         var resdataH = eval('(' + data + ')');
+            //
+            //         console.log(resdataH);
+            //         if (resdataH.code == 0) {
+            //             var openIdA = resdataH.result.openId;
+            //             localStorage.setItem('LoginOpenId', openIdA)
+            //             getCustInfoByOpenId();
+            //         } else {
+            //             toLoginAlert("请先登录");
+            //
+            //         }
+            //     }, error: function (msg) {
+            //         toLoginAlert("请先登录");
+            //         console.log("mobile/payment/getWxOpenid   ----------->>>>>>请求失败");
+            //     }
+            //
+            // })
+        }
+
+    })();
+
+</script>
+</body>
+</html>

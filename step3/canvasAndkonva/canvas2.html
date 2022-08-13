@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .cna {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 1px solid red;
+        }
+
+        canvas {
+            display: block;
+            margin: 0;
+            position: absolute;
+            background: white;
+            left: 0;
+            top: 0;
+        }
+
+        #myCanvas {
+            z-index: 1;
+        }
+
+        #myCanvas2 {
+            z-index: 2;
+            background: transparent;
+            transform: rotate(-90deg);
+        }
+    </style>
+</head>
+<body>
+<div class="cna">
+    <canvas id="myCanvas" width="200" height="200"></canvas>
+    <canvas id="myCanvas2" width="200" height="200"></canvas>
+</div>
+
+<script>
+    function weads(speat) {
+        var aCanvas = document.getElementById('myCanvas');
+        var bCanvas = document.getElementById('myCanvas2');
+        var acontent = aCanvas.getContext('2d');
+        var bcontent = bCanvas.getContext('2d');
+
+        //背景 颜色
+        acontent.strokeStyle = '#eee';
+        //背景 宽度
+        acontent.lineWidth = '10';
+        acontent.beginPath();
+        acontent.arc(aCanvas.width / 2, aCanvas.height / 2, aCanvas.width / 2 - acontent.lineWidth / 2, 0, Math.PI * 2);
+        acontent.stroke();
+        acontent.closePath()
+
+
+        bcontent.strokeStyle = 'skyblue';
+        // 动画圈的宽
+        bcontent.lineWidth = '10';
+        bcontent.font = '30px Arial';
+        var timer = null;
+        var start = 0;
+
+        (function drew() {
+            timer = requestAnimationFrame(drew);
+            bcontent.clearRect(0, 0, bCanvas.width, bCanvas.height);
+            bcontent.beginPath();
+            // 动画的圈
+            bcontent.arc(bCanvas.width / 2, bCanvas.height / 2, bCanvas.width / 2 - bcontent.lineWidth / 2, 0, Math.PI / 180 * start, false);
+            start++;
+            bcontent.stroke();
+            bcontent.closePath()
+            if (start > (speat / 100 * 360)) {
+                //清除动画
+                window.cancelAnimationFrame(timer)
+            }
+            var text = parseInt(start / 360 * 100) + '%';
+            bcontent.beginPath();
+            bcontent.rotate(90 * Math.PI / 180)
+            bcontent.fillText(text, bCanvas.width / 2, -(bCanvas.height / 2));
+
+            // bcontent.fillText(text,bCanvas.width / 2, bCanvas.height / 2);
+            bcontent.closePath()
+        })()
+    }
+    weads(60)
+</script>
+
+</body>
+</html>

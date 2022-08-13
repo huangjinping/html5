@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function runAsync1() {
+
+        var pro = new Promise((resolve, reject) => {
+            setTimeout(function () {
+                console.log("=====runAsync1执行程序=>>");
+                resolve("runAsync1随便什么数据");
+            }, 3000);
+        })
+        return pro;
+    }
+
+    function runAsync2() {
+
+        var pro = new Promise((resolve, reject) => {
+            setTimeout(function () {
+                console.log("=====runAsync2执行程序=>>");
+                resolve("runAsync2随便什么数据");
+            }, 2000);
+        })
+        return pro;
+    }
+
+    function runAsync3() {
+        var pro = new Promise((resolve, reject) => {
+            setTimeout(function () {
+                console.log("=====runAsync3执行程序=>>");
+                resolve("runAsync3随便什么数据");
+            }, 2000);
+        })
+        return pro;
+    }
+
+    //链式编程
+    //    runAsync1().then(function (data) {
+    //        console.log(data);
+    //        return runAsync2();
+    //    }).then(function (data) {
+    //        console.log(data);
+    //        return runAsync3();
+    //    }).then(function (data) {
+    //        console.log(data);
+    //    });
+
+
+    function getNumber() {
+        var p = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                var num = Math.ceil(Math.random() * 10);
+                if (num <= 5) {
+                    resolve(num);
+                } else {
+                    reject("数字太大了");
+                }
+            }, 2000);
+        });
+        return p;
+    }
+//    getNumber().then(function (data) {
+//        console.log("resolve");
+//        console.log(data);
+//        console.log(daeda);
+//    }, function (reason, data) {
+//        console.log("reject");
+//        console.log(reason);
+//        console.log(data);
+//
+//    }).catch(function (reason) {
+//        console.log("catch");
+//        console.log(reason);
+//    });
+
+
+//    时间返回时间都是一定的；以最慢的时间为准
+    Promise.all([runAsync1(),runAsync2(),runAsync3()]).then(function (results) {
+        console.log(results);
+    });
+
+
+//    谁先执行完就要哪个结果
+
+    Promise.race([runAsync1(),runAsync2(),runAsync3()]).then(function (results) {
+        console.log(results);
+    });
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

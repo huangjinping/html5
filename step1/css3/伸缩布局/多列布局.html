@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>多列布局问题</title>
+    <style type="text/css">
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+
+        .root {
+            /*列数字*/
+            -webkit-column-count: 6;
+            -webkit-column-width: 50px;
+            /*分割线*/
+            -webkit-column-gap: 50px;
+            -webkit-column-rule: 1px solid #000;
+
+        }
+
+        .item {
+            background-color: skyblue;
+        }
+
+        h4 {
+            background-color: red;
+            -webkit-column-span: all;
+        }
+    </style>
+</head>
+<body>
+
+
+<ul class="root">
+    <h4>标题4</h4>
+    <ul class="item">
+        1
+    </ul>
+    <ul class="item">2</ul>
+    <ul class="item">3</ul>
+    <ul class="item">4</ul>
+    <ul class="item">5</ul>
+    <ul class="item">6</ul>
+</ul>
+
+</body>
+</html>

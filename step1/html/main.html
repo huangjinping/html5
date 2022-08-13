@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>标签分布及属性分布 </title>
+</head>
+<body>
+<div>
+
+    p
+    <p>段落 标签</p>
+    span
+    <div><span>span</span>是段落段落显示 <span>span</span></div>
+    //保存段落格式
+    pre
+    <pre>   啊
+        段落属性</pre>
+    i 斜体字， em 也是斜体字
+    <p>北京<i>互动</i>金服<em>科技</em>有限公司</p>
+    b 粗体 strong 粗体
+    <p>北京<b>工商</b>银行<strong>望京</strong>支行</p>
+    del删除文字标签
+    <p>蕙兰
+        <del>医院</del>
+    </p>
+    sub 下行文字 sup 文字上行
+    <p><sub>老人</sub>活动<sup>中心</sup></p>
+    &lt;小于号
+    &gt;大于号
+    &reg;注册标签
+    &copy;声明
+    <div>
+        &reg; &copy;北京互动科技有限公司
+    </div>
+    <div>
+        a标签;target 属性；_blink;_self;_parent;_top
+        <a href="html4.html" target="_blink">_blink 用新的窗口打开界面</a>
+        <a href="html4.html" target="_self">_self 用当前窗口打开界面</a>
+        <a>_parent,top这两个属性目前没有用到</a>
+        a 标签锚点操作就是
+        <a href="#c1">点击我跳转到锚点</a>
+        <a name="c1"> 点击返回到跳转到锚点</a>
+
+    </div>
+    img alt只是图片的描述
+    主要属性上就是src
+    <img src="images/ic_service_user.jpg" alt="打开界面"/>
+    列表布局
+    无序列表
+    <ul type="circle">
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+    </ul>
+    有序列表
+    <ol type="I">
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+        <li>2</li>
+    </ol>
+
+    dl 是有序的列表 dt 和dd 都需要被dl 所包裹者
+    <dl>
+        <dt>一级标题</dt>
+        <dd>3</dd>
+        <dd>3</dd>
+        <dd>3</dd>
+        <dt>二级列表</dt>
+        <dd>3</dd>
+        <dd>3</dd>
+        <dd>3</dd>
+    </dl>
+    表格界面
+    caption 表格描述
+    tr th 是表格的头
+    colspan 是占据的函数
+    cellsspacing 行边距
+    cellpadding 表格内边距
+    fragme 边框的选择 above ,below hsides
+    rules 内部td 显示边框位置none groups rows cols all
+
+    <table width="500px" border="1" bgcolor="#f5deb3" cellspacing="6" cellpadding="3" frame="above" rules="none">
+        <caption>title</caption>
+        <tr>
+            <th>北京</th>
+            <th colspan="2">上海</th>
+            <th>台湾</th>
+        </tr>
+        <tr>
+            <td>全年</td>
+            <td>上半年</td>
+            <td>下半年</td>
+            <td>全年</td>
+        </tr>
+        <tr>
+            <td>2014</td>
+            <td colspan="2">2000</td>
+            <td>2000</td>
+        </tr>
+        <tr>
+            <td>2017</td>
+            <td colspan="2">2000</td>
+            <td>2000</td>
+        </tr>
+        <tr>
+            <td>2018</td>
+            <td colspan="2">2000</td>
+            <td>2000</td>
+        </tr>
+
+    </table>
+
+    thead ,tbody,tfoot这种这种能实现分布式加载
+    显示顺序是thead 在头上；tbody 中  t foot  在下；他会自动调整顺序
+
+
+</div>
+</body>
+</html>

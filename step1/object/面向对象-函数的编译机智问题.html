@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        var a = 1;
+        function add() {
+            console.log(a);
+            var a = 12;
+        }
+        add();
+
+        //add 与下面的的add1是相同的用法；函数执行的时候会先把所有声明用到的局部变量提到函数前面 var a,b,c,c这样
+        //所以上面的函数使用的使用的时候就会undefined,而不是取值外的值。
+        function add1() {
+            var a;
+            console.log(a);
+        }
+        add1();
+    </script>
+</head>
+<body>
+
+</body>
+</html>

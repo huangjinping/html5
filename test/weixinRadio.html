@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--https://hdfex.com/WeChatMini/weixinRadio.html-->
+<!--https://hdfex.com/hjptemp/weixinframe.html-->
+<head>
+    <title>视频</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .container {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+        #myVideo {
+            margin: 1rem auto;
+            width: 90%;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <video id="myVideo" autoplay="true"  src="https://hdfex.com/hd-merchant-web/mobile/picture/down?file=/upload/19/01/15/a41f8363dd084f849467a19c0ca22261.mp4" controls ></video>
+</div>
+</body>
+<script>
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+
+    (function () {
+        var params = GetRequest()
+        params.url = decodeURIComponent(params.url);
+        var myVideo=document.getElementById("myVideo");
+//        myVideo.src=params.url;
+//        myVideo.src="";
+//        myVideo.play();
+    })();
+</script>
+</html>

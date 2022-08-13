@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery-1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            /**
+             *选择含有这个属性的标签
+             //            $("[href]").css("background","red");
+             /**
+             * 选择属性等于某一个值
+             */
+//            $("[href='http://www.360.com']").css("background-color","red");
+            /**
+             * 选择以这个开头的
+             */
+//            $("[href^='http']").css("background-color","blue");
+            /**
+             * 选择以这个结束的
+             */
+//            $("[href$='com1']").css("background-color","green");
+            /**
+             * 选择以这个包含的
+             */
+//            $("[href*='bai']").css('background-color', 'pink');
+        });
+    </script>
+</head>
+<body>
+<div>
+    <ul>
+        <li><a href="http://www.baidu00.com">1</a></li>
+        <li><a href="http://www.baihe.com1">2</a></li>
+        <li><a href="1http://www.taobao.com">3</a></li>
+        <li><a href="http://www.360.com">3</a></li>
+        <li><span>我是段落</span></li>
+    </ul>
+</div>
+
+
+</body>
+</html>

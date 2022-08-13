@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>页面3</title>
+</head>
+<body>
+
+<p id="next">下一页3</p>
+</body>
+<script>
+
+
+    (function () {
+        var next = document.getElementById("next");
+        next.onclick = function () {
+            console.log("=============++++>>>>>>>>>>>");
+            window.location.href = "./page4.html"
+        }
+
+        if (!!(window.history && history.pushState)) {
+
+            window.onpopstate = function (event) {
+
+                console.log('location: ' + document.location);
+
+                console.log('state: ' + JSON.stringify(event.state));
+
+            };
+
+
+
+            // 支持History API
+            console.log("=======支持History API=======>>>>>");
+
+            var stateObj = { foo: 'bar' };
+
+            history.pushState(stateObj, 'page 2', 'page2.html');
+
+
+        } else {
+            // 不支持
+            console.log("=======不支持History API=======>>>>>");
+        }
+
+
+
+    })();
+</script>
+</html>

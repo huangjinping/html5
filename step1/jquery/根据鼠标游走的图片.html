@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).on("mousemove", function (e) {
+            console.log(e.pageX + "==" + e.pageY);
+
+            $("img").css({
+                "position": "absolute",
+                "top": e.pageY,
+                "left": e.pageX
+            });
+        });
+    </script>
+</head>
+<body>
+<img src="images/ic_service_user.jpg" alt="">
+</body>
+</html>

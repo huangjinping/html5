@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-app="mApp" ng-controller="mController">
+         <p>
+             <span>{{name}}</span>
+         </p>
+        <btn>
+        </btn>
+         <span btn></span>
+         <p class="btn"></p>
+         <!-- directive:btn -->
+         <script type="text/javascript">
+    var mApp = angular.module("mApp", []);
+    mApp.controller("mController", ["$scope", function ($scope) {
+        $scope.name="文件"
+    }]);
+    mApp.directive("btn",[function () {
+        return{
+            restrict:"EACM",
+            template:"<input type='text'/>"
+        }
+    }]);
+</script>
+</body>
+</html>

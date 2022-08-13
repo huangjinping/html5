@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加信息</title>
+
+    <script src="./js/jquery.min.js"></script>
+</head>
+<body>
+
+<script>
+    (function () {
+
+        getcatevideos(3, 10);
+
+        function getcatevideos(cateid, page) {
+            $.ajax({
+                async: "true",
+                type: "GET",
+                url: "https://www.nice911.com/web/jdmobile/cate/video/videoList",
+                dataType: "text",
+                success: function (res) {
+                    console.log(res);
+                    var resloginData = eval('(' + res + ')');
+                    if (!resloginData.success) {
+                        return
+                    }
+                    var data = resloginData.data;
+                    var listItem = "";
+                    $(".listContainer").empty();
+                    data.videos.forEach(function (p1, p2, p3) {
+                        console.log(p1);
+                        listItem += ' <li class="item_list">' +
+                            '            <div class="itempic">' +
+                            '                <img src="' + p1.cover + '" alt="">' +
+                            '            </div>' +
+                            '            <div> 播放量：<span class="num">' + p1.num + '</span></div>' +
+                            '            <div> 标题：<span class="title">' + p1.title + '</span></div>' +
+                            '        </li>';
+                    })
+                    $(".listContainer").html(listItem);
+                },
+                error: function (msg) {
+                    console.log(msg)
+                }
+            })
+        }
+
+    })();
+</script>
+</body>
+</html>

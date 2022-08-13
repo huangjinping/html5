@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+
+        aside {
+            float: left;
+            width: 20%;
+        }
+
+        section {
+            float: left;
+            width: 80%;
+        }
+
+        section > div {
+            height: 1000px;
+            display: none;
+        }
+
+        section > div:target {
+            display: block;
+        }
+        active{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<aside>
+    <ul>
+        <li><a href="#tab1">标题1</a></li>
+        <li><a href="#tab2">标题2</a></li>
+        <li><a href="#tab3">标题3</a></li>
+    </ul>
+</aside>
+<section>
+    <div id="tab1">第一页内容1</div>
+    <div id="tab2">第一页内容2</div>
+    <div id="tab3">第一页内容3</div>
+</section>
+</body>
+</html>

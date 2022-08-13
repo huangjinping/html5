@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>页面1</title>
+</head>
+<body>
+
+<p id="next">下一页1</p>
+</body>
+<script>
+    var next = document.getElementById("next");
+    next.onclick = function () {
+        console.log("=============++++>>>>>>>>>>>");
+        var stateObj = {foo: "bar"};
+//        history.pushState(stateObj, "page 2", "./page2.html");
+        window.location.href = "./page2.html?v="+Math.random();
+
+    }
+
+</script>
+</html>

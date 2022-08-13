@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script src="../node_modules/bignumber.js/bignumber.min.js"></script>-->
+    <!--<script src="../node_modules/json-bigint/lib/stringify.js"></script>-->
+    <!--<script src="../node_modules/json-bigint/lib/parse.js"></script>-->
+</head>
+<body>
+<script>
+    var       data="{\"errcode\":\"200\",\"msg\":\"request success ! \",\"object\":{\"bussinessId\":6242584573577369601,\"name\":\"mini循环贷\"}}";
+//    console.log(JSON.parse(data));
+    var stringedJSON = data.replace(/:\s*([-+Ee0-9.]+)/g, ': "uniqueprefix$1"');
+        console.log(stringedJSON);
+
+
+
+       var  bojec= JSON.parse(stringedJSON,function (key,value) {
+            if (typeof value !== 'string') return value;
+            // only changing number strings
+            if (!value.startsWith('uniqueprefix')) return value;
+            // chop off the prefix
+            value = value.slice('uniqueprefix'.length);
+            // pick your favorite arbitrary-precision library
+             console.log(value);
+            return value;
+        });
+       console.log(bojec);
+</script>
+</body>
+</html>

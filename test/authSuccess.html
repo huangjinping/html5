@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>成功页面</title>
+</head>
+<body>
+
+</body>
+<script>
+    (function () {
+        returnFhj();
+        function returnFhj() {
+            var cd = getParameter("cd");
+            if (!isEmpty(cd)) {
+                console.log(cd);
+                location.replace(decodeURIComponent(cd));
+            }
+            window.parent.postMessage('3', "*");
+        }
+    })();
+
+    function getParameter(name) {
+        var quary = window.location.search;
+        var len = quary.length;
+        var start = quary.indexOf(name);
+        if (start == -1) {
+            return "";
+        }
+        var end = quary.indexOf("&", start);
+        if (end == -1) {
+            var param = quary.substring(start);
+            return param.split("=")[1];
+        }
+        var param = quary.substring(start, end);
+        return param.split("=")[1];
+    }
+
+    function isEmpty(src) {
+        if (typeof(src) == 'undefined' || src == null || src == "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+</script>
+
+</html>
+
+
+

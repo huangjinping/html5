@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <title>Title</title>
+
+</head>
+<body>
+
+<ul id="menu">
+    <li>标签1</li>
+    <li>标签2</li>
+    <li>标签3</li>
+    <li>标签4</li>
+    <li>标签5</li>
+    <li>标签6</li>
+</ul>
+
+<script>
+    $("#menu").on("click","li",function (e) {
+        console.log(e);
+    })
+
+
+</script>
+
+</body>
+</html>

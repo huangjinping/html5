@@ -1,0 +1,30 @@
+@maincolor: #440;
+@import "sub";
+
+
+   .container{
+     width: 100px;
+     height: 100px;
+     background-color: lighten(#000, 10%);
+     background-color: darken(#fff, 10%);
+   }
+
+
+ul {
+  background-color: @maincolor;
+  list-style: none;
+  overflow: hidden;
+  &:extend(.container);
+  overflow: hidden;
+  > li {
+
+    float: left;
+    a {
+      text-decoration: none;
+      &:hover {
+
+        background-color: blueviolet;
+      }
+    }
+  }
+}

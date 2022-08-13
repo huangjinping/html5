@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <bttton-counter v-on:enlargeText="enlargeText"  v-for="item in list" v-bind:title="item.name"></bttton-counter>
+    <blog-post>12</blog-post>
+</div>
+</body>
+<script>
+
+    Vue.component('blog-post',{
+        props:['post'],
+        template:"<div><button v-on:click=\"$emit('enlargeText')\">123123</button></div>"
+    });
+
+    Vue.component("bttton-counter", {
+        props:['title'],
+        data: function () {
+            return {
+                count: 0,
+            }
+        },
+        template: '<button v-on:click="count++">You {{title}}clicked me {{ count }} times.</button>'
+    });
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            list: [{
+                name: "关羽",
+                power: 1000
+            }, {
+                name: "吕布",
+                power: 123,
+            }],
+        },
+        methods:{
+            enlargeText:function () {
+                console.log("111111");
+            }
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+</head>
+<style>
+    button {
+        width: 2rem;
+        height: 1rem;
+        font-size: 0.2rem;
+        background-color: #c0a16b;
+        margin: 1rem;
+
+    }
+
+    .loading {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        margin-left: -150px;
+        margin-top: -150px;
+        width: 300px;
+        height: 300px;
+        z-index: 300;
+    }
+
+</style>
+<script>
+    (function () {
+        document.addEventListener('DOMContentLoaded', function () {
+            var html = document.documentElement;
+            var windowWidth = html.clientWidth;
+            html.style.fontSize = windowWidth / 7.5 + 'px';
+            // 等价于html.style.fontSize = windowWidth / 640 * 100 + 'px';
+        }, false);
+    })();
+</script>
+<body id="bodyView">
+<div>
+    <button id="btn_show">显示</button>
+    <button id="btn_hidden">隐藏</button>
+    <!--<img src="images/ic_service_user.jpg" alt="">-->
+
+    <p id="addView"></p>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+
+    </ul>
+</div>
+<script>
+    //    <div class="loading" style="display: none"><img src="../../img/loding.jpg" width="100px" height="100px;"></div>
+    $(function () {
+
+
+    });
+    $("#btn_show").click(function () {
+        console.log("====点击显示===");
+
+        showLoading();
+    });
+    $("#btn_hidden").click(function () {
+        console.log("====点击隐藏===");
+        dismissLoading();
+    });
+
+    function dismissLoading(e) {
+        var loading = document.getElementById("loading_hjp");
+        if (loading) {
+            loading.remove();
+        }
+    }
+
+    function showLoading(e) {
+        dismissLoading();
+        var img = document.createElement("img");
+        img.width = 300;
+        img.height = 300;
+        img.style.objectFit = 'cover';
+        img.style.display='block';
+        img.src = "images/loding.jpg";
+
+        var p=document.createElement("p");
+        p.innerHTML="asdasd";
+
+        var div = document.createElement("div");
+        div.id = "loading_hjp";
+        div.style.position = 'fixed';
+        div.style.left = '50%';
+        div.style.top = '50%';
+        div.width = "300px";
+        div.height = "300px";
+        div.style.marginLeft = "-150px";
+        div.style.marginTop = "-150px";
+        div.style.zIndex = "10000";
+        div.appendChild(img);
+        div.appendChild(p);
+        document.body.appendChild(div);
+    }
+
+</script>
+</body>
+</html>

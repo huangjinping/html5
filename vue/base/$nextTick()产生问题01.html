@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <button @click="showAndHidden">显示/隐藏</button>
+    <input type="text" v-show="flag" ref="myinput">
+</div>
+<script>
+
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            flag: false
+        },
+        methods: {
+            showAndHidden() {
+                // 这个代码是让input显示出来。显示出来能立刻显示出来？
+                // Vue中数据的变化会导致页面的渲染。这个过程是异步过程，不是立刻执行。
+                this.flag = !this.flag;
+                // flag 值改变后，不会立即再次渲染，意味着还没有进行再次的渲染，代码就已经执行完毕了
+                //if(this.flag) {
+                //this.$refs.myinput.focus();
+                // }
+                //所以等到再次渲染的时候，代码已经失效了。
+                // 但是如果你想在 DOM 状态更新后做点什么，就使用 ，$nextTick()
+                // 下一个滴答。就是在页面渲染成功之后才执行。
+                this.$nextTick(() => {
+                    if (this.flag) {
+                        this.$refs.myinput.focus();
+                    }
+                })
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

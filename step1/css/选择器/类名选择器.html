@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>类名选择器</title>
+
+    <style type="text/css">
+        .teshu {
+            color: red;
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            margin-left: 100px;
+        }
+
+        .zhongyao {
+            text-decoration: underline;
+        }
+    </style>
+
+
+</head>
+<body>
+
+
+<h3 class="teshu zhongyao">i</h3>
+<h4 class="teshu" id="dong">i</h4>
+<script type="text/javascript">
+    var dong = document.getElementById("dong");
+    var a = 0;
+    setInterval(function () {
+        a += 1;
+        dong.style.marginLeft = a + "px";
+    }, 30);
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    Array.apply(null, {length: 3}).map(function () {
+        console.log("=====>>>>>" + Math.random());
+    })
+
+    var arr1 = new Array('1', "2", '3');
+    var max = Math.max.apply(null, arr1);
+    console.log(max);
+
+
+    function test(test1, test2) {
+        console.log(test1 + "===11==" + test2);
+    }
+
+    test.call(null,12,12);
+
+
+
+
+    var name = "名字";
+    var person = {name: "小明"};
+    function sayHello() {
+        console.log(this.name + ': hello')
+    }
+    var personSay = sayHello.bind(person);
+    sayHello();
+    personSay();
+    sayHello();
+
+
+</script>
+</body>
+</html>

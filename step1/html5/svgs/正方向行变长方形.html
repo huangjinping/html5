@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<svg id="svgView" height="200" width="200">
+    <path d="M100 100 L150 100 L150 150 L100 150 Z" stroke-width="2" stroke="black" fill="transparent"></path>
+
+    <rect  height="100" width="100" stroke-width="1" stroke="red" fill="transparent"></rect>
+</svg>
+</body>
+<script>
+    (function init() {
+        const NF = 30;
+        _svgView = document.getElementById("svgView");
+        _RECT = document.querySelector("path");
+        _RECT01 = document.querySelector("rect");
+        _RECT_WIDTH = _RECT01.getAttribute("width");
+        DATA = _RECT.getAttribute('d').replace(/M|L|Z/g, '').trim().split(/\s+/).map(c => +c);
+        let rID = null, f = 0, dir = -1;
+
+        console.log(DATA);
+
+        function stopAni() {
+            cancelAnimationFrame(rID);
+            rID = null;
+        };
+
+        function timing(k) {
+            return 1 - Math.pow(1 - k, 2);
+        };
+
+
+        function update() {
+            f += dir;
+            var cpy3 = DATA[3] - f;
+            var cpy5 = DATA[5] + f;
+            _RECT.setAttribute('d',
+                `M${DATA.slice(0, 2)}
+         L${DATA[2]} ${cpy3}
+         L${DATA[4]} ${DATA[5]}
+         L${DATA.slice(-2)} Z`);
+
+            var k = f / NF;
+            var rx = (timing(k) * _RECT_WIDTH).toFixed(2);
+
+            _RECT01.setAttribute('rx', rx);
+            if (!(f % NF)) {
+                stopAni();
+                return;
+            }
+            rID = requestAnimationFrame(update);
+
+
+        }
+
+        _svgView.addEventListener('click', e => {
+            if (rID) stopAni();
+            dir *= -1;
+            update();
+        }, false);
+
+
+    })();
+</script>
+</html>

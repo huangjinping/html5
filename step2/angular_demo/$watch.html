@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="node_modules/angular/angular.js"></script>
+</head>
+<body >
+<div ng-app="myApp">
+    <div ng-controller="firstController">
+        {{ date }}
+        <br><br>
+        {{ count }}
+    </div>
+</div>
+<script type="text/javascript">
+    //用 $scope的$apply方法实现每秒自动刷新model
+    angular.module('myApp',[])
+        .controller('firstController',["$scope","$window",function($scope,$window){
+            $scope.date=new Date();
+            $scope.count=0;
+            setInterval(function(){
+                $scope.date=new Date();
+                $scope.count++;
+                $window.location.reload();
+
+//                $scope.$apply(function(){
+//                    $scope.date=new Date();
+//                    $scope.count++;
+//                    $window.location.reload();
+//                });
+            },1000);
+
+        }]);
+</script>
+</body>
+
+</html>

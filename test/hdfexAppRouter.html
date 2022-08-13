@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分付君</title>
+</head>
+<body>
+<script>
+
+    window.onload = function () {
+        function GetRequest() {
+            var url = decodeURI(location.search); //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
+
+        var params = GetRequest();
+
+        console.log(params);
+        if (params) {
+            if (params.hdType == 1) {
+                var hduserId = params.hduserId;
+                var hdtoken = params.hdtoken;
+                var hdDebug = params.hdDebug;
+                var url = "";
+                if (1 == hdDebug) {
+                    url = "https://www.daiyutech.com/fenfujun/web/mobile/myBill/membershipInterests.html?v=" + Math.random() + "&hduserId=" + hduserId + "&hdtoken=" + hdtoken;
+                } else {
+                    url = "https://www.daiyutech.com/creditCard/FunfujunHH5/mobile/myBill/membershipInterests.html?v=" + Math.random() + "&hduserId=" + hduserId + "&hdtoken=" + hdtoken;
+                }
+                window.location.replace(url);
+            }
+        }
+    }
+</script>
+</body>
+</html>

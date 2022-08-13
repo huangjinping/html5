@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    var Dog = function (option) {
+        this._init(option);
+    }
+    Dog.prototype = {
+        constructor: Dog,
+        _init: function (option) {
+            this.x = option.x;
+        },
+        render: function () {
+            console.log("=======>>>>" + this.x);
+        }
+    }
+
+    var dog = new Dog({
+        x: 123,
+    });
+    dog.render();
+</script>
+
+</body>
+</html>

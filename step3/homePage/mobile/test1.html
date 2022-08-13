@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="format-detection" content="telephone=no, email=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <title>商务合作</title>
+    <link rel="stylesheet" href="../css/commons.css"/>
+    <link rel="stylesheet" href="../css/resets.css"/>
+    <link rel="stylesheet" href="../css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../css/styles.css"/>
+    <script src="../js/area.json"></script>
+    <script src="../js/zepto.min.js"></script>
+    <!-- <script src="../js/https.js"></script> -->
+    <script src="../js/dialog.js"></script>
+
+    <style>
+        .mark {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            opacity: .5;
+            position: absolute;
+            z-index: 9999;
+        }
+
+        .dialog {
+            width: 75%;
+            height: 3.5rem;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 99999;
+        }
+
+        .pa-01 {
+            text-align: center;
+            line-height: 1rem;
+            font-size: .3rem;
+            color: #8a8282;
+        }
+
+        .pa-02 {
+            text-align: center;
+            font-size: .25rem;
+            color: #8a8282;
+        }
+
+        .btn2 {
+            position: absolute;
+            bottom: .5rem;
+            left: 30%;
+            text-align: center;
+        }
+
+        .btn2 button {
+            width: 2rem;
+            height: .7rem;
+            font-size: .33rem;
+            border-radius: 0.1rem;
+            border: none;
+            background: skyblue;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div><p>ssssss</p></div>
+
+<div>
+</div>
+
+
+</body>
+
+<script>
+
+    (function () {
+        document.addEventListener('DOMContentLoaded', function () {
+            var html = document.documentElement;
+            var windowWidth = html.clientWidth;
+            html.style.fontSize = windowWidth / 7.5 + 'px';
+            // 等价于html.style.fontSize = windowWidth / 640 * 100 + 'px';
+        }, false);
+    })();
+    new Obj({
+        content: '<p class="pa-01">您的信息已提交成功</p><p class="pa-02">请勿重复提交，3个工作日内，我们会与您联系</p><p class="pa-02">客服电话：4006032198</p>',
+        btns: ['我知道了'],
+        methed: function () {
+        }
+    })
+</script>
+</html>

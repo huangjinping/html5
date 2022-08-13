@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script SRC="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-app="hApp" ng-controller="hController">
+<h1>
+    {{price|currency}}
+</h1>
+<h1>
+    <!--1.currency这个参数参数的格式化，2.参数2是钱的格式化"USD$" 3、参数3，小苏点精确位数-->
+    {{price | currency:"USD$":9}}
+</h1>
+
+<label>Search: <input ng-model="searchText"></label>
+<table id="searchTextResults">
+    <tr><th>Name</th><th>Phone</th></tr>
+    <tr ng-repeat="friend in friends | filter:searchText">
+        <td>{{friend.name}}</td>
+        <td>{{friend.phone}}</td>
+    </tr>
+</table>
+<hr>
+
+<script type="text/javascript">
+    var module = angular.module("hApp", []);
+    module.controller("hController", ["$scope", "$filter", function ($scope, $filter) {
+        $scope.price = "31415926"
+        $scope.friends = [{name: 'John', phone: '555-1276'},
+            {name: 'Mary', phone: '800-BIG-MARY'},
+            {name: 'Mike', phone: '555-4321'},
+            {name: 'Adam', phone: '555-5678'},
+            {name: 'Julie', phone: '555-8765'},
+            {name: 'Juliette', phone: '555-5678'}]
+    }]);
+</script>
+</body>
+</html>

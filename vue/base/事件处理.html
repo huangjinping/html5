@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <button v-on:click="counter+=1">Add</button>
+    <p>The button above has been clicked {{ counter }} times.</p>
+    <!--v-on:click.capture.stop-->//只相应外部点击；不会触发内部点击
+    <div v-on:click="outer">
+        <p>外部数据</p>
+        <!--v-on:click.stop-->//只相应内部点击
+        <div v-on:click="inner">内部点击</div>
+    </div>
+</div>
+</body>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            counter: 0
+        },
+        methods: {
+            outer: function () {
+                alert("outer");
+            },
+            inner: function () {
+                alert("inner");
+            }
+        }
+    });
+</script>
+</html>

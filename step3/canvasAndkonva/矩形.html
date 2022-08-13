@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<canvas id="canvEmla">
+
+</canvas>
+<script>
+
+    (function () {
+        var convas = document.getElementById("canvEmla");
+        convas.width = 600;
+        convas.height = 600;
+
+        ctx = convas.getContext("2d");
+        ctx.rect(100, 100, 100, 100);
+        ctx.stroke();
+
+        ctx.strokeRect(200, 200, 100, 100);
+        ctx.fillRect(300, 300, 100, 100);
+        ctx.clearRect(250, 250, 100, 100);
+
+
+    })();
+</script>
+</body>
+</html>

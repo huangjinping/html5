@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <h1>前置守卫</h1>
+    <router-link to="/foo">foo</router-link>
+    <router-link to="/bar">bar</router-link>
+    <router-view></router-view>
+</div>
+</body>
+<script>
+
+    var Foo = {
+        template: "<div>foo</div>",
+
+    };
+    var Bar = {
+        template: "<div>bar</div>"
+    };
+
+    var login = {
+        template: "<div>login</div>"
+    };
+    var router = new VueRouter({
+        routes: [
+            {
+                path: '/',
+                redirect: "/bar"
+            },
+            {
+                path: "/foo",
+                name: "Foo",
+                component: Foo,
+                meta: {
+                    requiresAuth: true
+                }
+            }, {
+                path: "/bar",
+                name: "Bar",
+                component: Bar
+            }
+            , {
+                path: "/login",
+                name: "login",
+                component: login
+            }
+        ]
+    });
+    //前置守卫
+    router.beforeEach((to, from, next) => {
+        console.log("beforeEach");
+        if (to.matched.some(record => record.meta.requiresAuth)) {
+            // this route requires auth, check if logged in
+            // if not, redirect to login page.
+            if (true) {
+                next({
+                    path: '/login',
+                    query: {redirect: to.fullPath}
+                })
+            } else {
+                next()
+            }
+        } else {
+            next() // 确保一定要调用 next()
+        }
+
+
+    });
+
+    var app = new Vue({
+        el: "#app",
+        router
+    });
+</script>
+</html>

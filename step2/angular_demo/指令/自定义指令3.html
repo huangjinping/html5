@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义之类</title>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-app="hApp" ng-controller="hController">
+<btn primary="文件问题"></btn>
+<script type="text/javascript">
+
+
+    var hApp = angular.module("hApp", []);
+    hApp.controller("hController", ["$scope", function ($scope) {
+        $scope.name = "文件页面";
+        $scope.primary = "primary";
+
+    }]);
+
+    /**
+     * 属性传值简写方式
+     */
+    hApp.directive('btn', [function () {
+        return {
+            scope: {
+                primary: '@',
+                lg: '@',
+                block: '@',
+            },
+            template: '<button>{{primary+123}}</button>'
+        }
+    }]);
+
+    /**
+     * 属性传值方式
+     */
+
+    hApp.directive('btn', [function () {
+        return {
+            scope: {
+                primary: '@primary',
+                lg: '@lg',
+                block: '@block',
+            },
+            template: '<button class="btn {{primary==\'true\'?\'btn-primary\':\'\'}}">button</button>'
+        }
+    }]);
+
+</script>
+</body>
+</html>

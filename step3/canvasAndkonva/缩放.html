@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>缩放</title>
+</head>
+<body>
+<canvas id="canEml">
+</canvas>
+<script>
+    (function () {
+        var canvas = document.querySelector("#canEml");
+        var ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px solid red";
+        ctx.strokeRect(100, 100, 100, 100);
+        ctx.scale(2, 2);
+        ctx.strokeRect(100, 100, 100, 100);
+        ctx.rotate(30 * Math.PI / 180);
+        ctx.strokeRect(10, 10, 100, 100);
+
+    })();
+</script>
+
+</body>
+</html>

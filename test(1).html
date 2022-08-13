@@ -1,0 +1,56 @@
+关于防止诈骗的温馨提示
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>关于防止诈骗的温馨提示</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style>
+        *{
+            padding: 0;
+            margin:0;
+        }
+        .wrap{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            display: -webkit-flex;
+            -webkit-flex-direction: column;
+        }
+        .body{
+            position: absolute;
+            top: 0;
+        }
+        .wrap img{
+            width: 100%;
+        }
+    </style>
+    <script>
+        (function () {
+            document.addEventListener('DOMContentLoaded', function () {
+                var html = document.documentElement;
+                var windowWidth = html.clientWidth;
+                html.style.fontSize = windowWidth / 7.5 + 'px';
+                // 等价于html.style.fontSize = windowWidth / 640 * 100 + 'px';
+            }, false);
+        })();
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <img src="https://www.hdfex.com/statement/img/statement20190418.jpg">
+</div>
+<script>
+
+</script>
+</body>
+</html>

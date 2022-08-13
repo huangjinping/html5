@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .box2 {
+            color: chartreuse;
+        }
+
+        div {
+            color: blue;
+        }
+
+        .box {
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+//选中的情况下
+
+id 类 标签<br>
+1，1，1<br>
+1.三者不进位大的权重大<br>
+2.继承的权重为0<br>
+3.当权重一样的时候，写在下面的权重大<br>
+
+//继承关系<br>
+继承有哪些方法<br>
+color text-* font-*<br>
+这三类才能继承父标签的样式<br>
+
+//继承权重比较方式<br>
+规则顺序<br>
+1.比较继承性就近原则 胜者显示，（就是继承关系远近）<br>
+2.远近程度一样的时候比较权重,（权重的大小）<br>
+3.权重又一样的时候下载面对的胜利（远近）<br>
+
+<div class="box">
+    <div class="box1">
+        <div class="box2">
+            <p class="p1">p1</p>
+            <p class="p2">p2</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

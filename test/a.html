@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+   <form>
+
+       <div>
+           <input type="text">
+       </div>
+
+       <div>
+           <input type="text">
+       </div>
+   </form>
+   <button id="submitBtn"></button>
+
+   <script>
+       console.log("==========>>>>>>>>>>");
+    var  btn=document.getElementById("submitBtn");
+    btn.onclick=function () {
+        window.location.href="./b.html"
+    }
+//       document.addEventListener("DOMContentLoaded", function () {
+//           console.log("DOMContentLoaded");
+//       });
+//       document.addEventListener("onLoad", function () {
+//           console.log("onLoad");
+//       });
+//       document.addEventListener("beforeunload", function () {
+//           console.log("beforeunload");
+//       });
+//       document.addEventListener("unload", function () {
+//           console.log("unload");
+//       });
+
+       // current state
+       console.log(document.readyState);
+
+       // print state changes
+       document.addEventListener('readystatechange', function () {
+           console.log(document.readyState)
+       });
+
+
+</script>
+</body>
+</html>

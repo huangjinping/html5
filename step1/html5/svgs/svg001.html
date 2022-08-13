@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<svg width="200px" height="200px">
+    <path d="M10 10 H 90 V 90 H 10 Z" stroke="red" stroke-width="3"></path>
+</svg>
+<svg width="200px" height="200px">
+    <path d="M10 10 h80 v80 h-80 Z" stroke="red" stroke-width="3"></path>
+</svg>
+
+<div>
+    <p>二阶贝塞尔</p>
+    <svg width="200px" height="200px">
+        <path d="M10 80 Q90 10 180 80" stroke="black" stroke-width="3" fill="transparent"></path>
+    </svg>
+</div>
+<div>
+    <p>二阶贝塞尔简写，T(终点)</p>
+    <svg width="300px" height="200px">
+        <path d="M10 80 Q90 10,180 80 T 280 80" stroke="red" stroke-width="2" fill="transparent"></path>
+    </svg>
+</div>
+
+<div>
+    <p>三阶贝塞尔C(控制点1,控制点2,终点)</p>
+    <svg width="200px" height="200px">
+        <path d="M100 100 C100 140,180 140,180,100" stroke="red" stroke-width="3" fill="transparent"></path>
+    </svg>
+</div>
+
+<div>
+    <p>三阶贝塞尔简写S(控制点，终点)</p>
+    <svg width="200px" height="200px">
+        <path d="M100 100 S180 140, 180 100" stroke="red" stroke-width="2" fill="transparent"></path>
+    </svg>
+</div>
+
+
+</body>
+
+</html>

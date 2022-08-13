@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>面向对象应用</title>
+</head>
+<body>
+<canvas id="cavEml">
+</canvas>
+<script>
+    (function () {
+        function Sprite(option) {
+            this._init(option);
+        }
+
+        Sprite.prototype = {
+            _init: function (option) {
+                this.x = option.x;
+                this.y = option.y;
+            },
+            show: function () {
+                console.log("function");
+            }
+        }
+
+        var sprite = new Sprite({
+            x: 123,
+            y: 990
+        });
+
+        console.log(sprite.x);
+        console.log(sprite.y);
+        //提交信息
+        console.log(this);
+        var _that = this;
+        var kong = {
+            x: 123,
+            spt: function () {
+                console.log(this);
+                console.log(_that);
+            }
+        }
+        kong.spt();
+    })();
+</script>
+</body>
+</html>

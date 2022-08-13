@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body {
+        display: flex;
+        margin: 0;
+        height: 100vh;
+    }
+
+    svg {
+        flex: 1;
+        background-color: #f1f1f1;
+    }
+</style>
+<body>
+<svg>
+    <path id='shape'/>
+    <script>
+        const _SVG = document.querySelector('svg'),
+            _SHAPE = document.getElementById('shape'),
+            D = 1000 /* viewBox size */,
+            O = {} /* data object */,
+            /* number of cubic curves/ polygon vertices */
+            P = 5;
+
+        function getStarPoints(f = .5) {
+            const RCO = f * D /* outer (pentagram) circumradius*/,
+                BAS = 2 * (2 * Math.PI / P) /* base angle for star poly */,
+                BAC = 2 * Math.PI / P /* base angle for convex poly */,
+                RI = RCO * Math.cos(.5 * BAS) /*pentagram/ inner pentagon inradius */,
+                RCI = RI / Math.cos(.5 * BAC) /* inner pentagon circumradius */,
+                ND = 2 * P /* total number of distinct points we need to get */,
+                BAD = 2 * Math.PI / ND /* base angle for point distribution */,
+                PTS = [] /* array we fill with point coordinates */;
+
+            for (let i = 0; i < ND; i++) {
+                // if (window.CP.shouldStopExecution(0))
+                //     break;
+                // if (window.CP.shouldStopExecution(0))
+                //     break;
+                let /* radius at end point (inner)/ control point (outer) */
+                    cr = i % 2 ? RCI : RCO,
+                    /* angle of radial segment from origin to current point */
+                    ca = i * BAD + .5 * Math.PI,
+                    x = Math.round(cr * Math.cos(ca)),
+                    y = Math.round(cr * Math.sin(ca));
+
+                PTS.push([x, y]);
+                /* for even indices double it, control points coincide here */
+                if (!(i % 2)) PTS.push([x, y]);
+            }
+            // window.CP.exitedLoop(0);window.CP.exitedLoop(0);
+
+            return PTS;
+        };
+
+        function fnStr(fname, farg) {return `${fname}(${farg})`;}
+
+        (function init() {
+            _SVG.setAttribute('viewBox', [-.5 * D, -.5 * D, D, D].join(' '));
+
+            O.d = {
+                ini: getStarPoints(),
+                afn: function (pts) {
+                    return pts.reduce((a, c, i) => {
+                        return a + (i % 3 ? ' ' : 'C') + c;
+                    }, `M${pts[pts.length - 1]}`);
+                } };
+
+
+            O.transform = { ini: -180, afn: ang => fnStr('rotate', ang) };
+
+            O.fill = { ini: [255, 215, 0], afn: rgb => fnStr('rgb', rgb) };
+
+            for (let p in O) _SHAPE.setAttribute(p, O[p].afn(O[p].ini));
+        })();
+
+    </script>
+</svg>
+</body>
+</html>

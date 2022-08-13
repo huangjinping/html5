@@ -1,0 +1,11 @@
+.mydiv {
+    width: 440px;
+    height: 285px;
+    border: 1px solid red;
+    background: url("./dog.jpg");
+}
+.item {
+    height: 10rem;
+    width: 10rem;
+    background-color: saddlebrown;
+}

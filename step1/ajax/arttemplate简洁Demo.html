@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="open.js"></script>
+    <script src="../arttemplate/template.js"></script>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script id="template1" type="text/html">
+
+        {{each content as value index}}
+        <div>{{index}}:{{value}}</div>
+
+        {{each value as cityvalue index}}
+        <div>{{index}}:{{cityvalue}}</div>
+        {{/each}}
+
+        {{/each}}
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var data = {
+                content: [
+                    {province: '四川', city: ['成都', '绵阳', '自贡']},
+                    {province: '广东', city: ['广州', '东莞', '佛山']},
+                    {province: '海南', city: ['海口', '三亚']}
+                ]
+            };
+            var html = template('template1', data);
+            document.getElementById('area').innerHTML = html
+        });
+    </script>
+</head>
+<body>
+<div id="area"></div>
+</body>
+</html>

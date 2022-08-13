@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jqueryUI 的使用</title>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script src="../lib/jQueryUI/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="../lib/jQueryUI/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="../lib/jQueryUI/jquery-ui.structure.min.css"/>
+    <link rel="stylesheet" href="../lib/jQueryUI/jquery-ui.theme.min.css"/>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#tdiv").dialog();
+
+        });
+    </script>
+</head>
+<body>
+<div>
+    <ul>
+        <li><a href="#">href0"</a></li>
+        <li><a href="#">href1</a></li>
+        <li><a href="#">href2</a></li>
+    </ul>
+</div>
+
+<div id="tdiv" title="Basic dialog">
+    hello world,this is a dialog
+</div>
+
+</body>
+</html>

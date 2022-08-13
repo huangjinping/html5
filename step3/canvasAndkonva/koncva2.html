@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../bower_components/konva/konva.js"></script>
+</head>
+<body>
+
+<div id="container">
+</div>
+
+<script>
+    var stage = new Konva.Stage({
+        container: 'container',
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
+    var layer = new Konva.Layer();
+    stage.add(layer);
+    var rect = new Konva.Rect({
+        x: 100,
+        y: 100,
+        width: 10,
+        height: 30,
+        stroke: "blue",
+        fill: "red"
+    });
+    layer.add(rect);
+    layer.draw();
+
+    //to动画系统
+    rect.to({
+        x: 100,
+        y: 100,
+        width: 1000,
+        duration: 1,
+        easing: Konva.Easings.EaseIn,
+    });
+    
+
+</script>
+
+</body>
+</html>

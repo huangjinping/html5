@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分付君登录</title>
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-route/angular-route.js"></script>
+    <script id="a_tmpl" type="text/ng-template">
+        <!-- 只有type="text/javascript"的script节点才会被当做JS执行 -->
+        <!-- script中的内容就算不能执行，也不可以显示在界面上 -->
+        <h1>{{title}}</h1>
+    </script>
+</head>
+<body ng-app="hApp" ng-controller="hController">
+<form ng-submit="onSubmit()">
+    <p><span>姓名：</span><input type="text" ng-model="name"/></p>
+    <p><span>密码：</span><input type="password" ng-model="password"></p>
+    <p>
+        <input type="submit" value="提交登录">
+    </p>
+    <div ng-view></div>
+</form>
+
+<script type="text/javascript">
+    var hApp = angular.module("hApp", ["ngRoute"]);
+    hApp.controller("hController", ["$scope", "$hContent", "$http", "$location", function ($scope, $hContent, $http, $location) {
+        $scope.name = $hContent.name;
+        $scope.password = $hContent.password;
+        $scope.title = "122";
+        console.log("==================================================");
+        console.log();
+        $scope.$watch("name", function (p1, p2, p3) {
+            console.log(p1);
+            console.log(p2);
+        });
+        $scope.onSubmit = function () {
+            console.log($scope.name);
+            console.log($scope.password);
+            $http.get("package.json").then(function (res) {
+                console.log(res.data);
+                $scope.title = "返回结果";
+                $location.path("/update");
+            });
+        }
+    }]);
+    hApp.config(["$locationProvider", "$routeProvider", function ($locationProvider, $routeProvider) {
+//        $locationProvider.hashPrefix('');
+        $routeProvider.when("/update", {
+            controller: "hController",
+            templateUrl: 'com_tmpl'
+
+        }).otherwise({
+            template: "<span>文件数据</span>"
+            }
+        )
+    }])
+
+    hApp.constant("$hContent", {
+            name: "13611290917",
+            password: "wo123456"
+        }
+    );
+
+    hApp.controller('BController', ['$scope', function($scope) {
+        $scope.title = '这是B控制器';
+    }]);
+
+    hApp.controller('CController', ['$scope', function($scope) {
+        $scope.title = '这是C控制器';
+    }]);
+</script>
+</body>
+</html>

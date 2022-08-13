@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("ul").on("click", "li", function (e) {
+                /**
+                 * 判断类型
+                 *
+                 * e.type获取的事件的类型
+                 */
+//                alert(e.type);
+                /**
+                 * 判断currentTarget
+                 * 获取当前事件源；事件的发起者
+                 *
+                 * e.currentTarget严格等于this
+                 */
+//                alert($(e.currentTarget).text());
+                /**
+                 *  e.keyCode
+                 *  获取的是键盘的点击按钮 ASC
+                 * */
+//                alert(e.keyCode);
+
+//                获取鼠标的按键
+//                alert(e.switch);
+
+
+            }).on("click", function (e) {
+                /**
+                 *e.target！==this不严格等于this
+                 */
+//                alert($(e.target).text());
+
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div>
+    <ul>
+        <li>菜单1</li>
+        <li>菜单2</li>
+        <li>菜单3</li>
+    </ul>
+</div>
+
+</body>
+</html>

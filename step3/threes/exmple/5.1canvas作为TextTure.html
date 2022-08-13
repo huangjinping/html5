@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas当纹理动态更新纹理</title>
+    <script src="../src/three.js"></script>
+    <style>
+        div#canvas-frame {
+            width: 100%;
+            height: 600px;
+            cursor: pointer;
+            background-color: #EEEEEE;
+            border: none;
+        }
+    </style>
+    <script>
+
+        var width;
+        var height;
+        var container;
+        var renderer;
+        var camera;
+        var scene;
+        var mesh;
+        var texture;
+
+        function init() {
+            container = document.getElementById("canvas-frame");
+            width = container.clientWidth;
+            height = container.clientHeight;
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setClearColor(0xEEEEEE, 1);
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+
+            scene = new THREE.Scene();
+            scene.fog = new THREE.Fog(0x050505, 2000, 3500);
+
+            camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+            camera.position.set(100, 0, 1000);
+
+            var light = new THREE.DirectionalLight(0xffeedd, 1);
+            light.position.set(0, 0, 1000);
+            scene.add(light);
+
+
+            var canvas = document.createElement("canvas");
+            canvas.style.border = '1px  solid red';
+            canvas.width = 128;
+            canvas.height = 128;
+            var context = canvas.getContext("2d");
+            var gradient = context.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2);
+            gradient.addColorStop(0.1, 'red');
+            gradient.addColorStop(1, 'yellow');
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+//            var shadowTexture = new THREE.Texture(canvas);
+//            shadowTexture.needsUpdate = true;
+//
+//            var geometry = new THREE.CylinderGeometry(400, 400,400);
+//            var material = new THREE.MeshLambertMaterial({map:shadowTexture});
+//
+//            mesh = new THREE.Mesh(geometry, material);
+//            scene.add(mesh);
+
+
+            var geometry = new THREE.CylinderGeometry(400, 400, 400);
+            var material = new THREE.MeshLambertMaterial();
+            mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+
+            var loader = new THREE.TextureLoader();
+            loader.load("../img/b.jpg", function (texture) {
+                var timer = setTimeout(function () {
+                    window.clearTimeout(timer);
+                    var material = new THREE.MeshLambertMaterial({map: texture});
+                    mesh.material = material;
+                }, 3000);
+            });
+        }
+
+        function threeStart() {
+            init();
+            animate();
+        }
+
+
+        function animate() {
+
+            requestAnimationFrame(animate);
+            var time = Date.now() * 0.001;
+            mesh.rotation.x = time * 0.25;
+            mesh.rotation.y = time * 0.5;
+            renderer.render(scene, camera);
+        }
+
+        //        function change()
+        //        {
+        //            if(texture != null){
+        //                texture.repeat.x = texture.repeat.y= para.repeat;
+        //                if(para.wrap == 1)
+        //                {
+        //                    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        //                }else if(para.wrap == 2)
+        //                {
+        //                    texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+        //                }else if(para.wrap == 3)
+        //                {
+        //                    texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;
+        //                }
+        //                texture.needsUpdate = true;
+        //            }
+        //        }
+
+    </script>
+
+</head>
+<body onload="threeStart()">
+<div id="canvas-frame">
+</div>
+<canvas id="container"></canvas>
+</body>
+</html>

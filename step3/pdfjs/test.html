@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="zepto.min.js"></script>
+</head>
+<body>
+
+<div id="openJson">
+    打开pdfj
+</div>
+
+</body>
+
+<script>
+    (function () {
+        $("#openJson").click(function () {
+
+            var url = "https://sandbox-dashboard.openpay.co/paynet-pdf/mn5pefxl6vfzormkz6oc/9988783090879917";
+            // url="https://www.hdfex.com/travel.pdf";
+            var target = encodeURIComponent(url);
+
+            window.location.href="https://docs.google.com/viewer?url="+target;
+            // window.location.href="https://www.nice911.com/pdfjs/web/viewer.html?file="+target;
+        });
+
+
+    })();
+
+</script>
+</html>

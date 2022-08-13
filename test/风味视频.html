@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        (function () {
+            document.addEventListener('DOMContentLoaded', function () {
+                var html = document.documentElement;
+                var windowWidth = html.clientWidth;
+                html.style.fontSize = windowWidth / 7.5 + 'px';
+                // 等价于html.style.fontSize = windowWidth / 640 * 100 + 'px';
+            }, false);
+        })();
+    </script>
+
+
+    <style>
+
+        html ,div,span {
+            font-size: 0.3rem;
+        }
+
+        .listContainer {
+            list-style: none;
+        }
+
+        .item_list {
+            margin: 0.1rem;
+            background-color: #c9c9c9;
+        }
+
+
+        .navItemContainer{
+            list-style: none;
+            overflow: hidden;
+
+        }
+
+        .navItem{
+            float: left;
+        }
+        .itempic img {
+            width: 2rem;
+            height: 1rem;
+        }
+
+        .navItem input{
+            width: 0.3rem;
+            height: 0.3rem;
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+
+<div>
+
+
+
+    <ul class="navItemContainer">
+        <li class="navItem"><input type="checkbox" /> <lable></lable></li>
+    </ul>
+
+    <ul class="listContainer">
+        <li class="item_list">
+            <div class="itempic">
+                <img src="" alt="">
+            </div>
+            <div> 播放量：<span class="num"></span></div>
+            <div> 标题：<span class="title"></span></div>
+        </li>
+    </ul>
+</div>
+
+<script>
+    (function () {
+
+
+        getcate()
+       function getcate(){
+
+            $.ajax({
+                async: "true",
+                type: "GET",
+                url: "https://mp.mag998.com/fengwei/api/getcate",
+                dataType: "text",
+                success: function (res) {
+                    console.log(res);
+                    var resloginData = eval('(' + res + ')');
+                    if (!resloginData.success) {
+                        return
+                    }
+                    var data = resloginData.data;
+
+                    var listItem = "";
+                    $(".navItemContainer").empty();
+                    data.forEach(function (p1, p2, p3) {
+                        console.log(p1);
+                        listItem+='<li class="navItem"><input  data-cateid="'+p1.cateid+'" type="checkbox" /> <lable>'+p1.catename+'</lable></li>';
+
+                    })
+                    $(".navItemContainer").html(listItem);
+
+
+                },
+                error: function (msg) {
+                    console.log(msg)
+                }
+            })
+        }
+
+
+        getcatevideos(3,10);
+        function getcatevideos(cateid, page) {
+            $.ajax({
+                async: "true",
+                type: "GET",
+                url: "https://mp.mag998.com/fengwei/api/getcatevideos?cateid=" + cateid + "&page=" + page,
+                dataType: "text",
+                success: function (res) {
+                    console.log(res);
+                    var resloginData = eval('(' + res + ')');
+                    if (!resloginData.success) {
+                        return
+                    }
+                    var data = resloginData.data;
+
+                    var listItem = "";
+                    $(".listContainer").empty();
+                    data.videos.forEach(function (p1, p2, p3) {
+                        console.log(p1);
+                        listItem += ' <li class="item_list">' +
+                            '            <div class="itempic">' +
+                            '                <img src="' + p1.cover + '" alt="">' +
+                            '            </div>' +
+                            '            <div> 播放量：<span class="num">' + p1.num + '</span></div>' +
+                            '            <div> 标题：<span class="title">' + p1.title + '</span></div>' +
+                            '        </li>';
+                    })
+                    $(".listContainer").html(listItem);
+
+
+                },
+                error: function (msg) {
+                    console.log(msg)
+                }
+            })
+        }
+
+
+        // getvideobyid(82);
+
+        function getvideobyid(videoid) {
+            $.ajax({
+                async: "true",
+                type: "GET",
+                url: "https://mp.mag998.com/fengwei/api/getvideobyid?videoid=" + videoid + "&userid=111659225",
+                dataType: "text",
+                success: function (res) {
+                    console.log(res);
+                },
+                error: function (msg) {
+                    console.log(msg)
+                }
+            })
+        }
+
+
+    })();
+</script>
+
+
+</body>
+</html>

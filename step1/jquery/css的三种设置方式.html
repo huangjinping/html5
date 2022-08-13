@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery-1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //第一种方式
+            $("li:first-child").css("background", "red");
+            //第二种方式
+            $("ul+p").css({
+                "background": "red",
+                "width": "100px"
+            });
+            //第三种方式
+            $("li").css("background", function (index, value) {
+                if (index % 2 == 0) {
+                    return "blue";
+                }
+                return "yellow";
+            })
+
+        });
+    </script>
+
+</head>
+<body>
+<div>
+    <ul>
+        <li>分付君01</li>
+        <li>分付君02</li>
+        <li>分付君03</li>
+        <li>分付君04</li>
+        <li>分付君05</li>
+        <li>分付君06</li>
+        <li>分付君07</li>
+        <li>分付君08</li>
+        <li>分付君09</li>
+        <li>分付君10</li>
+    </ul>
+    <P>asda</P>
+    <P>asda</P>
+    <P>asda</P>
+
+</div>
+</body>
+</html>

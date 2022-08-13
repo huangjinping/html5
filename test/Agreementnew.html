@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no, email=no"/>
+    <!--<meta name="apple-mobile-web-app-capable" content="yes"/>-->
+    <title>签约</title>
+    <link rel="stylesheet" href="./css/commons.css"/>
+    <link rel="stylesheet" href="./css/resets.css"/>
+    <link rel="stylesheet" href="./css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/agree-new.css"/>
+    <script>
+        (function () {
+            document.addEventListener('DOMContentLoaded', function () {
+                var html = document.documentElement;
+                var windowWidth = html.clientWidth;
+                html.style.fontSize = windowWidth / 7.5 + 'px';
+                // 等价于html.style.fontSize = windowWidth / 640 * 100 + 'px';
+            }, false);
+        })();
+    </script>
+</head>
+<body>
+
+
+<div class="content">
+    <p class="subTitle">
+        请查看签约文件，如有异议请勿点击"提交"；点击"提交"即代表您同意一下内容，并自理办理本业务
+    </p>
+    <ul class="list_container">
+        <li class="list_item">
+            <input type="checkbox" id="input1"/> <label for="input1"></label> <span>消费贷款合同</span>
+        </li>
+        <li class="list_item">
+            <input type="checkbox" id="input2"/> <label for="input2"></label> <span>购物合同</span>
+        </li>
+    </ul>
+    <div class="btn_container">
+        <button id="btn_submit">提交</button>
+    </div>
+    <script src="./js/jquery-1.9.1.min.js"></script>
+    <script src="./js/ProgressBar.js"></script>
+    <script src="./js/dialog.js"></script>
+    <script src="./js/Agree2.js"></script>
+</div>
+<div id="progressView">
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据绑定</title>
+    <script src="../node_modules/angular/angular.js">
+    </script>
+    <script src="../node_modules/angular-sanitize/angular-sanitize.js"></script>
+</head>
+<body ng-app="hApp" ng-cloak ng-controller="hController">
+<div ng-bind="name">
+</div>
+
+<div ng-bind-html="name"></div>
+
+<script type="text/javascript">
+    var happ = angular.module("hApp", ["ngSanitize"]);
+    happ.controller("hController", ['$scope', function ($scope) {
+        $scope.name = "<h1>夏侯惇</h1>";
+    }]);
+</script>
+</body>
+</html>

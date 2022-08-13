@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>重点是如何用直接用css直接给伪类赋值</title>
+    <style>
+        ul {
+            list-style: none;
+            width: 210px;
+            margin: 20px auto;
+        }
+
+        li {
+            float: left;
+            width: 100px;
+            margin-left: 5px;
+            color: whitesmoke;
+            position: relative;
+            text-align: center;
+            background-color: cornflowerblue;
+            transform-origin: top;
+            transform-style: preserve-3d;
+            /*//主要是这个属性判定这个动画是设置转换属性为3d*/
+            transition: all 1s;
+        }
+
+        li::after {
+            content: attr(data-content);
+            width: 100px;
+            position: absolute;
+            background-color: cornflowerblue;
+            top: 20px;
+            left: 0px;
+            transform: rotateX(-90deg);
+            transform-origin: top;
+        }
+
+        li:hover {
+            transform: rotateX(90deg);
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li data-content="分付君">我的预约</li>
+    <li data-content="优选加">发布记录</li>
+</ul>
+</body>
+</html>

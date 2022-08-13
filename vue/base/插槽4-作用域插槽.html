@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <current-user >
+        user.firstName
+    </current-user>
+</div>
+<script>
+    Vue.component("current-user", {
+        props: ["user"],
+        template: "<div><span>{{user.firstName}}<slot>{{user.lastName}}</slot></span></div>"
+    });
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            user: {
+                firstName: "firstName121",
+                lastName: "lastName2",
+            }
+        }
+
+    });
+</script>
+</body>
+</html>

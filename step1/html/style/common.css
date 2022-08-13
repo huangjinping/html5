@@ -1,0 +1,88 @@
+@charset "utf-8";
+/*头部-广告和右侧导航*/
+.gWidth {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header_nav {
+
+}
+
+.header_nav li {
+    float: left;
+}
+
+.header_nav span {
+    color: #020202;
+    width: 1px;
+    height: 8px;
+    overflow: hidden;
+    background-color: #000;
+    float: left;
+    margin: 10px 10px;
+
+}
+
+.nav_list li {
+    float: left;
+}
+
+.nav_sel li {
+    float: left;
+}
+
+.red {
+    color: red;
+}
+
+.header_menu {
+    position: relative;
+    margin-top: 20px;
+}
+
+.nav_sel li {
+
+    float: left;
+}
+
+.nav_menu {
+
+}
+
+
+.sj1 sj2{
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+}
+
+.sj1 {
+    border-width: 0 6px 7px;
+    border-style: dashed dashed solid;
+    border-color: transparent transparent #F00;
+    right: 10px;
+    bottom: 100%;
+}
+
+.sj2 {
+    border-width: 0 5px 6px;
+    border-style: dashed dashed solid;
+    border-color: transparent transparent #fff;
+    right: 11px;
+    bottom: 100%;
+}
+.nav_menu dl {
+    border: red solid 1px;
+    position: relative;
+    right: 30px;
+}
+.nav_box{
+    display: inherit;
+}
+
+
+
+

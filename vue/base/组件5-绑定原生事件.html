@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--<base-input v-bind:label="阿萨德" v-on:focus.native="onFocus()"></base-input>-->
+    <!--<base-input v-bind:label="阿萨德1" v-on:focus.native="onFocus()"></base-input>-->
+
+
+    <base-input v-on:input.native="onFocus"></base-input>
+</div>
+<script>
+    Vue.component('base-input', {
+        model: {
+            event: 'input'
+        },
+        inheritAttrs: false,
+        props: ['label', 'value'],
+        computed: {
+            inputListeners: function () {
+                var vm = this
+                // `Object.assign` 将所有的对象合并为一个新对象
+                return Object.assign({},
+                    // 我们从父级添加所有的监听器
+                    this.$listeners,
+                    // 然后我们添加自定义监听器，
+                    // 或覆写一些监听器的行为
+                    {
+                        // 这里确保组件配合 `v-model` 的工作
+                        input: function (event) {
+                            console.log("111111");
+                            vm.$emit('input', event.target.value)
+                        }
+                    }
+                )
+            }
+        },
+        template: '<label>{{label}}<input v-bind="$attrs" v-bind:value="value" v-on="inputListeners"></label>'
+    })
+    var vue = new Vue({
+        el: "#app",
+        methods: {
+            onFocus: function (e) {
+                console.log("===============111======+++++00>>11>>22>>33>44>55>");
+                console.log(e);
+            }
+        }
+    });
+</script>
+</body>
+</html>

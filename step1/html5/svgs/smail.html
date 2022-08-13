@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    /*#btn--yp {*/
+    /*    box-sizing: content-box;*/
+    /*    position: fixed;*/
+    /*    z-index: 9;*/
+    /*    bottom: 1em;*/
+    /*    right: 1em;*/
+    /*    border: solid 1em transparent;*/
+    /*    width: 4.625em;*/
+    /*    height: 3.25em;*/
+    /*    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/2017/icon-yp.svg) 50%/cover content-box;*/
+    /*    font: 16px/ 1.25 trebuchet ms, sans-serif;*/
+    /*    text-indent: 200vw;*/
+    /*    text-shadow: none;*/
+    /*    filter: grayscale(1) drop-shadow(0 0 1px #e8e0e0);*/
+    /*    transition: .5s;*/
+    /*    white-space: nowrap;*/
+    /*}*/
+
+    /*#btn--yp:before {*/
+    /*    box-sizing: inherit;*/
+    /*    position: absolute;*/
+    /*    left: 0;*/
+    /*    bottom: 100%;*/
+    /*    margin: 1em -.5em;*/
+    /*    padding: .5em;*/
+    /*    width: 100%;*/
+    /*    border-radius: 5px;*/
+    /*    background: #e8e0e0;*/
+    /*    color: #000;*/
+    /*    text-align: center;*/
+    /*    text-decoration: none;*/
+    /*    text-indent: 0vw;*/
+    /*    white-space: normal;*/
+    /*    animation: float 1s ease-in-out infinite alternate;*/
+    /*    content: attr(data-txt);*/
+    /*}*/
+
+    /*#btn--yp:hover, #btn--yp:focus {*/
+    /*    outline: none;*/
+    /*    filter: grayscale(0) drop-shadow(0 0 1px crimson);*/
+    /*}*/
+
+    @keyframes float {
+        to {
+            transform: translateY(0.75em);
+        }
+    }
+
+    * {
+        vector-effect: non-scaling-stroke;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        margin: 0;
+        max-height: 125vmin;
+        height: 100vh;
+    }
+
+    body:after {
+        font: 900 9vmin satisfy, cursive;
+        content: "Click my face!";
+    }
+
+    svg {
+        max-width: 20em;
+        width: 80vmin;
+    }
+
+    [x] {
+        fill: gold;
+        stroke: currentcolor;
+        cursor: pointer;
+    }
+
+    [d] {
+        fill: none;
+        stroke: currentcolor;
+        stroke-width: 5px;
+        stroke-linecap: round;
+    }
+</style>
+<body>
+
+<svg viewBox="-250 -250 500 500" style="background: #f40">
+    <rect x="-200" y="-200" width="400" height="400"></rect>
+    <ellipse id="eye" cx="70" cy="-50" rx="20" ry="30"></ellipse>
+    <use xlink:href="#eye" transform="scale(-1 1)"></use>
+
+    <path d="M-70 70
+                    C-42 28.000000000000004
+                      42 28.000000000000004
+                      70 70"></path>
+</svg>
+<script>
+    (function init() {
+        const NF = 32,
+            _FACE = document.querySelector('rect'),
+            _MOUTH = document.querySelector('path'),
+            RMAX = .5 * _FACE.getAttribute('width'),
+            DATA = _MOUTH.getAttribute('d').replace(/M|C/g, '').trim().split(/\s+/).map(c => +c),
+            CPY_INI = DATA[3],
+            CPY_RANGE = 2 * (DATA[1] - DATA[3]);
+        console.log(_MOUTH.getAttribute('d').replace(/M|C/g, '').trim().split(/\s+/));
+        console.log(_MOUTH.getAttribute('d').replace(/M|C/g, '').trim().split(/\s+/).map(c => +c));
+        let rID = null, f = 0, dir = -1;
+
+        function stopAni() {
+            cancelAnimationFrame(rID);
+            rID = null;
+        };
+
+        function timing(k) {
+            return 1 - Math.pow(1 - k, 2);
+        };
+
+
+        console.log(timing(0.2));
+        console.log(timing(0.8));
+
+
+        function update() {
+            f += dir;
+            let k = f / NF, cpy = CPY_INI + timing(k) * CPY_RANGE;
+
+            console.log("===timing(k)==000000     " + k + "    ======   " + timing(k));
+            _FACE.setAttribute('rx', (timing(k) * RMAX).toFixed(2));
+            console.log(DATA);
+            _MOUTH.setAttribute('d',
+                `M${DATA.slice(0, 2)}
+         C${DATA[2]} ${cpy}
+         ${DATA[4]} ${cpy}
+         ${DATA.slice(-2)}`);
+
+
+            if (!(f % NF)) {
+                stopAni();
+                return;
+            }
+
+            rID = requestAnimationFrame(update);
+        };
+
+        _FACE.addEventListener('click', e => {
+            if (rID) stopAni();
+            dir *= -1;
+            update();
+        }, false);
+    })();
+</script>
+</body>
+</html>

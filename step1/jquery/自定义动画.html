@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        div {
+        }
+
+        .footerAnimate2 {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .marksA {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            opacity: .5;
+        }
+
+        .bigBoxAA2 {
+            /* display: none; */
+            width: 100%;
+            /* height: 2rem; */
+            min-height: 3rem;
+            background: #eeeeee;
+            z-index: 999999;
+            position: absolute;
+            bottom: -4rem;
+            left: 0;
+            /*padding: 0 .3rem;*/
+            box-sizing: border-box;
+        }
+    </style>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("button:lt(1)").click(function () {
+                $("div").animate({
+                    "width": "100px",
+                    "height": "100px"
+
+                });
+                $("div").animate({
+                    "width": "1px",
+                    "height": "100px"
+                });
+                $("div").animate({
+                    "width": "100px",
+                    "height": "10px"
+                });
+                $("div").animate({
+                    "width": "10px",
+                    "height": "100px"
+                });
+                $("div").animate({
+                    "width": "100px",
+                    "height": "10px",
+
+                    "opacity": "0"
+                });
+                $("div").animate({
+                    "width": "40px",
+                    "height": "100px",
+                    "opacity": '1'
+                });
+
+            });
+            $("button:eq(1)").click(function () {
+                $("div").stop(true, false);
+            });
+            $("button:gt(1)").click(function () {
+
+            });
+
+        });
+
+
+    </script>
+</head>
+<body>
+
+<p id="openMenu">打开菜单</p>
+<button>开始</button>
+<button>停止</button>
+<button>清除</button>
+
+<div class="footerAnimate2">
+    <div class="marksA"></div>
+    <div class="bigBoxAA2">
+        <ul class="hunyinA hunyinZ">
+            <li>未婚</li>
+            <li>已婚</li>
+            <li>其他</li>
+        </ul>
+        <ul class="hunyinA cloceQu">
+            <li>取消</li>
+        </ul>
+    </div>
+</div>
+<div>
+
+</div>
+<script>
+
+    $(".cloceQu").click(function (e) {
+        $('.footerAnimate2 .bigBoxAA2').animate({bottom: -300}, 200, function (e) {
+            $('.footerAnimate2').hide();
+        });
+    });
+    
+    $("#openMenu").click(function (e) {
+        console.log("==function====>>>>");
+        $('.footerAnimate2').show();
+        $('.footerAnimate2 .bigBoxAA2').animate({bottom: 0}, 200);
+    });
+</script>
+
+</body>
+</html>

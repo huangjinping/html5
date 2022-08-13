@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style type="text/css">
+
+
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .nav {
+            background-color: white;
+        }
+
+        .title {
+            margin-left: 40px;
+            text-align: center;
+        }
+
+        .title ul {
+            list-style: none;
+            margin-top: 10px;
+            border: 1px solid grey;
+            overflow: hidden;
+            display: inline-block;
+
+        }
+
+        .title ul li {
+            font-weight: bold;
+            font-size: 14px;
+            padding: 3px 10px;
+            float: left;
+        }
+
+        .select {
+            background-color: dodgerblue;
+            color: white;
+        }
+
+        .unSelect {
+            background-color: darkgrey;
+            color: black;
+        }
+
+        .segment {
+            background-color: white;
+            text-align: center;
+        }
+
+        .segment ul {
+            list-style: none;
+
+        }
+
+        .segment ul li {
+            float: left;
+            width: 50%;
+        }
+
+        .segment_select {
+            color: skyblue;
+            border-bottom: 1px solid skyblue;
+        }
+
+        .segment_unselect {
+            color: grey;
+            border-bottom: 0px solid transparent;;
+        }
+
+        .item_head {
+            background-color: white
+        }
+
+    </style>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var left = document.getElementById("left");
+            var right = document.getElementById("right");
+            var left_segment = document.getElementById("left_segment");
+            var right_segment = document.getElementById("right_segment");
+
+            left.className = "select";
+            left.onclick = function () {
+                left.className = "select";
+                right.className = "unSelect"
+            }
+            right.onclick = function () {
+                right.className = "select";
+                left.className = "unSelect"
+            }
+            left_segment.className = "segment_select";
+
+
+            left_segment.onclick = function () {
+                this.className = "segment_select";
+                right_segment.className = "segment_unselect";
+            }
+            right_segment.onclick = function () {
+                this.className = "segment_select";
+                left_segment.className = "segment_unselect";
+            }
+        }
+
+    </script>
+
+</head>
+<body>
+
+<div class="nav">
+    <img src="images/user_head.jpg" style="float: right">
+    <div class="title">
+        <ul>
+            <li id="left">跟进订单</li>
+            <li id="right">客户预约</li>
+        </ul>
+    </div>
+</div>
+<div class="segment">
+    <ul>
+        <li id="left_segment">未跟进</li>
+        <li id="right_segment">已经跟进</li>
+    </ul>
+</div>
+
+<div class="item_head">
+    <p>尼格买提·亚里士多德·嘉措</p>
+    <p>未跟进</p>
+</div>
+</body>
+</html>

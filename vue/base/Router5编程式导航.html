@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>编程式的导航</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+<div id="app">
+    <p>{{userId}}</p>
+    <p>
+        <router-link to="/foo">go to foo</router-link>
+        <router-link to="/bar">go to bar</router-link>
+    </p>
+    <p v-on:click="onAdd">添加add{{$route.params.userId}}</p>
+    <p v-on:click="onBack">后退back</p>
+    <router-view></router-view>
+</div>
+<script>
+    var Foo = {template: "<div>Foo</div>"};
+    var Bar = {template: "<div>Bar</div>"};
+    var routes = [{
+        name: "myFoo",
+        path: "/foo",
+        component: Foo
+    }, {
+        name: "myBar",
+        path: "/bar",
+        component: Bar
+    }];
+    const router = new VueRouter({
+        routes
+    });
+    new Vue({
+        router,
+        data(){
+            return {
+                userId: "xiahoudun"
+            }
+        },
+        methods: {
+            onAdd: function () {
+                console.log("===添加add====");
+//                this.$router.push("/foo");
+//                this.$router.push({path:'/foo'});
+                this.$router.push({
+                    name: "myBar", params: {
+                        userId: '123'
+                    }
+                });
+//                如果提供了path par
+//                this.$router.push({path:'/foo',query:{plan:'private'}});
+
+                this.$router.push({path: '/foo', query: {plan: 'private'}})
+                console.log(this.$route.query);
+            },
+            onBack: function () {
+                console.log("===后退back====");
+//            router.go(1);//相当于history.forward
+                router.go(-1);//后退一步记录，等同于history.back
+
+            },
+        }
+    }).$mount("#app");
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

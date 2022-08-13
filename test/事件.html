@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+
+
+        body {
+            height: 2000px;
+            width: 100%;
+        }
+
+        #son {
+            width: 200px;
+            height: 200px;
+            background-color: yellow;
+        }
+
+        #father {
+            width: 400px;
+            height: 400px;
+            background-color: red;
+        }
+
+        #myAlert {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            right: 50px;
+            bottom: 50px;
+            background-color: #f0ad4e;
+        }
+    </style>
+</head>
+<body>
+<div id="father">
+    <div id="son">
+    </div>
+</div>
+
+<div id="myAlert"></div>
+</body>
+<script>
+    var father = document.getElementById("father");
+    var son = document.getElementById("son");
+    var myAlert = document.getElementById("myAlert");
+    function outSide() {
+        console.log("我是父元素事件")
+    }
+    function inSide() {
+        console.log("我是子元素事件")
+    }
+
+    //测试冒泡 执行结果为先出现我是子元素，再出现我是父元素，证明元素执行的顺序是由内到外
+    son.addEventListener("click", inSide, false);
+    father.addEventListener("click", outSide, false);
+    // 测试捕获 执行结果是先出现我是父元素，再出现我是子元素，证明元素的执行顺序是由外到内
+    //    son.addEventListener("click", inSide, true);
+    //    father.addEventListener("click", outSide, true);
+
+    function load() {
+        console.log('body')
+    }
+    function cli(e) {
+        console.log('div');
+        if (e && e.stopPropagation) {
+            e.stopPropagation();
+        }
+        else {
+            window.event.cancelBubble = true;
+            return false;
+        }
+    }
+
+    myAlert.addEventListener("click", function (e) {
+        alert("=====>>>>>");
+    }, true);
+
+
+</script>
+
+</html>
+
+
+<!--阻止事件冒泡：-->
+

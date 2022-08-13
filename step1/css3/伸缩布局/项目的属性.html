@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            height: 500px;
+            flex-flow: row nowrap;
+            display: flex;
+
+        }
+
+        li {
+            width: 100px;
+            height: 100px;
+            background-color: skyblue;
+            border: 10px solid #cccccc;
+            padding: 10px;
+        }
+
+        .item1 {
+            /*order: 3;*/
+            /*flex-shrink: 0;*/
+            flex-basis: 50px;
+        }
+
+        .item2 {
+            /*order: 3;*/
+            /*flex-shrink: 2;*/
+            flex-basis: 50px;
+
+        }
+
+        .item3 {
+            /*order: 1;*/
+            /*flex-shrink: 1;*/
+            flex-basis: auto;
+
+        }
+    </style>
+</head>
+<body>
+
+项目的属性
+以下6个属性设置在项目上。
+order  //css 上order越小越靠前
+flex-grow //放大比例  类似于android widget
+flex-shrink //缩小比例  越小越不压缩；数值越大越压缩
+flex-basis  https://www.jianshu.com/p/ea53c2daff9c
+flex
+align-sel
+<ul>
+    <li class="item1">背景1</li>
+    <li class="item2">背景2</li>
+    <li class="item3">背景3</li>
+    <!--    <li>背景4</li>-->
+    <!--    <li>背景5</li>-->
+    <!--    <li>背景6</li>-->
+    <!--    <li>背景7</li>-->
+    <!--    <li>背景8</li>-->
+    <!--    <li>背景9</li>-->
+    <!--    <li>背景10</li>-->
+
+
+</ul>
+</body>
+</html>

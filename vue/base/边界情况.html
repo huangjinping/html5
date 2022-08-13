@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>{{foo}}</div>
+
+    <base-input ref="usernameInput"></base-input>
+    <div>
+        <button v-on:click="parent_submit">父控件</button>
+    </div>
+</div>
+<script>
+    Vue.component("base-input", {
+        data: function () {
+            return {
+                count: 0,
+            }
+        },
+        template: '<button v-on:click="on_submit">提交{{count}}</button>',
+        methods: {
+            on_submit: function (e) {
+                console.log(e);
+                console.log(this.$root.foo);
+                this.$root.foo++;
+            }
+            , focus: function () {
+                console.log("child=====focus");
+            }
+        }
+    });
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            foo: 1
+        },
+        computed: {
+            bar: function () {
+
+            }
+        },
+        methods: {
+            parent_submit: function () {
+                console.log("parent_submit");
+                this.$refs.usernameInput.count++;
+                this.$refs.usernameInput.focus()
+            },
+            baz: function () {
+
+            }
+        }
+    })
+</script>
+</body>
+</html>

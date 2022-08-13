@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+1.IE  不支持微小的盒子  12px 一下的都显示偏大；解决方法是css text_size=0
+2.IE6  Hook问题，所有的ie6 在css 标签中加入_就是专属的ie6的标签；例如_backgroud_color在飞ie6都不可显示；但是在ie6上可以显示
+3.ie6   清除浮动用的overflow:hidden 解决方法是加上zoom=1;
+4.ie6  margin 塌陷现象；标准文档流中上下俩个标签都上边加margin_bottom=50px下边加margin_top=20px最后两者之间的间距是50px
+5.position flexed在ie 中不产生作用而且会有边框；需要加_padding_top去除边框
+</body>
+</html>

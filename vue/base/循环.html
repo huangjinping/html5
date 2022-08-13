@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li v-for="(item,index) in userList">{{item}}{{index}}</li>
+    </ul>
+</div>
+
+<div id="app2">
+    <ul>
+        <li v-for="(value,key) of order">
+            {{key}}{{value}}
+        </li>
+    </ul>
+</div>
+
+<div id="app3">
+    <ul>
+        <li v-for="item in dataList">{{item}}</li>
+    </ul>
+    <button v-on:click="add">提交</button>
+</div>
+
+<div id="app4">
+    <ul>
+        <li v-for="item in evenNumbers">{{item}}</li>
+    </ul>
+</div>
+</body>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            userList: [1, 2, 3, 3, 4, 5, 6]
+        }
+    });
+
+    var vm2 = new Vue({
+        el: "#app2",
+        data: {
+            order: {
+                id: 123123123123,
+                message: "请求成功",
+                code: 0
+            }
+        }
+    });
+
+
+    var vm3 = new Vue({
+        el: "#app3",
+        data: {
+            dataList: [1, 2, 3, 4, 56, 7, 12],
+        },
+        methods: {
+            add: function () {
+//                Vue.set(vm3.dataList,1,Math.random());
+//                vm.$set(vm3.dataList,1,Math.random());
+                //                this.dataList.push(Math.random());
+            }
+        }
+    });
+
+
+    var vm4 = new Vue({
+        el: "#app4",
+        data: {
+            list: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        },
+        computed:{
+            evenNumbers:function () {
+                return this.list.filter(function (number) {
+                    return number%2===0
+                });
+            }
+        }
+    });
+
+
+</script>
+</html>

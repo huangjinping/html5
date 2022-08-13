@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width;initial-scale=1;scalable=no"/>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".submit").on("click", function (e) {
+                message();
+            })
+        });
+        var message = function () {
+            var count;
+            var interval = setInterval(function () {
+                console.log(count++);
+                var width = $(".layout_submit").width();
+                $(".layout_submit").width(width - 1);
+                if (count > 1000) {
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+    </script>
+    <style type="text/css">
+        body, html {
+            height: 100%;
+        }
+
+        .container {
+            max-width: 600px;
+            min-width: 300px;
+            margin: 0px auto;
+            height: 100%;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: deepskyblue;
+        }
+
+        header h3 {
+            text-align: center;
+            position: relative;
+        }
+
+        header h3:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background-color: green;
+
+        }
+
+        .content > div {
+            background-color: white;
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        .content .product_info p:nth-of-type(1) {
+            color: grey;
+            border-bottom: 1px solid #cccccc;
+            line-height: 30px;
+        }
+
+        .content .upload_info img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .beizhu_info p {
+            background-color: white;
+            color: skyblue;
+        }
+
+        .layout_submit {
+            width: 60%;
+            margin: 20px auto;
+        }
+
+        .submit {
+            background-color: skyblue;
+            border: 1px solid skyblue;
+            border-radius: 10px;
+            width: 100%;
+            display: inline-block;
+            padding: 10px;
+            color: white;
+            margin: 0px auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h3>跟进订单</h3>
+    </header>
+    <div class="content">
+        <div class="follow_info">
+            <p>
+                我们在2017/5/18 17:44 审核了客户XXX的资料
+            </p>
+            <p>
+                结果：
+            </p>
+            <p>
+                合同照片需要重新拍照提供
+            </p>
+        </div>
+        <div class="product_info">
+            <p>商品信息</p>
+            <p>商品名称</p>
+            <p>贷款总额：12,888（2,888 X 10期）</p>
+        </div>
+        <div class="upload_info">
+            <p>按要求重新上传资料附件，务必清晰完整</p>
+            <img src="img/icon-updown-arrow.png" alt="">
+        </div>
+        <div class="beizhu_info">
+            <h4>备注</h4>
+            <p>您可以在这里填写补充说明其他信息</p>
+        </div>
+    </div>
+
+
+    <div class="layout_submit">
+        <button class="submit">我已经将资料重新提供</button>
+
+    </div>
+</div>
+</body>
+</html>

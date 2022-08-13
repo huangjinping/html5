@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>动态路由匹配</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>动态路由标记</h1>
+
+    <p v-on:click="pushRouter">主动触发</p>
+    <p>
+        <router-link to="/user/121231233">我的页面</router-link>
+    </p>
+    <router-view></router-view>
+</div>
+<script>
+    const User = {
+        template: '<div>User{{$route.params.id}}</div>'
+//        beforeRouteUpdate:function (to, from, next) {
+//            console.log("beforeRouteUpdate");
+//        }
+    }
+    const router = new VueRouter({
+        mode:"History",
+        routes: [
+            {
+                path: '/user/:id',
+                component: User
+            }
+        ]
+    });
+    var app = new Vue({
+        router
+        ,
+        methods: {
+            pushRouter () {
+                this.$router.push('/user/99188372');
+                this.$route.params.pathMatch // 'admin'
+
+            }
+        }
+    }).$mount("#app");
+
+
+</script>
+</body>
+</html>

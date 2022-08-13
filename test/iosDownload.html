@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title></title>
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            background-color: #f0f0f0;
+            overflow-x: hidden;
+            font-size: 0.3rem;
+        }
+
+
+        #content img {
+            display: block;
+        }
+
+        #content .img1 {
+            width: 102px;
+            margin: 0 auto;
+            margin-top: 25px;
+            object-fit: cover;
+        }
+
+        #content .img2 {
+            width: 180px;
+            height: 50px;
+            margin: 0 auto;
+            margin-top: 30px;
+        }
+
+        #content .img3 {
+            width: 185px;
+            height: 373px;
+            margin: 0 auto;
+            margin-top: 30px;
+        }
+
+        .bg {
+            display: none;
+            top: 0;
+            left: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: #7c7c7f;
+            z-index: 100;
+            opacity: 0.6;
+        }
+
+        .fixed {
+            display: none;
+            top: 0;
+            left: 3%;
+            position: relative;
+            position: fixed;
+            width: 94%;
+            height: 120px;
+            background-color: #fff;
+            z-index: 101;
+            -moz-border-radius: 0px 0px 15px 15px;
+            -webkit-border-radius: 0px 0px 15px 15px;
+            border-radius: 0px 0px 15px 15px;
+            text-indent: 30px;
+            font-family: "宋体";
+        }
+
+        .t1 {
+            font-size: 16px;
+            margin-top: 12px;
+            font-family: "微软雅黑";
+        }
+
+        .t2 {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .t3 {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .jian {
+            position: absolute;
+            top: 10%;
+            right: 5%;
+            width: 75px;
+            height: 62px;
+        }
+
+        .t3 .p1, .t3 .p2 {
+            display: none;
+            color: red;
+        }
+
+
+        .desc {
+            font-size: 0.3rem;
+            line-height: 0.5rem;
+            margin: 0.5rem;
+
+        }
+
+
+        .content-item {
+            text-align: center;
+        }
+
+
+        .submitBtn {
+            margin: 1rem auto;
+            color: white;
+            width: 4rem;
+            padding: 0.2rem;
+            display: block;
+            font-size: 0.2rem;
+            background-color: #4279D6;
+            border-radius: 0.5rem;
+
+        }
+
+        .explain {
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            margin: 0.2rem 0.4rem;
+
+        }
+
+        .explain p {
+            background-color: #4279D6;
+            height: 0.1rem;
+            position: absolute;
+            width: 100%;
+            top: 0.21rem;
+            left: 0;
+            z-index: -1;
+
+        }
+
+        .explain span {
+            display: inline-block;
+            background-color: white;
+            padding: 0 0.1rem;
+        }
+
+
+        .titleItem {
+            text-align: left;
+        }
+
+        .titleItem .title01 {
+            font-size: 1rem;
+
+        }
+
+        .titleItem .title02 {
+            font-size: 0.3rem;
+
+        }
+
+        .content-item .step {
+            width: 80%;
+            margin: 0 auto;
+            object-fit: cover;
+
+        }
+
+        @media (device-height: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+            /* 兼容iphone4/4s */
+            .fixed {
+                display: none;
+                top: 0;
+                left: 3%;
+                position: relative;
+                position: fixed;
+                width: 94%;
+                height: 120px;
+                background-color: #fff;
+                z-index: 101;
+                -moz-border-radius: 0px 0px 15px 15px;
+                -webkit-border-radius: 0px 0px 15px 15px;
+                border-radius: 0px 0px 15px 15px;
+                text-indent: 30px;
+                font-family: "宋体";
+            }
+
+            .jian {
+                position: absolute;
+                top: 10%;
+                right: 5%;
+                width: 75px;
+                height: 62px;
+            }
+
+            .t1 {
+                font-size: 14px;
+                margin-top: 12px;
+                font-family: "微软雅黑";
+            }
+
+            .t2 {
+                font-size: 12px;
+                margin-top: 5px;
+            }
+
+            .t3 {
+                font-size: 12px;
+                margin-top: 5px;
+            }
+
+        }
+
+        @media (device-height: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+            /* 兼容iphone5 */
+            .fixed {
+                display: none;
+                top: 0;
+                left: 3%;
+                position: relative;
+                position: fixed;
+                width: 94%;
+                height: 120px;
+                background-color: #fff;
+                z-index: 101;
+                -moz-border-radius: 0px 0px 15px 15px;
+                -webkit-border-radius: 0px 0px 15px 15px;
+                border-radius: 0px 0px 15px 15px;
+                text-indent: 30px;
+                font-family: "宋体";
+            }
+
+            .jian {
+                position: absolute;
+                top: 10%;
+                right: 5%;
+                width: 75px;
+                height: 62px;
+            }
+
+            .t1 {
+                font-size: 14px;
+                margin-top: 22px;
+                font-family: "微软雅黑";
+            }
+
+            .t2 {
+                font-size: 12px;
+                margin-top: 5px;
+            }
+
+            .t3 {
+                font-size: 12px;
+                margin-top: 5px;
+            }
+
+        }
+
+
+    </style>
+    <script>
+        (function () {
+            document.addEventListener('DOMContentLoaded', function () {
+                var html = document.documentElement;
+                var windowWidth = html.clientWidth;
+                html.style.fontSize = windowWidth / 7.5 + 'px';
+                // 等价于html.style.fontSize = windowWidth / 640 * 100 + 'px';
+            }, false);
+        })();
+    </script>
+</head>
+<body>
+<div class="bg"></div>
+<div class="fixed">
+    <p class="t1">哎呀！微信不让跳。</p>
+
+    <p class="t2">麻烦您抬抬眼，点击右上角,</p>
+
+    <p class="t3">选择<span class="p1">“在浏览器打开”</span><span class="p2">“safari打开”</span></p>
+
+    <p class="t3">该怎么下，还是怎么下</p>
+    <img class="jian" src="images/jiantou.png">
+</div>
+<div id="content">
+    <img class="img1" src="images/ic_log_ffj_yxj.png">
+    <!--    <a class="gogo" href="javascript:;"><img class="img2" src="images/Down.png"></a>-->
+    <button class="submitBtn">安装TestFlight</button>
+    <p class="desc">
+        使用“TestFlight”来安装“分付君” 是我们为您提供的一种更稳定的安装方式,避免iOS版本企业签名频繁掉签的问题。
+    </p>
+    <div class="explain">
+        <p></p>
+        <span>安装使用说明</span>
+    </div>
+    <!--    <img class="img3" src="images/shousho.png">-->
+
+
+    <div class="content-item">
+
+        <div class="titleItem">
+            <span class="title01">1.</span><span class="title02">在苹果应用商店中搜索“TestFlight”并下载</span>
+        </div>
+        <p class="desc">
+            TestFlight是苹果官方提供的用来测试软件的工具，请您放心使用。
+        </p>
+        <div><img src="./images/step-1-cn.png" alt="" class="step"></div>
+    </div>
+
+    <div class="content-item">
+
+        <div class="titleItem">
+            <span class="title01">2.</span><span class="title02">下载后，打开TestFlight软件。</span>
+        </div>
+        <div><img src="./images/step-2-cn.png" alt="" class="step"></div>
+    </div>
+
+    <div class="content-item">
+        <div class="titleItem">
+            <span class="title01">3.</span><span class="title02">在Safari浏览器中打开以下地址：</span>
+        </div>
+        <div><a id="updateUrl" href=""></a></div>
+        <p class="desc">点击顶部的“打开”或者第二步的“开始测试”跳转安装分付君app页面</p>
+        <div><img src="images/step-3-yxj.png" alt="" class="step"></div>
+    </div>
+    <div class="content-item">
+        <div class="titleItem">
+            <span class="title01">4.</span><span class="title02">跳转后，点击“接受”，选择“安装”即可。</span>
+        </div>
+        <div><img src="images/step-3-yxj.png" alt="" class="step"></div>
+    </div>
+    <div class="content-item">
+        <div class="titleItem">
+            <span class="title01">5.</span><span class="title02"> 您在安装过程中遇到任何问题请联系客服:</span>
+        </div>
+        <div><img src="images/step-3-yxj.png" alt="" class="step"></div>
+        <button class="submitBtn"> 安装TestFlight</button>
+    </div>
+</div>
+<script>
+    $(function () {
+        var https = "https://daiyutech.com/hd-merchant-web/";
+
+
+        var updateUrl = "";
+
+        getSystemConfig();
+        function getSystemConfig() {
+            var applyIddata = {};
+            applyIddata.systemConfigName = "c_testflight_url";
+
+            $.ajax({
+                type: "POST",
+                url: "" + https + "mobile/getSystemConfig",
+                dataType: "text",
+                data: applyIddata,
+                success: function (res) {
+                    var applyRes = eval('(' + res + ')');
+                    console.log(applyRes)
+                    if (applyRes.code == 0) {
+                        var result = applyRes.result;
+                        console.log(result);
+                        updateUrl = result.configValue;
+                        $("#updateUrl").attr("href",updateUrl);
+                        $("#updateUrl").html(updateUrl);
+
+                    }
+                },
+                error: function (msg) {
+                    console.log(msg)
+                }
+            })
+        }
+
+
+        $(".submitBtn").on("click", function () {
+            window.location.href = updateUrl;
+        });
+
+        $(".gogo").on("click", function () {
+            var browser = {
+                versions: function () {
+                    var u = navigator.userAgent, app = navigator.appVersion;
+                    return {         //移动终端浏览器版本信息
+                        trident: u.indexOf('Trident') > -1, //IE内核
+                        presto: u.indexOf('Presto') > -1, //opera内核
+                        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+                        iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+                        iPad: u.indexOf('iPad') > -1, //是否iPad
+                        webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+                    };
+                }(),
+                language: (navigator.browserLanguage || navigator.language).toLowerCase()
+            };
+            if (browser.versions.mobile) {//判断是否是移动设备打开。browser代码在下面
+                var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+                if (ua.match(/MicroMessenger/i) == "micromessenger") {//在微信中打开
+                    $(".bg").css("display", "block");
+                    $(".fixed").css("display", "block");
+                    if (browser.versions.ios) {
+                        $(".p2").css("display", "inline-block");
+                    }
+                    if (browser.versions.android) {
+                        $(".p1").css("display", "inline-block");
+                    }
+                }
+                if (browser.versions.ios) {
+                    window.location.href = "https://itunes.apple.com/cn/app/fen-fu-jun/id1108375587?mt=8";
+                }
+                if (browser.versions.android) {
+                    window.location.href = "https://www.daiyutech.com/appstore/app-hdrelease-fenfujun.apk";
+                }
+                if (browser.versions.iPhone) {
+                }
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

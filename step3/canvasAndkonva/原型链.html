@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>原型链</title>
+</head>
+<body>
+
+
+<script>
+    //    var  i=0;
+    //   var  timer= setInterval(function () {
+    //        console.log(i++);
+    //        if(i==5){
+    //            clearInterval(timer)
+    //        }
+    //    },100);
+
+    //    var timer = setTimeout(function () {
+    //        clearTimeout(timer);
+    //    }, 1000);
+    //    var kong = {};
+    //    kong.name = "文件处理";
+    //    kong.show = function () {
+    //        console.log("=======>>>>>>");
+    //        console.log(this.name);
+    //        console.log("=======>>>>>>");
+    //    };
+    //    console.log(kong.name);
+    //    console.log(kong.show());
+
+
+    //    function Cat(option) {
+    //        this.cat = option.age;
+    //        this.x = option.x;
+    //    }
+    //    Cat.prototype.show = function () {
+    //        console.log(this.age);
+    //    }
+    //
+    //    var cat = new Cat({
+    //        x: 19,
+    //        age: 18
+    //    });
+
+    //    var html = {
+    //        Name:'Object',
+    //        Success:function(){
+    //            this.Say = function(){
+    //                alert("Hello,world");
+    //            };
+    //            alert("Obj Success");
+    //        }
+    //    };
+
+    var html = new Object();
+    html.Name = 'Object';
+    html.Success = function () {
+        this.Say = function () {
+            alert("Hello,world");
+        };
+        alert("Obj Success");
+    }
+    var s = new html.Success();
+    s.Say();
+    html.Success.prototype.Show = function () {
+        alert("HaHa");
+    };
+    var s = new html.Success();
+    s.Show();
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>title</title>
+    <script src="node_modules/angular/angular.min.js"></script>
+</head>
+<body>
+<div ng-app="mApp" ng-controller="homeController">
+    <p><input type="text" ng-model="user.name"></p>
+    <p>{{user.name}}</p>
+    <button>提交数据</button>
+</div>
+<script type="text/javascript">
+    var module = angular.module("mApp", []);
+    module.controller("homeController", function ($scope) {
+        console.log("====11111===");
+        $scope.user={
+            name:"夏侯惇",
+        }
+        console.log("====22222===");
+    });
+</script>
+</body>
+</html>

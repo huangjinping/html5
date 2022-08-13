@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="format-detection" content="telephone=no, email=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <title>晋商退货</title>
+    <link rel="stylesheet" href=".css/commons.css"/>
+    <link rel="stylesheet" href=".css/resets.css"/>
+    <link rel="stylesheet" href=".css/font-awesome.min.css"/>
+    <link rel="stylesheet" href=".css/styles.css"/>
+
+    <script src="./js/https.js"></script>
+    <script src="./js/jquery-1.11.1.js"></script>
+    <script src="./js/utils.js"></script>
+    <script>
+
+        window.onpageshow = function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        }
+        (function () {
+            document.addEventListener('DOMContentLoaded', function () {
+                var html = document.documentElement;
+                var windowWidth = html.clientWidth;
+                html.style.fontSize = windowWidth / 7.5 + 'px';
+                // 等价于html.style.fontSize = windowWidth / 640 * 100 + 'px';
+            }, false);
+        })();
+    </script>
+    <style>
+        .loading {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            margin-left: -50px;
+            margin-top: -50px;
+            width: 100px;
+            height: 100px;
+            z-index: 100;
+            text-align: center;
+        }
+
+        .loading img {
+            vertical-align: middle;
+        }
+
+    </style>
+</head>
+<body>
+<div class="wrp">
+    <div class="loading" style="display: none"><img src="./img/loding.jpg" width="100px"
+                                                    height="100px;"></div>
+</div>
+<script type="text/javascript">
+
+    const  closeUrl="https://www.hdfex.com/bestSignUrl/91Sucess.html";
+    $(function () {
+
+        var https = httpss;
+        var url = decodeURI(location.search); //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1); //substr()方法返回从参数值开始到结束的字符串；
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+            }
+        }
+
+        loadOrderDetails();
+        $(".loading").show();
+
+        function loadOrderDetails() {
+            var applyIddata = {};
+            applyIddata.id = theRequest.userId;
+            applyIddata.applyId = theRequest.applyId;
+            applyIddata.token = theRequest.token;
+            $.ajax({
+                type: "POST",
+                url: "" + https + "mobile/order/detail",
+                dataType: "text",
+                data: applyIddata,
+                success: function (res) {
+                    $(".loading").hide();
+                    var reswanShanData = eval('(' + res + ')');
+                    console.log(reswanShanData)
+                    if (reswanShanData.code == 0) {
+                        $.MsgBox.Confirm({
+                            msg:"是否继续退货？",
+                            positiveTitle:"继续退货",
+                            negativeTitle:"不退了",
+                            callback:function () {
+                                $(".loading").show();
+                                loadApplySettle();
+                            },
+                            negativeCallback:function () {
+                                    //出去
+                                window.location.href=closeUrl;
+                            },
+                        });
+
+                    } else {
+                        showToast(reswanShanData.message);
+                    }
+
+                },
+                error: function (msg) {
+                    $(".loading").hide();
+                    showToast("请求失败请重试");
+                    console.log(msg)
+                }
+            })
+        }
+
+        function loadApplySettle() {
+            var applyIddata = {};
+            applyIddata.id = theRequest.userId;
+            applyIddata.orderId = theRequest.applyId;
+            $.ajax({
+                type: "POST",
+                url: "" + https + "mobile/order/applySettle",
+                dataType: "text",
+                data: applyIddata,
+                success: function (res) {
+                    $(".loading").hide();
+                    var reswanShanData = eval('(' + res + ')');
+                    console.log(reswanShanData)
+                    if (reswanShanData.code == 0) {
+                        var  result=reswanShanData.result;
+
+                        if(!isEmpty(result.refundUrl)){
+                            console.log(result.refundUrl);
+                            window.location.href=result.refundUrl;
+                        }else {
+                            showToast("请求失败请重试");
+                        }
+                    } else {
+                        showToast(reswanShanData.message);
+                    }
+                },
+                error: function (msg) {
+                    $(".loading").hide();
+                    showToast("请求失败请重试");
+                    console.log(msg);
+                }
+            })
+        }
+
+
+
+        /**
+         * 提示信息
+         * @param msg
+         */
+        function showToast(msg) {
+            if (isEmpty(msg)) {
+                return;
+            }
+            $.MsgBox.Alert({
+                msg: msg,
+                positiveTitle: "我知道了"
+            });
+        }
+    });
+</script>
+</body>
+</html>

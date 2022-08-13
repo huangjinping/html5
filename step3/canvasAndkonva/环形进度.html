@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>环形进度条</title>
+</head>
+<body>
+<canvas id="canEml">
+</canvas>
+<script>
+    (function () {
+        var canvas = document.querySelector("#canEml");
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px  solid  red";
+        var ctx = canvas.getContext("2d");
+
+
+        var current = 360;
+
+        var angle = 10;
+        var timer = setInterval(function () {
+//            ctx.clearRect(200,200,300,300);
+            canvas.width = 600;
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = "blue";
+            ctx.lineCap = "round";
+            ctx.arc(300, 300, 100, ditToAngile(-90), ditToAngile((-90) + angle));
+            ctx.stroke();
+            ctx.font = '20px "微软雅黑"';
+            var text = parseInt((angle / 360) * 100);
+            var t_with = ctx.measureText(text).width;
+            ctx.fillText(text + "%", 300 - (t_with) / 2, 300 + 10);
+            angle++;
+            if (angle > current || angle > 360) {
+                clearInterval(timer);
+            }
+        }, 10);
+
+
+    })();
+
+    function ditToAngile(angle) {
+        return angle * Math.PI / 180;
+    }
+</script>
+</body>
+</html>

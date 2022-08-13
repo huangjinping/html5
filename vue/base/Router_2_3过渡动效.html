@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过渡动效</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<style>
+    .fooContainer {
+        width: 200px;
+        height: 200px;
+        border: 1px solid royalblue;
+    }
+
+    .barContainer {
+        width: 200px;
+        height: 200px;
+        border: 4px solid saddlebrown;
+    }
+</style>
+<body>
+<div id="app">
+    <h1>动画过渡</h1>
+    <router-link to="/foo">foo</router-link>
+    <router-link to="/bar">bar</router-link>
+    <!--<transition name="slide">-->
+    <!--<router-view></router-view>-->
+    <!--</transition>-->
+    <router-view></router-view>
+
+</div>
+<script>
+    var Foo = {
+        template: `<transition name="fade">
+<div class='fooContainer'>F11oo</div>
+</transition>`
+    }
+    var Bar = {
+        template: "<div class='barContainer'>Bar</div>"
+    }
+    var routes = [
+        {
+            path: "/",
+            component: Foo
+        },
+        {
+            path: "/Foo",
+            name: "myFoo",
+            component: Foo
+        },
+        {
+            path: "/Bar",
+            name: "myBar",
+            component: Bar
+        }
+    ];
+    var router = new VueRouter({
+        routes
+    });
+
+    var app = new Vue({
+        el: "#app",
+        router,
+        data(){
+            return {}
+        }
+    });
+</script>
+</body>
+</html>

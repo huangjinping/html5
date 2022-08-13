@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="height:400px"></div>
+<!-- ECharts单文件引入 -->
+<script src="./source/echarts-all.js"></script>
+<script src="MyData.js"></script>
+<script type="text/javascript">
+    // 路径配置
+    var myChart = echarts.init(document.getElementById('main'));
+    var option = {
+        title : {
+            text: '学员职务统计',
+        },
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            data:["科员","副科级","正科级","副处级","处级"]
+        },
+
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                data : ["科员","副科级","正科级","副处级","处级"],
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'人数',
+                type:'bar',
+                data:[13,9,5,4,2],
+            },
+
+        ]
+    };
+    myChart.setOption(option);
+ </script>
+</body>

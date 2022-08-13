@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+        }
+
+        li:hover {
+            /**
+            总共是八个属性四个和过渡一样的
+             */
+            animation: fadein;
+            /*总时间*/
+            animation-duration: 1s;
+            /*延迟放松*/
+            /*animation-delay: 1s;*/
+            /*速度类型*/
+            animation-timing-function: linear;
+            /*反向流转动画  就是动画是不是回来的顺序*/
+            animation-direction:alternate;
+            /*是不是保持动画的结束*/
+            animation-fill-mode: forwards;
+            /**
+            循环测试
+             */
+            animation-iteration-count: infinite;
+            /**
+            动画的暂停paused running
+             */
+            /*animation-play-state: paused;*/
+
+        }
+
+        @keyframes fadein {
+            0% {
+                width: 100px;
+                height: 100px;
+            }
+
+            100% {
+                width: 500px;
+                height: 500px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<ul>
+    <li>标题1</li>
+    <li>标题2</li>
+    <li>标题3</li>
+    <li>标题4</li>
+    <li>标题5</li>
+    <li>标题6</li>
+</ul>
+</body>
+</html>

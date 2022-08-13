@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>粒子系统2</title>
+    <script src="../js/three.js"></script>
+    <script src="../js/stats.min.js"></script>
+    <style>
+        div#canvas-frame {
+            width: 100%;
+            height: 600px;
+            background-color: #EEEEEE;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+
+    <script>
+        var width;
+        var height;
+        var container;
+        var renderer;
+        var camera;
+        var scene;
+        var particleSystem;
+
+        function init() {
+            container = document.getElementById("canvas-frame");
+            width = container.clientWidth;
+            height = container.clientHeight;
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            renderer.setClearColor(0xEEEEEE, 1);
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+
+            scene = new THREE.Scene();
+            scene.fog = new THREE.Fog(0x050505, 2000, 3500);
+
+            camera = new THREE.PerspectiveCamera(45, width / height, 1, 2000);
+            camera.position.set(0, 0, 2000);
+
+            var light = new THREE.DirectionalLight(0xff0000, 1);
+            light.position.set(0, 0, 2000);
+            scene.add(light);
+
+            var particles = 1000000;
+            var positions = new Float32Array(particles * 3);
+            var colors = new Float32Array(particles * 3);
+            var n = 1000, n2 = n / 2; // particles spread in the cube
+            var color = new THREE.Color();
+
+            for (var i = 0; i < positions.length; i++) {
+                var x = Math.random() * n - n2;
+                var y = Math.random() * n - n2;
+                var z = Math.random() * n - n2;
+
+                positions[i] = x;
+                positions[i + 1] = y;
+                positions[i + 2] = z;
+
+                var vx = (x / n) + 0.5;
+                var vy = (y / n) + 0.5;
+                var vz = (z / n) + 0.5;
+                color.setRGB(vx, vy, vz);
+                colors[i] = color.r;
+                colors[i + 1] = color.g;
+                colors[i + 2] = color.b;
+            }
+
+//            BufferGeometry有一个连续的内存，这些内存有效的提交了选择的fps
+            var geometry = new THREE.BufferGeometry();
+            geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
+            geometry.addAttribute("color", new THREE.BufferAttribute(colors, 3));
+            geometry.computeBoundingSphere();
+            //文件处理
+            var material = new THREE.PointsMaterial({
+                size: 100,
+                vertexColors: THREE.VertexColors
+            });
+            particleSystem = new THREE.Points(geometry, material);
+            scene.add(particleSystem);
+
+        }
+        function threeStart() {
+            console.log("======>>threeStart>>>>>>>>>");
+            init();
+            renderer.render(scene, camera);
+        }
+    </script>
+</head>
+<body onload="threeStart()">
+<div id="canvas-frame"></div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        .water-waves {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            opacity: 0.5;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 50%;
+            background-color: #bce8f1;
+            animation: water-waves linear infinite;
+        }
+
+        .water-wave1 {
+            position: absolute;
+            top: 45%;
+            left: -35%;
+            background: #0B85CC;
+            opacity: 0.5;
+            width: 200%;
+            height: 200%;
+            border-radius: 35%;
+            animation: inherit;
+            animation-duration: 7s;
+        }
+
+        .water-wave2 {
+            position: absolute;
+            top: 45%;
+            left: -35%;
+            background: #0B85CC;
+            opacity: 0.5;
+            width: 200%;
+            height: 200%;
+            border-radius: 25%;
+            animation: inherit;
+            animation-duration: 6s;
+        }
+
+
+        .water-wave3 {
+            position: absolute;
+            top: 45%;
+            left: -35%;
+            background: #0B85CC;
+            opacity: 0.5;
+            width: 200%;
+            height: 200%;
+            border-radius: 30%;
+            animation: inherit;
+            animation-duration: 4s;
+        }
+
+        @keyframes water-waves {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="water-waves">
+    <div class="water-wave1"></div>
+    <div class="water-wave2"></div>
+    <div class="water-wave3"></div>
+</div>
+
+</body>
+</html>

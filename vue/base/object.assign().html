@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    const target = {a: 1, b: 2, c: 1};
+    const source = {b: 4, c: 5, d: 123};
+    //  var  returnedTarget= Object.assign(target,source);
+    const returnedTarget = Object.assign(target, source);
+    console.log(returnedTarget);
+    console.log(returnedTarget == target);
+    console.log(target);
+
+
+    const target1 = {a: 12, d: 90};
+    const source1 = {b: 45, f: 33};
+    const returnedTarget1=Object.assign({},target1,source1);
+    console.log(returnedTarget1);
+    console.log(target1);
+    console.log(returnedTarget1==target1);
+
+
+</script>
+</body>
+</html>

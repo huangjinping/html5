@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canEml">
+    浏览器不支持
+</canvas>
+<script>
+    (function () {
+        var canvas = document.getElementById("canEml");
+        var ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 600;
+        canvas.style.border = "1px solid  red";
+        var img = new Image();
+        img.src = './ic_operator.png';
+        img.onload = function () {
+            console.log(img.width + "=======>>>>>>" + img.height);
+            ctx.drawImage(img, 300, 300, img.width, img.height);
+            ctx.drawImage(img, 30, 0, 46, 48, 100, 100, 46, 48);
+            ctx.stroke();
+        }
+    })();
+</script>
+</body>
+</html>

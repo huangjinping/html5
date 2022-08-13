@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    input[type="radio"] {
+        height: 22px;
+        width: 22px;
+        margin-right: 10px;
+        display: none;
+    }
+    input[type="radio"] + label::before {
+        content: "\a0"; /*不换行空格*/
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        border-radius: 50%;
+        border: 1px solid #003c66;
+        background: #fff;
+        line-height: 22px;
+        box-sizing: border-box;
+    }
+    input[type="radio"]:checked + label::before {
+        background-color: #003c66;
+        background-clip: content-box;
+        padding: 3px;
+    }
+</style>
+<body>
+<form>
+    <p>
+        <input type="radio" name="gender" id="male" value="male">
+        <label for="male">男士</label>
+    </p>
+    <p>
+        <input type="radio" name="gender" id="female" value="female">
+        <label for="female">女士</label>
+    </p>
+</form>
+
+</body>
+</html>

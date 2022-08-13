@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            /**
+             * 这样不加任何的处理就会出现事件冒泡问题
+             */
+//            $("div").on("click", "a", function () {
+//                alert("a");
+//            }).on("click", function () {
+//                alert("div")
+//            });
+
+//            消除默认点击事件
+//            $("div").on("click", "a", function (e) {
+//                e.preventDefault();
+//                alert("a");
+//            }).on("click", function () {
+//                alert("div");
+//            });
+//              消除事件冒泡
+            $("div").on("click", "a", function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+                alert("a");
+
+            }).on("click", function () {
+                alert("div");
+            });
+        });
+    </script>
+</head>
+<body>
+<div><a href="http://www.baidu.com">分付君</a></div>
+</body>
+</html>

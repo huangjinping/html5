@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        div {
+            width: 1px;
+            height: 100px;
+            margin: 0px auto;
+            background-color: transparent;
+            position: relative;
+        }
+
+        div::before {
+            content: " ";
+            background-color: yellow;
+            border-radius: 8px;
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            left: -8px;
+        }
+
+        div::after {
+            content: " ";
+            background-color: red;
+            border-radius: 8px;
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            left: -8px;
+            top: 100%;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            float: left;
+            width: 100px;
+            height: 100px;
+            background-color: skyblue;
+        }
+
+        li:nth-child(1) {
+
+        }
+
+        li:nth-child(2) {
+            width: 1px;
+            background-color: transparent;
+            position: relative;
+        }
+
+        .center::after {
+            content: ' ';
+            width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            background-color: whitesmoke;
+            position: absolute;
+            left: -8px;
+            top: -8px;
+        }
+
+        .center::before {
+            content: ' ';
+            width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            background-color: whitesmoke;
+            position: absolute;
+            left: -8px;
+            bottom: -8px;
+        }
+
+        li:nth-child(3) {
+
+        }
+    </style>
+</head>
+<body>
+<div>
+</div>
+
+<ul>
+    <li></li>
+    <li class="center"></li>
+    <li></li>
+</ul>
+</body>
+</html>

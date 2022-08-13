@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提交数据</title>
+    <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("Button").on("click", function () {
+                $.ajax(
+                    {
+                        url: "http://182.92.6.16:8081/hd-merchant-biz-app/app/discovery/commoditySubscribe",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: "6209289855979393025",
+                            roomId: "6312899627619189761",
+                            subscribeDate: new Date(),
+                            remark: "dadsasdasd",
+                            contactName: "asdasdasd",
+                            contactPhone: "13611290917"
+                        },
+                        success: function (result) {
+                            alert(result + "success");
+                        },
+                        error: function (xhr, status, p3, p4) {
+                            var err = "Error " + " ===" + status + " " + p3;
+                            document.write(err);
+
+                            if (xhr.responseText && xhr.responseText[0] == "{")
+                                err = JSON.parse(xhr.responseText).message;
+//                            alert(err);
+                        }
+                    });
+
+
+
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+
+<Button>获取数据</Button>
+
+
+</body>
+</html>

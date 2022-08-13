@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        div {
+            height: 100px;
+        }
+        .container {
+            background-color: skyblue;
+            /***
+            1.问题的原因是在页面换行的时候会产生空白字符串；
+            2.只有在父亲级别的设置属性的时候font-size=0px解决问题
+            3.大多会出现在display:inline-block 里面出现
+            几把问题。
+             */
+            font-size: 0px;
+        }
+
+        .left {
+            display: inline-block;
+            width: 20%;
+            background-color: burlywood;
+        }
+
+        .right {
+            display: inline-block;
+            width: 80%;
+            background-color: slateblue;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="left"></div>
+    <div class="right"></div>
+</div>
+</body>
+</html>

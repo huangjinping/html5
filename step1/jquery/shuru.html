@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>换种方式展现验证码输入框</title>
+        <script src="../jquery-1.11.1/jquery-1.11.1.min.js"></script>
+        <style>
+            .container {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin: -80px 0 0 -135px;
+                padding: 10px;
+                text-align: center;
+            }
+            .container p{
+                font-family: "微软雅黑";
+                color: #888;
+            }
+            .val-box {
+                display: inline-block;
+                height: 40px;
+                width: 216px;
+                text-align: center;
+                position: relative;
+                background: #FFFFFF;
+            }
+
+            .val-box input[type=text] {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 34px;
+                width: 212px;
+                opacity: 0.9;
+                z-index: -999;
+                outline: none;
+            }
+
+            .val-box div {
+                height: 34px;
+                width: 28px;
+                border-bottom: : 1px solid #DDD;
+                border-radius: 0px;
+                float: left;
+                margin: 2px 3px;
+                z-index: 5;
+                font-size: 1.5em;
+                font-family: arial;
+                font-weight: 530;
+                text-align: center;
+                line-height: 1.5em;
+                cursor: text;
+            }
+            .val-box .available {
+                border-color: #0081db;
+            }
+        </style>
+        <script type="text/javascript">
+            $(() => {
+                var valCodeInput = $('#val-code-input');
+                var valCodeItems = $("div[name='val-item']");
+                var regex = /^[\d]+$/;
+                var valCodeLength = 0;
+                $('#val-box').on('click',()=>{
+                    valCodeInput.focus();
+                })
+                valCodeInput.on('input propertychange change', (e) => {
+                    valCodeLength = valCodeInput.val().length;
+                    if(valCodeInput.val() && regex.test(valCodeInput.val())) {
+                        $(valCodeItems[valCodeLength - 1]).addClass('available');
+                        $(valCodeItems[valCodeLength - 1]).text(valCodeInput.val().substring(valCodeLength - 1, valCodeLength));
+                    }
+                })
+                $(this).on('keyup', (e) => {
+                    if(e.keyCode === 8) {
+                        $(valCodeItems[valCodeLength]).removeClass('available');
+                        $(valCodeItems[valCodeLength]).text("");
+                    }
+                });
+            })
+            function checkForNum(obj) {
+                obj.value = obj.value.replace(/[\D]/g, '');
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container" id="test">
+            <h2>给验证码输入框换个风格</h2>
+            <div class="val-box" id="val-box">
+                <input id="val-code-input" type="text" maxlength="6" onkeyup="checkForNum(this)"  onselectstart="return false;" onblur="checkForNum(this)" />
+                <div name="val-item"></div>
+                <div name="val-item"></div>
+                <div name="val-item"></div>
+                <div name="val-item"></div>
+                <div name="val-item"></div>
+                <div name="val-item"></div>
+            </div>
+        </div>
+    </body>
+</html>

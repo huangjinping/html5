@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    @keyframes deform {
+        0% {
+            d: path("M88,66H48c-6.6,0-12-5.4-12-12V39c0-6.6,5.4-12,12-12h40c6.6,0,12,5.4,12,12v15 C100,60.6,94.6,66,88,66z");
+        }
+        100% {
+            d: path('M88,66H48c-6.6,0-12-5.4-12-12v0c0-14.85,12.15-27,27-27h10c14.85,0,27,12.15,27,27v0 C100,60.6,94.6,66,88,66z');
+        }
+    }
+
+    #animated {
+        animation: deform 1s infinite alternate-reverse;
+
+    }
+</style>
+<body>
+
+<svg height="200px" width="200px">
+    <path style="fill:#00FFFF;" id="animated"/>
+</svg>
+</body>
+</html>

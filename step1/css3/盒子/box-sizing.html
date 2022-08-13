@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style type="text/css">
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            width: 100px;
+            height: 100px;
+            background-color: skyblue;
+            border: 10px solid grey;
+            margin: 10px;
+        }
+
+        li:nth-child(1) {
+            box-sizing: border-box;
+        }
+
+        /**
+
+         */
+        li:nth-child(2) {
+            box-sizing: content-box;
+        }
+
+        li:nth-child(3) {
+            box-sizing: inherit;
+        }
+
+        .div1{
+            background-color: pink;
+            display:inline-block;
+            height: 100px;
+            width:-webkit-fill-available;
+            margin: 200px;
+        }
+
+        .main{
+            min-height: 100vh;
+            display: flex;
+            background-color: #d0cdd1;
+        }
+
+        .main div{
+            width: 100px;
+            height: 100px;
+            background-color: saddlebrown;
+            margin: auto;
+        }
+
+    </style>
+</head>
+<body>
+boxsizng 主要是为了定义width和height 到底包含的是什么内容
+border-box的时候说明宽高包含宽高
+content-box的时候说明宽高含有宽高
+<ul>
+    <li>标题1</li>
+    <li>标题2</li>
+    <li>标题3</li>
+</ul>
+
+<div class="div1">
+</div>
+<div class="main">
+    <div>
+    </div>
+
+</div>
+
+</body>
+</html>

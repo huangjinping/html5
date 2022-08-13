@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义之类</title>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-app="hApp" ng-controller="hController">
+<p>
+    {{name}}
+</p>
+<p>
+    <btn>itcast</btn>
+</p>
+<p>
+    <temp></temp>
+    <a href="grid.html"></a>
+</p>
+
+<script type="text/javascript">
+    /**
+     * 初始化
+     * */
+    var hApp = angular.module("hApp", []);
+    hApp.controller("hController", ["$scope", function ($scope) {
+        $scope.name = "文件页面";
+    }]);
+
+   /**
+    * 替换数据
+    * */
+    hApp.directive('btn', [function () {
+        return {
+            // 指令对象的transclude必须设置为true才可以在模版中使用ng-transclude指令
+            transclude: true,
+            replace: true, // 替换指令在HTML中绑定的元素
+            template: '<button  ng-transclude></button>'
+        };
+    }]);
+
+    /**
+     * 引入模板
+     */
+    hApp.directive('temp',[function () {
+        return{
+            templateUrl: 'grid.html',
+            replace: true,
+        }
+    }]);
+
+
+</script>
+</body>
+</html>

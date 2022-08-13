@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-demo="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <input v-focus type="text">
+</div>
+
+<div id="hook-arguments-example" v-demo:foo.a.b="message">123</div>
+
+<div id="demo1">
+    <div v-demo="{ color: 'white', text: 'hello!' }"></div>
+</div>
+<script>
+
+
+    new Vue({
+        el: '#demo1',
+
+        data: {},
+        directives: {//局部自定义指令
+            demo: function (el, binding) {
+                console.log(binding.value.color) // => "white"
+                console.log(binding.value.text)  // => "hello!"
+            }
+        }
+    })
+
+
+    //全局自定义指令
+    Vue.directive('demo', {
+        bind: function (el, binding, vnode) {
+            var s = JSON.stringify
+            el.innerHTML =
+                'name: ' + s(binding.name) + '<br>' +
+                'value: ' + s(binding.value) + '<br>' +
+                'expression: ' + s(binding.expression) + '<br>' +
+                'argument: ' + s(binding.arg) + '<br>' +
+                'modifiers: ' + s(binding.modifiers) + '<br>' +
+                'vnode keys: ' + Object.keys(vnode).join(', ')
+        }
+    })
+
+    new Vue({
+        el: '#hook-arguments-example',
+        data: {
+            message: 'hello!'
+        }
+    })
+    Vue.directive('focus', {
+        bind: function (e) {
+            console.log("bind");
+        },
+        update: function (e) {
+
+        }
+        ,
+        inserted: function (el) {
+            console.log(el);
+            el.focus();
+        }, unbind: function () {
+            console.log("unbind");
+        }
+    });
+    new Vue({
+        el: "#app"
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="format-detection" content="telephone=no, email=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <title>111款</title>
+    <style type="text/css">
+        #name{
+            width: 600px;
+        }
+
+
+         #container {
+                margin: 20px auto;
+            }
+             
+            #container span {
+                position: relative;
+            }
+             
+            #container .input_check {
+                position: absolute;
+                visibility: hidden;
+            }
+             
+            #container .input_check+label {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                border: 1px solid #fd8845;
+            }
+             
+            /*#container .input_check:checked+label:after {
+                content: "";
+                position: absolute;
+                left: 2px;
+                bottom: 12px;
+                width: 9px;
+                height: 4px;
+                border: 2px solid #fd8845;
+                border-top-color: transparent;
+                border-right-color: transparent;
+                -ms-transform: rotate(-60deg);
+                -moz-transform: rotate(-60deg);
+                -webkit-transform: rotate(-60deg);
+                transform: rotate(-45deg);
+            }*/
+            #container .input_check:checked+label:after {
+                content: "";
+                position: absolute;
+                left: 1px;
+                bottom: 5px;
+                width: 17px;
+                height: 16px;
+                background: blue;
+            }
+
+
+                
+    </style>
+</head>
+<body>
+    <!-- <div class="wrp">
+        <label>input</label>
+        <input type="text" name="" id="name">
+        <div class="xiang">
+           <div class="check"><input type="checkbox" name="item" id="11"><label for="11">11111</label></div>
+           <div class="check"><input type="checkbox" name="item" id="22"><label for="22">2222</label></div>
+           <div class="check"><input type="checkbox" name="item" id="33"><label for="33">3333</label></div>
+        </div>
+    </div> -->
+
+
+    <!-- <input type="file" name=""> -->
+
+
+        <div id="container">
+            <span><input type="checkbox"class="input_check" id="check3"><label for="check3"></label></span>
+            <span><input type="checkbox"class="input_check" id="check4"><label for="check4"></label></span>
+        </div>
+
+
+<script src="jQuery-2.1.4.min.js"></script>
+<script type="text/javascript">
+    // var ladels = $(".check label");
+    // var check = $(".check input");
+    // // console.log(check)
+    // var arr = [];
+    // check.click(function(){
+    //     if($(this).is(':checked') == true){
+    //         arr.push($(this).next().html())
+    //         console.log(arr.toString())
+    //     }else{
+    //         var a = $(this).next().html();
+    //         var index = $.inArray(a, arr);
+    //         if (index >= 0)
+    //         arr.splice(index, 1);
+    //         console.log(arr.toString())
+    //     }
+    // })
+
+
+
+</script>
+</body>
+</html>

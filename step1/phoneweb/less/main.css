@@ -1,0 +1,24 @@
+p {
+  background-color: #440;
+}
+.container,
+ul {
+  width: 100px;
+  height: 100px;
+  background-color: #1a1a1a;
+  background-color: #e6e6e6;
+}
+ul {
+  background-color: #440;
+  list-style: none;
+  overflow: hidden;
+}
+ul > li {
+  float: left;
+}
+ul > li a {
+  text-decoration: none;
+}
+ul > li a:hover {
+  background-color: blueviolet;
+}

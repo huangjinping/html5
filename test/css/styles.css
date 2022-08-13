@@ -1,0 +1,399 @@
+.wrp {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: #F0F0F0;
+  display: -webkit-flex;
+  -webkit-flex-direction: column; 
+}
+.content{
+  width: 100%;
+  -webkit-flex: 1;
+  overflow-y: scroll;
+  /*display: -webkit-flex; */
+}
+.content .topBanner{
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background:url(../img/bg_1.png) no-repeat;
+  background-size:100%;
+  padding: 0 .3rem;
+  box-sizing: border-box;
+}
+.tops{
+  padding: 0 10%;
+  box-sizing: border-box;
+}
+.tops img{
+  width: 100%;
+  height: 100%;
+  background-size: 100%;
+  margin-top: .5rem;
+}
+.contents{
+  margin-top: .4rem;
+}
+.container{
+  width: 100%;
+  background: #fff;
+  color: #000;
+  border-radius: 5px;
+}
+.centers{
+  display: flex;
+  padding-top: .2rem;
+}
+.left{
+  width: 50%;
+  text-align: right;
+  padding: 0 4%;
+  box-sizing: border-box;
+}
+.imgs{
+  width: 76%;
+}
+.right{
+  width: 50%;
+  padding: 0 4%;
+  box-sizing: border-box;
+}
+.titles{
+    font-size: .3rem;
+    margin-top: .2rem;
+}
+.titlesB{
+    font-size: .28rem;
+    margin-top: .1rem;
+    color: #a59999;
+}
+.titlesC{
+    font-size: .28rem;
+    margin-top: .1rem;
+    color: #a59999;
+}
+.icons{
+  text-align: center;
+  
+}
+.icons i{
+  font-size: .4rem;
+  color: #dcd9d9; 
+}
+.footers{
+  padding-bottom: .3rem;
+}
+.content .topBanner2{
+  width: 100%;
+  height: 20.2rem;
+  color: #fff;
+  background:url(../img/bg_2.png) no-repeat;
+  background-size:100%;
+  padding: 0 .35rem;
+  box-sizing: border-box;
+  position: relative;
+}
+.contents2{
+  /*margin-top: .4rem;*/
+}
+.container2{
+  width: 100%;
+  padding-top: 3.5rem;
+  box-sizing: border-box;
+  /*background: #fff;*/
+  color: #000;
+  /*border-radius: 5px;*/
+}
+.centers2{
+  display: flex;
+  padding-top: .3rem;
+}
+.left2{
+  width: 40%;
+  text-align: right;
+  padding: 0 0%;
+  box-sizing: border-box;
+}
+.imgs2{
+  width: 100%;
+}
+.right2{
+  width: 60%;
+  padding: 0 0 0 0;
+  box-sizing: border-box;
+}
+.titles2{
+    font-size: .3rem;
+    margin-top: .2rem;
+}
+.title2s2 img{
+  width: 75%;
+}
+.titles2C2{
+  padding-left: .2rem;
+  color: #a09898;
+  font-size: .28rem;
+}
+.left2A{
+  width: 40%;
+  text-align: right;
+  padding-top: .4rem;
+  box-sizing: border-box;
+}
+.imgs2{
+  width: 100%;
+}
+.right2A{
+  width: 60%;
+  padding: 0 0 0 0;
+  box-sizing: border-box;
+}
+.titles2A{
+    font-size: .3rem;
+    margin-top: .2rem;
+}
+.title2s2A img{
+  width: 75%;
+}
+.titles2C2A{
+  padding-left: .2rem;
+  color: #a09898;
+  font-size: .28rem;
+}
+.left2s{
+  width: 60%;
+  padding: 0 0 0 0;
+  box-sizing: border-box;
+}
+.imgs2s{
+  width: 100%;
+}
+.right2s{
+  width: 40%;
+  text-align: right;
+  /*padding: 0 0%;*/
+  padding-top: .4rem;
+  box-sizing: border-box;
+}
+.titles2s{
+    font-size: .3rem;
+    margin-top: .2rem;
+}
+.title2s2s{
+  text-align: right;
+}
+.title2s2s img{
+  width: 75%;
+}
+.titles2C2s{
+  padding-left: .2rem;
+  color: #a09898;
+  font-size: .28rem;
+}
+.content .topBanner3{
+  width: 100%;
+  height: 23.6rem;
+  color: #fff;
+  background:url(../img/bg_3.png) no-repeat;
+  background-size:100%;
+  padding: 0 .35rem;
+  box-sizing: border-box;
+}
+.tops3{
+  padding: 0 10%;
+  box-sizing: border-box;
+}
+.tops3 img{
+  width: 100%;
+  height: 100%;
+  background-size: 100%;
+  margin-top: .5rem;
+}
+.contents3{
+  margin-top: .4rem;
+}
+.container3{
+  width: 100%;
+  background: #fff;
+  color: #000;
+  border-radius: 5px;
+  padding: .2rem .3rem;
+  box-sizing: border-box;
+}
+.titlesTit{
+  font-size: .26rem;
+  color: #989696;
+  line-height: .5rem;
+}
+.titlesTits{
+  font-size: .26rem;
+  color: #989696;
+  line-height: .5rem;
+  margin-bottom: .4rem;
+}
+.tits{
+  padding-top: 0;
+}
+.hezuoBtn{
+  text-align: center;
+  margin-top: .1rem;
+}
+.hezuoBtn button{
+    background: #eea81a;
+    color: #fff;
+    cursor: pointer;
+    padding: .2rem 1rem;
+    border: none;
+    border-radius: 20px;
+}
+.anniu{
+  color: #eea81a;
+  font-size: .3rem;
+  position: absolute;
+  right: .5rem;
+  top: 2.7rem;
+}
+
+.qiyename{
+  margin-top: .1rem;
+}
+.titits{
+  font-size: .35rem;
+  color: #8a8282;
+}
+.titits em{
+  font-style: normal;
+  font-size: .28rem;
+  color: red;
+}
+.input1{
+  margin-top: .1rem;
+}
+.qiyemingcheng{
+  width: 100%;
+  height: .7rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.radiosA{
+  width: 100%;
+  margin-top: .1rem;
+  border: 1px solid #ccc;
+}
+.psA{
+  margin:0 .1rem;
+  padding:.1rem 0;
+  font-size: .3rem;
+}
+.psA b{
+  font-weight: normal;
+  font-size: .3rem;
+  color: #8a8282;
+  margin-left: .3rem;
+}
+.selectA{
+  width: 100%;
+  margin-top: .1rem;
+  padding: .1rem .2rem;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.selects{
+  margin:.1rem.2rem;
+  padding:.1rem 0;
+  box-sizing: border-box;
+  font-size: .3rem;
+}
+.selectA select{
+  width: 100%;
+  height: .7rem;
+  margin: .1rem 0;
+  border:1px solid #ccc;
+  padding-left: .2rem;
+  box-sizing: border-box;
+  color: #8a8282;
+  border-radius: 3px;
+}
+.textAeax{
+  margin-top: .1rem;
+}
+.textarea{
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    min-width: 100%;
+    min-height: 2.5rem;
+    font-size: .3rem;
+}
+.submit{
+  text-align: center;
+  font-size: .3rem;
+  margin-top: .3rem;
+}
+.subBtn{
+  background: #eea81a;
+  color: #fff;
+  font-size: .3rem;
+  cursor: pointer;
+  padding: .2rem 2rem;
+  border: none;
+  border-radius: 20px;
+}
+
+
+
+
+
+
+
+
+
+.mark {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: .5;
+  position: absolute;
+  z-index: 9999; 
+}
+.dialog {
+  width: 75%;
+  height: 3.5rem;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 99999; 
+}
+.pa-01{
+  text-align: center;
+  line-height: 1rem;
+  font-size: .3rem;
+  color: #8a8282;
+}
+.pa-02{
+  text-align: center;
+  font-size: .25rem;
+  color: #8a8282;
+}
+.btn2{
+  position: absolute;
+  bottom: .5rem;
+  left: 30%;
+  text-align: center;
+}
+.btn2 button{
+  width: 2rem;
+  height: .7rem;
+  font-size: .33rem;
+  border-radius: 0.1rem;
+  border:none;
+  background:skyblue;
+  color:#fff;
+}
