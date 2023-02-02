@@ -16,14 +16,24 @@
             padding: 5px;
         }
 
+
         .nav {
             text-align: center;
         }
 
         #container {
-            width: 300px;
-            height: 180px;
+            /*width: 300px;*/
+            width: 50%;
+            height: 20%;
+            position: fixed;
             background-color: darkblue;
+        }
+
+
+        .span1 {
+            line-height: 200px;
+            background-color: red;
+            height: 300px;
         }
 
     </style>
@@ -38,6 +48,10 @@
 </div>
 
 
+<div>
+    <span class="span1">dddd</span>
+</div>
+
 <div id="container"></div>
 
 
@@ -49,14 +63,52 @@
 
 <script>
 
+    function getUTCTime() {
+        let d1 = new Date();
+        let d2 = new Date(d1.getUTCFullYear(), d1.getUTCMonth(), d1.getUTCDate(), d1.getUTCHours(), d1.getUTCMinutes(), d1.getUTCSeconds());
+        return Date.parse(d2);
+    }
+
+    function getCurrentTimeUTC() {
+        //RETURN:
+        //      = number of milliseconds between current UTC time and midnight of January 1, 1970
+        var tmLoc = new Date();
+        //The offset is in minutes -- convert it to ms
+        return tmLoc.getTime() + tmLoc.getTimezoneOffset() * 60000;
+    }
+
     (function () {
+
+        var utc = new Date(new Date().toUTCString()).getTime();
+
+        console.log(utc);
+
+        let time = getUTCTime() / 1000;
+        console.log(time, "当前UTC时间戳");
+
+        console.log("===========================");
+        console.log(getUTCTime());
         console.log("=========>>>>>>>>>>>>>>");
         var map = new AMap.Map('container', {
             resizeEnable: true
         })
 
 
+        var list = [];
 
+        console.log(getCurrentTimeUTC());
+
+        const utcDate = new Date(getCurrentTimeUTC()).toUTCString();
+
+        // getTimezoneOffset()
+
+        list.push("111111111");
+        list.push("dddd1111111d");
+        list.push(utcDate);
+        console.log(list.join(""));
+
+        console.log("===========================");
+        console.log(getUTCTime());
 
 
         // AMap.plugin('AMap.CitySearch', function () {

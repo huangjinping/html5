@@ -26,6 +26,8 @@
             }
         }
 
+
+
         @media (min-width: 1200px) {
             /*这里的代码只有当(min-width: 1280px)满足时才会执行*/
             .container {
@@ -35,9 +37,23 @@
     </style>
 </head>
 <body>
+<div id="div_html"></div>
 <div class="container">
 
 </div>
-
 </body>
+<script>
+    (function () {
+        var s = "";
+
+        s += " 网页可见区域宽："+ document.body.clientWidth;
+
+        s += " 网页可见区域高："+ document.body.clientHeight;
+
+
+
+        document.getElementById("div_html").innerHTML = s;
+    })();
+
+</script>
 </html>

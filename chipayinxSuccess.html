@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>success</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+</head>
+<body>
+</body>
+<script>
+
+    function getParameter(name) {
+        var quary = window.location.search;
+        var len = quary.length;
+        var start = quary.indexOf(name);
+        if (start == -1) {
+            return "";
+        }
+        var end = quary.indexOf("&", start);
+        if (end == -1) {
+            var param = quary.substring(start);
+            return param.split("=")[1];
+        }
+        var param = quary.substring(start, end);
+        return param.split("=")[1];
+    }
+
+    (function () {
+        window.location.href = "./static/Mpsuccess.html?code=" + getParameter("code");
+
+    })();
+</script>
+</html>
