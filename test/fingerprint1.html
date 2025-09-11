@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./js/md5.js"></script>
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"></script>
+
+
+
+</head>
+
+<style>
+    #shiw{
+        font-size: 50px;
+    }
+</style>
+<body>
+
+
+
+
+<div id="shiw">dddd</div>
+
+<script>
+
+    (function (){
+
+        new Fingerprint2().get(function(result, components){
+
+            let elementById = document.getElementById("shiw");
+            elementById.innerHTML=hex_md5(result);
+            // resolve(hex_md5(result))
+
+        });
+
+
+        // const uuid = () => {
+        //     const canvas = document.createElement('canvas')
+        //     const ctx = canvas.getContext('2d')
+        //     const txt = 'test'
+        //     ctx.fillText(txt, 10, 10)
+        //     console.log(canvas.toDataURL())
+        //     return hex_md5(canvas.toDataURL()) // md5是一种加密算法
+        // }
+        // let elementById = document.getElementById("shiw");
+        // elementById.innerHTML=uuid();
+        // alert(uuid());
+    })();
+</script>
+</body>
+</html>

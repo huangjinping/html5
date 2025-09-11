@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Div内容转图片</title>
+  <style>
+    #myDiv {
+      width: 200px;
+      height: 200px;
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+<div id="myDiv">
+  <h1>Hello, World!</h1>
+</div>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+  // 获取div元素
+  var div = document.getElementById('myDiv');
+  console.log(div,"dom");
+  // 使用html2canvas将div转换为图片
+  html2canvas(div).then(function(canvas) {
+    // 创建一个新的图片元素设置地址
+    var image = new Image();
+    image.src = canvas.toDataURL();
+
+    // 显示图片在页面上
+    document.body.appendChild(image);
+  });
+</script>
+</body>
+</html>

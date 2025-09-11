@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+
+    <title>Title</title>
+
+
+    <style>
+        .facebook {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+        }
+
+        .whatapp {
+            width: 200px;
+            height: 200px;
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="facebook" id="facebook">
+    facebook
+</div>
+<div class="whatapp" id="whatapp">
+    whatapp
+</div>
+</body>
+<script>
+    (function () {
+        var facebook = document.getElementById("facebook");
+        facebook.addEventListener("click", function () {
+            console.log("==facebook===");
+            window.android.openApp(1);
+
+
+        });
+        var whatapp = document.getElementById("whatapp");
+        whatapp.addEventListener("click", function () {
+            console.log("==whatapp===");
+            window.android.openApp(2);
+        });
+    })();
+</script>
+</html>

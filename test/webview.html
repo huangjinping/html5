@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WebView Settings Detector</title>
+    <style>
+        body {
+            width: 960px;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .success { color: green; }
+        .fail { color: red; }
+        .warning { color: orange; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h2>WebView 配置检测</h2>
+<div id="results">
+    <div class="result fail">✗ JavaScript: 不支持 (页面不能正常运行JS)</div>
+</div>
+
+
+<button onclick="openCustomProtocol()">按钮1: 打开自定义协议</button>
+<button onclick="openGooglePlay()">按钮2: 打开Google Play X详情</button>
+
+<script>
+    function checkWebViewSettings() {
+        const resultsDiv = document.getElementById('results');
+        let results = '';
+
+        // 检查 Local Storage
+        try {
+            localStorage.setItem('test', 'test');
+            localStorage.removeItem('test');
+            results += '<div class="result success">✓ Local Storage: 支持</div>';
+        } catch (e) {
+            results += '<div class="result fail">✗ Local Storage: 不支持</div>';
+        }
+
+        // 检查 JavaScript
+        results += '<div class="result success">✓ JavaScript: 支持 (页面正在运行JS)</div>';
+
+        // // 检查视口设置
+        const viewportWidth = window.innerWidth;
+        if (viewportWidth > 0) {
+            results += `<div class="result success">✓ Wide Viewport: 支持 (宽度: ${viewportWidth}px)</div>`;
+        } else {
+            results += '<div class="result fail">✗ Wide Viewport: 不支持</div>';
+        }
+
+        results+=detectWideViewPort(results);
+        // results+=testWindowOpen(results);
+        // 检查多窗口支持
+        try {
+            const newWindow = window.open("about:blank", "_blank");
+
+            if (newWindow) {
+                // alert("WebView 支持打开新窗口，可能是 setJavaScriptCanOpenWindowsAutomatically 已启用")
+
+                results += '<div class="result success">✓ 多窗口支持: 可用</div>';
+                newWindow.close(); // 关闭测试窗口
+            }else{
+                results += '<div class="result fail">✗ 多窗口支持: 不可用</div>';
+
+            }
+        } catch (e) {
+            results += '<div class="result fail">✗ 多窗口支持: 不可用</div>';
+        }
+
+        // checkWindowOpenSupport();
+
+        // 检查缩放支持
+        const checkZoom = () => {
+            const canZoom = window.matchMedia('(max-width: 1000px)').matches;
+            if (canZoom) {
+                results += '<div class="result success">✓ 缩放支持: 检测到响应式行为</div>';
+            } else {
+                results += '<div class="result warning">? 缩放支持: 无法直接检测</div>';
+            }
+        };
+
+        // 添加结果
+        resultsDiv.innerHTML = results;
+        checkZoom();
+
+        // 添加测试元素
+        const testDiv = document.createElement('div');
+        testDiv.id = 'testDiv';
+        testDiv.style.width = '100%';
+        document.body.appendChild(testDiv);
+    }
+
+    function checkWindowOpenSupport() {
+        try {
+            const newWindow = window.open("about:blank", "_blank");
+            if (newWindow) {
+                alert("WebView 支持打开新窗口，可能是 setJavaScriptCanOpenWindowsAutomatically 已启用")
+                console.log("WebView 支持打开新窗口，可能是 setJavaScriptCanOpenWindowsAutomatically 已启用");
+                newWindow.close(); // 关闭测试窗口
+                return true;
+            } else {
+                alert("无法打开新窗口，可能是 setJavaScriptCanOpenWindowsAutomatically 未启用")
+                console.log("无法打开新窗口，可能是 setJavaScriptCanOpenWindowsAutomatically 未启用");
+                return false;
+            }
+        } catch (e) {
+            alert("打开窗口失败，可能不支持多窗口: "+e)
+            console.log("打开窗口失败，可能不支持多窗口: ", e);
+            return false;
+        }
+    }
+
+
+
+    function detectWideViewPort(input) {
+        // 获取关键信息
+        const innerWidth = window.innerWidth; // 视口宽度
+        const screenWidth = window.screen.width; // 屏幕物理宽度
+        const devicePixelRatio = window.devicePixelRatio || 1; // 设备像素比
+        const clientWidth = document.documentElement.clientWidth; // 文档宽度
+
+        // 输出调试信息
+        console.log('视口宽度 (innerWidth):', innerWidth);
+        console.log('屏幕宽度 (screenWidth):', screenWidth);
+        console.log('设备像素比 (devicePixelRatio):', devicePixelRatio);
+        console.log('文档宽度 (clientWidth):', clientWidth);
+
+        // 判断逻辑
+        let result = input;
+        if (innerWidth === screenWidth / devicePixelRatio || innerWidth === clientWidth) {
+            result = '可能启用了 setUseWideViewPort(true)，视口宽度匹配设备逻辑宽度';
+        } else if (innerWidth > screenWidth || innerWidth > clientWidth) {
+            result = '可能未启用 setUseWideViewPort(true)，视口宽度超出预期';
+        } else {
+            result = '无法确定，可能是其他配置影响';
+        }
+
+        // 显示结果
+        return result;
+    }
+
+
+    function testWindowOpen(input) {
+        let result = input;
+        let newWindow;
+
+        try {
+            // 尝试打开一个新窗口
+            newWindow = window.open('https://www.jianshu.com', 'testWindow', 'width=300,height=200');
+
+            if (newWindow && newWindow !== null) {
+                // 测试新窗口是否可用
+                newWindow.document.write('<h1>测试窗口</h1>');
+                result = 'window.open 成功，可能启用了 setJavaScriptCanOpenWindowsAutomatically(true)';
+
+                // 检查是否支持多窗口（间接推测）
+                if (newWindow.top === newWindow) {
+                    result += ' 且可能支持 setSupportMultipleWindows(true)（独立窗口）';
+                } else {
+                    result += ' 但可能未启用 setSupportMultipleWindows(true)（非独立窗口）';
+                }
+
+                // 关闭测试窗口
+                setTimeout(() => newWindow.close(), 2000); // 2秒后自动关闭
+            } else {
+                result = 'window.open 返回 null，可能未启用 setJavaScriptCanOpenWindowsAutomatically(true)';
+            }
+        } catch (error) {
+            console.error('窗口打开错误:', error);
+            result = '尝试打开窗口时出错，可能未启用相关设置: ' + error.message;
+        }
+
+        // 显示结果
+        return result;
+    }
+
+
+    // 打开自定义协议
+    function openCustomProtocol() {
+        try {
+            // 尝试打开自定义协议地址
+            // window.location.href = 'whatsapp://send?text=你好，这是测试消息';
+
+            window.open('https://www.jianshu.com', 'testWindow', 'width=100,height=100')
+            // setTimeout(() => {
+            //     alert('如果没有跳转，可能是自定义协议未注册或WebView不支持');
+            // }, 1000);
+        } catch (e) {
+            alert('打开自定义协议失败: ' + e.message);
+        }
+    }
+
+    // 打开Google Play X详情页
+    function openGooglePlay() {
+        try {
+            // X 的 Google Play 地址
+            const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.twitter.android';
+            window.open(playStoreUrl, '_blank') || (window.location.href = playStoreUrl);
+        } catch (e) {
+            alert('打开Google Play失败: ' + e.message);
+        }
+    }
+
+    // 页面加载时运行检测
+    window.onload = checkWebViewSettings;
+
+    // 测试窗口打开能力
+    function testWindowOpen() {
+        try {
+            const testWindow = window.open('', '', 'width=100,height=100');
+            if (testWindow) {
+                testWindow.close();
+                return true;
+            }
+            return false;
+        } catch (e) {
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

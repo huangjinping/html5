@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JsSIP Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jssip/3.10.0/jssip.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #status {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .controls {
+            margin: 10px 0;
+        }
+        input, button {
+            padding: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>JsSIP WebRTC Demo</h1>
+<div class="controls">
+    <input type="text" id="sipUri" placeholder="SIP URI (sip:user@domain)">
+    <button onclick="register()">Register</button>
+    <button onclick="call()">Call</button>
+    <button onclick="hangup()">Hang Up</button>
+</div>
+<div id="status">Not connected</div>
+<audio id="remoteAudio" autoplay></audio>
+
+<script>
+    let ua = null;
+    let session = null;
+    const remoteAudio = document.getElementById('remoteAudio');
+    const statusDiv = document.getElementById('status');
+
+    // SIP 配置
+    // const configuration = {
+    //     sockets: [new JsSIP.WebSocketInterface('wss://sip.example.com:8089/ws')],
+    //     uri: 'sip:your_username@sip.example.com',
+    //     password: 'your_password',
+    //     display_name: 'JsSIP Demo'
+    // };
+
+    // 3100和3200 2个坐席号
+    // 密码都是Aaaa!111
+    // 服务器:13.246.65.101
+    // 端口:65060
+    // const configuration = {
+    //     sockets: [new JsSIP.WebSocketInterface('wss://13.246.65.101:65060:8089/ws')],
+    //     uri: 'sip:3200@13.246.65.101:65060',
+    //     password: 'Aaaa!111',
+    //     display_name: '3200'
+    // };
+
+    function register() {
+        try {
+            ua = new JsSIP.UA(configuration);
+
+            ua.on('connected', () => {
+                statusDiv.innerText = 'Connected to SIP server';
+            });
+
+            ua.on('registered', () => {
+                statusDiv.innerText = 'Registered successfully';
+            });
+
+            ua.on('registrationFailed', (data) => {
+                statusDiv.innerText = 'Registration failed: ' + data.cause;
+            });
+
+            ua.on('newRTCSession', (data) => Ascending order: 1
+            session = data.session;
+            session.connection.onaddstream = (e) => {
+                remoteAudio.srcObject = e.streams[0];
+            };
+            session.on('accepted', () => {
+                statusDiv.innerText = 'Call accepted';
+            });
+            session.on('failed', (data) => {
+                statusDiv.innerText = 'Call failed: ' + data.cause;
+            });
+            session.on('ended', () => {
+                statusDiv.innerText = 'Call ended';
+                session = null;
+            });
+        });
+
+        ua.start();
+    } catch (error) {
+        statusDiv.innerText = 'Error: ' + error.message;
+    }
+    }
+
+    function call() {
+        const target = document.getElementById('sipUri').value;
+        if (!ua || !target) {
+            statusDiv.innerText = 'Please register first and enter a valid SIP URI';
+            return;
+        }
+
+        const options = {
+            mediaConstraints: { audio: true, video: false }
+        };
+
+        try {
+            session = ua.call(target, options);
+            statusDiv.innerText = 'Calling...';
+        } catch (error) {
+            statusDiv.innerText = 'Call error: ' + error.message;
+        }
+    }
+
+    function hangup() {
+        if (session) {
+            session.terminate();
+            statusDiv.innerText = 'Call terminated';
+        } else {
+            statusDiv.innerText = 'No active call';
+        }
+    }
+</script>
+</body>
+</html>

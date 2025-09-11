@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube API 播放</title>
+</head>
+<body>
+<h1>通过 API 播放 YouTube 视频</h1>
+<!-- 播放器容器 -->
+<div id="player"></div>
+
+<!-- 控制按钮 -->
+<button onclick="playVideo()">播放</button>
+<button onclick="pauseVideo()">暂停</button>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+  let player;
+
+  // 当 API 加载完成时调用
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '315',
+      width: '560',
+      videoId: '4Rzsu5AvK8c', // 视频 ID
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  // 播放器准备好后触发
+  function onPlayerReady(event) {
+    console.log("播放器已准备好");
+  }
+
+  // 播放状态变化时触发
+  function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+      console.log("视频正在播放");
+    }
+  }
+
+  // 自定义播放和暂停函数
+  function playVideo() {
+    player.playVideo();
+  }
+
+  function pauseVideo() {
+    player.pauseVideo();
+  }
+</script>
+</body>
+</html>

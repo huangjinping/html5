@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.11.1.js"></script>
+    <script src="marked.min.js"></script>
+    <title>Inx Documentation</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="hljs-github.css" type="text/css">
+</head>
+<body>
+
+<div id="container">
+    <header>
+        <a href="https://marked.js.org/">
+            <img alt="logo" src="./Marked Documentation_files/logo-black.svg" height="50px" width="50px">
+        </a>
+        <h1>Inx Documentation</h1>
+    </header>
+    <div style="display: flex">
+        <nav>
+            <ul class="inx_nav">
+                <li>
+                    <a href="https://marked.js.org/" class="">Getting Started</a>
+                    <ul>
+                        <li><a href="https://marked.js.org/#demo" class="">Demo</a></li>
+                        <li><a href="https://marked.js.org/#installation" class="">Installation</a></li>
+                        <li><a href="https://marked.js.org/#usage" class="selected">Usage</a></li>
+                        <li><a href="https://marked.js.org/#specifications" class="">Specs</a></li>
+                        <li><a href="https://marked.js.org/#tools" class="">Tools</a></li>
+                        <li><a href="https://marked.js.org/#security" class="">Security</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="navparent">Getting Started</a>
+                    <ul>
+                        <li><a href="https://marked.js.org/#demo" class="">Demo</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="content">
+            <p>Marked is</p>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+
+    (function () {
+        var config = {}
+
+        function createParentNav(parent, pid) {
+            var childText = "";
+            parent.child.forEach(function (v, cid) {
+                childText += createChildNav(v, pid, cid);
+            });
+            console.log(pid);
+            var result = " <li>\n" +
+                "                    <a data-pid='" + pid + "' class=\"navparent\">" + parent.title + "</a>\n" +
+                "                    <ul>\n" +
+                childText +
+                "                    </ul>\n" +
+                "                </li>";
+            return result;
+        }
+
+        function createChildNav(child, pid, cid) {
+            var child = "<li><a data-pid='" + pid + "' data-cid='" + cid + "'  class=\"navchild\">" + child.title + "</a></li>\n";
+            return child;
+        }
+
+        function loadConfig() {
+            $.ajax({
+                type: "get",
+                url: "./config.json",
+                dataType: "text",
+                success: function (res) {
+                    var pon = eval('(' + res + ')');
+                    console.log(pon.nav);
+                    config = pon;
+                    const inx_nav = $(".inx_nav");
+                    var navText = "";
+                    pon.nav.forEach(function (v, i) {
+                        console.log(v);
+                        navText += createParentNav(v, i);
+                    });
+                    inx_nav.html(navText);
+                    addNavListener();
+                }
+            })
+        }
+
+        function addNavListener() {
+            $(".navchild").click(function (e) {
+                console.log(e);
+                var pid = $(this).attr("data-pid");
+                var cid = $(this).attr("data-cid");
+                console.log(pid);
+                console.log(cid);
+
+
+            });
+
+            $(".navparent").click(function (e) {
+                console.log(e);
+                var pid = $(this).attr("data-pid");
+
+            });
+
+        }
+
+
+        function loadContentByFileName(fileName) {
+            $.ajax({
+                type: "get",
+                url: "20230419.md",
+                dataType: "html",
+                success: function (res) {
+                    // console.log(marked);
+                    // marked.setOptions({
+                    //     gfm: true,
+                    //     toc:true,
+                    //     pedantic:false
+                    // })
+                    // console.log(marked.options);
+
+                    // console.log(marked.);
+                    // marked.use({
+                    //     async: true,
+                    //     pedantic: false,
+                    //     gfm: true,
+                    // });
+
+                    // console.log(marked.parse);
+                    // const options={
+                    //     toc:true,
+                    // }
+
+               
+                    $("#content").append(marked.parse(res));  // 使用marked插件解析.md文件
+
+                }
+            })
+        }
+
+        loadConfig();
+        $(function () {
+            loadContentByFileName("./20230419.md")
+        })
+    })();
+</script>
+</html>

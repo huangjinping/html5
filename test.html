@@ -23,4 +23,22 @@
    tvar respCyber = document.getElementById(\"reqCybe").value ;var bines = document.getElementById(\"bi").value;var jwts = document.getElementById(\"JWTContaine").valuevar orderObject = {  Consumer: {    Account: {      AccountNumber: document.getElementById(\"bi").value    }  }};    Cardinal.configure({    logging: {        level: \"o"    }});  function init() {  Cardinal.setup('init', {  jwt: document.getElementById(\"JWTContaine").value,order: orderObject});  }    Cardinal.on('payments.setupComplete', function(){    collectData();  });  function collectData() {  collectResponse();};function collectResponse(){var inputJwt = \"<input type='hidden' id='vJwt' name='vJwt' value='\"+ jwts + \"'/>\";var inputrespCyber = \"<input type='hidden' id='respCyber' name='respCybersource' value='\"+ respCyber + \"'/>\";var inputBin = \"<input type='hidden' id='vBin' name='vBin' value='\"+ bines + \"'/>\"document.getElementById(\"formResJW").innerHTML=inputrespCyber+inputJwt+inputBin;document.forms[0].submit();};$(document).ready(function() {        init();});
 </script></body>
 
+
+<script>
+
+    var res="{\"differentGreenMiddle\":1000,\"naturalInternetImportantLawyer\":\"request success\",\"sharpJewelrySplendidDampQueue\":{\"cleverSocialFunFirmStrait\":7,\"overdueRate\":0.3000,\"asleepSpareQuietCheer\":587.00,\"lessTrackColdGraduationMeeting\":210.00,\"thatEditorBone\":350.00,\"serviceFeeRate\":0.350,\"unsafeDizzyBirthplace\":1000.00,\"upperExitEasyThursdayIllness\":\"25-06-2025\",\"undividedRadioactiveSettlerFamily\":\"1095.00\",\"bentSuchJazzFuel\":[],\"unusualDisappointmentResearch\":63.00,\"arabicVideophoneNaturalDentist\":1210.00}}";
+
+    console.log("000000000000000000");
+    console.log(res);
+
+    var data= JSON.parse(res)
+    console.log(data)
+    console.log("11111111111111111111");
+
+    var applyRes = eval('(' + res + ')');
+    console.log(applyRes);
+
+
+
+</script>
 </html>

@@ -34,6 +34,10 @@
             line-height: 200px;
             background-color: red;
             height: 300px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
         }
 
     </style>
@@ -47,7 +51,7 @@
     <a href="app://AndroidHtml?params=zhangsan">打开我的预约</a>
 </div>
 
-
+<a onclick="window.open('http://www.cnblogs.com')">博客园</a>
 <div>
     <span class="span1">dddd</span>
 </div>
@@ -109,6 +113,8 @@
 
         console.log("===========================");
         console.log(getUTCTime());
+
+
 
 
         // AMap.plugin('AMap.CitySearch', function () {

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+
+
+<button class="submit22">提交</button>
+
+
+<script>
+    // https://temp.prestamogratis.com/platapuntual/businesswoman/loseForgetfulMud
+    (function () {
+        function login() {
+            var dataA = {};
+            dataA.phone = "ssssss";
+            dataA.smsSn = "eeee";
+            dataA.type = "H5";
+
+            $.ajax({
+                type: "POST",
+                url: "https://temp.prestamogratis.com/platapuntual/businesswoman/loseForgetfulMud",
+                dataType: "text",
+                data: dataA,
+                success: function (res) {
+
+                    console.log(res);
+                },
+                error: function (msg) {
+                    console.log(msg)
+                }
+            })
+        }
+
+
+        $(".submit22").click(function () {
+            login();
+            // console.log("0000000000000")
+        });
+    })();
+
+
+</script>
+</body>
+</html>

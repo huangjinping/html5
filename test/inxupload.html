@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <title>上传图片demo</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/md5.js"></script>
+    <script src="js/Md5ch.js"></script>
+</head>
+<style>
+
+    .openImage {
+        width: 200px;
+        height: 200px;
+        background-color: cadetblue;
+    }
+</style>
+<body>
+
+<input type="file" accept="image/*" id="imgcamera" name="imgcamera"
+       accept/>
+
+
+<section>
+
+</section>
+<div class="openImage">
+
+</div>
+</body>
+
+
+<script>
+
+    (function () {
+        // const $file = $('#imgcamera');
+        // $file.on("change", function () { // 文件选择事件
+        //     const filename = $file.val();
+        //     console.log(filename);
+        // });
+        // console.log("========2=====")
+        //
+        // $(".openImage").click(function () {
+        //     console.log("=============")
+        //     $("#imgcamera").click();
+        // });
+
+        console.log("===========md5=======")
+        console.log(md5("中国人民解放军"))
+        console.log(hex_md5("中国人民解放军"))
+
+    })();
+
+
+</script>
+
+</html>

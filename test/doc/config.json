@@ -1,0 +1,48 @@
+{
+  "nav": [
+    {
+      "title": "Getting Started",
+      "path": "https://www.baidu.com",
+      "fileName": "Started",
+      "child": [
+        {
+          "title": "Demo",
+          "path": "https://www.baidu.com",
+          "fileName": "Demo"
+        },
+        {
+          "title": "Usage",
+          "path": "https://www.baidu.com",
+          "fileName": "Usage"
+        },
+        {
+          "title": "Security",
+          "path": "https://www.baidu.com",
+          "fileName": "Security"
+        }
+      ]
+    },
+    {
+      "title": "Getting Started1",
+      "path": "https://www.baidu.com",
+      "fileName": "Started",
+      "child": [
+        {
+          "title": "Demo",
+          "path": "https://www.baidu.com",
+          "fileName": "Demo"
+        },
+        {
+          "title": "Usage",
+          "path": "https://www.baidu.com",
+          "fileName": "Usage"
+        },
+        {
+          "title": "Security",
+          "path": "https://www.baidu.com",
+          "fileName": "Security"
+        }
+      ]
+    }
+  ]
+}

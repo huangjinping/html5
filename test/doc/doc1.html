@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Marked in the browser</title>
+    <script src="jquery-1.11.1.js"></script>
+
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="hljs-github.css" type="text/css">
+
+</head>
+<body>
+<div id="content"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+
+    (function () {
+        $.ajax({
+            type: "get",
+            url: "./2023.md?v=" + Math.random(),
+            dataType: "html",
+            success: function (res) {
+                console.log(res);
+                console.log(marked);
+                document.getElementById('content').innerHTML =
+                    marked.parse(res);
+            }
+        })
+    })();
+
+</script>
+</body>
+<script src="index.js"></script>
+
+</html>

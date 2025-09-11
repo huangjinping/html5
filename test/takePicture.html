@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Capture</title>
+    <style>
+        #preview {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<img id="preview"
+     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+     alt="预览">
+<br>
+<button onclick="openCamera()">打开相机</button>
+<input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+
+<script>
+    function openCamera() {
+        // 触发隐藏的文件输入
+        document.getElementById('cameraInput').click();
+    }
+
+    // 监听文件选择
+    document.getElementById('cameraInput').addEventListener('change', function (e) {
+        const file = e.target.files;
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                // 显示拍摄的图片
+                const preview = document.getElementById('preview');
+                preview.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+</body>
+</html>

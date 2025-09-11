@@ -5,13 +5,13 @@
     <title>Title</title>
     <style type="text/css">
 
-        .container1{
+        .container1 {
             background-color: #0B85CC;
             height: 300px;
             overflow: hidden;
         }
 
-        .container2{
+        .container2 {
             position: fixed;
             height: 100%;
             width: 100%;
@@ -19,6 +19,11 @@
         }
 
     </style>
+    <script src="https://openfpcdn.io/fingerprintjs/v3/iife.min.js"></script>
+    <script>
+        // Initialize the agent at application startup.
+
+    </script>
 </head>
 <body>
 
@@ -29,13 +34,43 @@
             <p>https://xcat-link.com/link/mrdpmHAxmLMgB8VC?mu=4</p>
         </div>
 
+
+        <div id="openmess">
+            张梦方式
+        </div>
         <div>
             <a href="https://www.google.com">google</a>
             <a href="https://www.facebook.com">facebook</a>
+            <a href="market://details?id=org.torproject.torbrowser">打开 google 详情</a>
 
         </div>
+
     </div>
 </div>
 
+
+<script>
+    (function () {
+        var open = document.getElementById("openmess");
+
+        var fpPromise = FingerprintJS.load()
+
+        // Analyze the visitor when necessary.
+        fpPromise
+            .then(fp => fp.get())
+            .then(result => {
+                console.log(result.visitorId);
+                open.innerHTML='--'+result.visitorId;
+            })
+
+        open.addEventListener("click", function () {
+            console.log("===========");
+            // window.location.href = "market://details?id=org.torproject.torbrowser"
+
+
+            window.location.href = "market://details?id=com.apoyo.lending.okredito.credito.ch.yumi.ifectivo.buro.loan.credit.cash"
+        });
+    })();
+</script>
 </body>
 </html>
