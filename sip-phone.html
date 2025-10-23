@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIP网络电话</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jssip@3.10.0/dist/jssip.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#10b981',
+                        danger: '#ef4444',
+                        dark: '#1e293b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .phone-shadow {
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            }
+            .button-press {
+                transform: scale(0.95);
+                transition: transform 0.1s ease;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-2xl phone-shadow overflow-hidden">
+        <!-- 电话头部 -->
+        <div class="bg-primary text-white p-6 text-center">
+            <h1 class="text-[clamp(1.5rem,3vw,2rem)] font-bold">SIP网络电话</h1>
+            <p class="opacity-80 mt-1">基于WebRTC技术</p>
+        </div>
+
+        <!-- SIP配置区域 -->
+        <div id="sip-config" class="p-6 border-b">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">SIP服务器</label>
+                <input type="text" id="sip-server" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="wss://sip-server:port" value="wss://35.247.130.54:3060/ws">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                <input type="text" id="sip-username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="SIP用户名" value="20250911180720">
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                <input type="password" id="sip-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="SIP密码" value="uR4z189r">
+            </div>
+
+            <button id="connect-btn" class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2">
+                <i class="fa fa-plug"></i>
+                <span>连接到SIP服务器</span>
+            </button>
+        </div>
+
+        <!-- 电话状态 -->
+        <div id="connection-status" class="p-4 bg-gray-50 text-center hidden">
+            <div class="flex items-center justify-center gap-2 text-sm">
+                <span id="status-indicator" class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span id="status-text">正在连接...</span>
+            </div>
+        </div>
+
+        <!-- 拨号区域 -->
+        <div id="dial-pad" class="p-6 hidden">
+            <!-- 号码显示 -->
+            <div class="mb-8 bg-gray-100 rounded-lg p-4 h-16 flex items-center justify-center">
+                <span id="phone-number" class="text-[clamp(1.5rem,5vw,2rem)] font-mono font-medium text-dark">0</span>
+            </div>
+
+            <!-- 拨号键盘 -->
+            <div class="grid grid-cols-3 gap-3">
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex flex-col items-center justify-center text-xl font-medium transition-all" data-digit="1">
+                    1
+                    <span class="text-xs opacity-60 mt-1"> </span>
+                </button>
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex flex-col items-center justify-center text-xl font-medium transition-all" data-digit="2">
+                    2
+                    <span class="text-xs opacity-60 mt-1">ABC</span>
+                </button>
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex flex-col items-center justify-center text-xl font-medium transition-all" data-digit="3">
+                    3
+                    <span class="text-xs opacity-60 mt-1">DEF</span>
+                </button>
+
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex flex-col items-center justify-center text-xl font-medium transition-all" data-digit="4">
+                    4
+                    <span class="text-xs opacity-60 mt-1">GHI</span>
+                </button>
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex flex-col items-center justify-center text-xl font-medium transition-all" data-digit="5">
+                    5
+                    <span class="text-xs opacity-60 mt-1">JKL</span>
+                </button>
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex flex-col items-center justify-center text-xl font-medium transition-all" data-digit="6">
+                    6
+                    <span class="text-xs opacity-60 mt-1">MNO</span>
+                </button>
+
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex flex-col items-center justify-center text-xl font-medium transition-all" data-digit="7">
+                    7
+                    <span class="text-xs opacity-60 mt-1">PQRS</span>
+                </button>
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex flex-col items-center justify-center text-xl font-medium transition-all" data-digit="8">
+                    8
+                    <span class="text-xs opacity-60 mt-1">TUV</span>
+                </button>
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex flex-col items-center justify-center text-xl font-medium transition-all" data-digit="9">
+                    9
+                    <span class="text-xs opacity-60 mt-1">WXYZ</span>
+                </button>
+
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex items-center justify-center text-xl font-medium transition-all" data-digit="*">
+                    *
+                </button>
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex flex-col items-center justify-center text-xl font-medium transition-all" data-digit="0">
+                    0
+                    <span class="text-xs opacity-60 mt-1">+</span>
+                </button>
+                <button class="digit-btn bg-gray-100 hover:bg-gray-200 h-14 rounded-full flex items-center justify-center text-xl font-medium transition-all" data-digit="#">
+                    #
+                </button>
+            </div>
+
+            <!-- 控制按钮 -->
+            <div class="mt-6 flex justify-between items-center px-2">
+                <button id="delete-btn" class="h-12 w-12 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all">
+                    <i class="fa fa-backspace text-xl text-gray-700"></i>
+                </button>
+
+                <button id="call-btn" class="h-16 w-16 rounded-full bg-secondary hover:bg-secondary/90 flex items-center justify-center transition-all shadow-lg">
+                    <i class="fa fa-phone text-2xl text-white rotate-90"></i>
+                </button>
+
+                <button id="hangup-btn" class="h-12 w-12 rounded-full bg-danger hover:bg-danger/90 flex items-center justify-center transition-all hidden">
+                    <i class="fa fa-phone text-xl text-white rotate-135"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 通话状态 -->
+        <div id="call-status" class="p-6 hidden text-center">
+            <h3 id="calling-number" class="text-2xl font-medium mb-2">正在拨打...</h3>
+            <p id="call-duration" class="text-gray-500 mb-6">00:00</p>
+
+            <div class="flex justify-center gap-4">
+                <button id="mute-btn" class="h-12 w-12 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all">
+                    <i class="fa fa-microphone text-xl text-gray-700"></i>
+                </button>
+
+                <button id="speaker-btn" class="h-12 w-12 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all">
+                    <i class="fa fa-volume-up text-xl text-gray-700"></i>
+                </button>
+
+                <button id="end-call-btn" class="h-14 w-14 rounded-full bg-danger hover:bg-danger/90 flex items-center justify-center transition-all shadow-lg">
+                    <i class="fa fa-phone text-2xl text-white rotate-135"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 日志区域 -->
+        <div class="bg-gray-50 p-4 text-xs text-gray-600 max-h-32 overflow-y-auto">
+            <p id="log-output" class="whitespace-pre-wrap"></p>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let phoneNumber = '0';
+        let socket = null;
+        let session = null;
+        let isConnected = false;
+        let isInCall = false;
+        let isMuted = false;
+        let callTimer = null;
+        let callStartTime = 0;
+
+        // DOM 元素
+        const sipServerInput = document.getElementById('sip-server');
+        const sipUsernameInput = document.getElementById('sip-username');
+        const sipPasswordInput = document.getElementById('sip-password');
+        const connectBtn = document.getElementById('connect-btn');
+        const connectionStatus = document.getElementById('connection-status');
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+        const dialPad = document.getElementById('dial-pad');
+        const phoneNumberEl = document.getElementById('phone-number');
+        const digitBtns = document.querySelectorAll('.digit-btn');
+        const deleteBtn = document.getElementById('delete-btn');
+        const callBtn = document.getElementById('call-btn');
+        const hangupBtn = document.getElementById('hangup-btn');
+        const callStatus = document.getElementById('call-status');
+        const callingNumberEl = document.getElementById('calling-number');
+        const callDurationEl = document.getElementById('call-duration');
+        const muteBtn = document.getElementById('mute-btn');
+        const speakerBtn = document.getElementById('speaker-btn');
+        const endCallBtn = document.getElementById('end-call-btn');
+        const logOutput = document.getElementById('log-output');
+
+        // 日志函数
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            logOutput.textContent += `[${timestamp}] ${message}\n`;
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        // 更新电话号码显示
+        function updatePhoneNumber(digit) {
+            if (phoneNumber === '0') {
+                phoneNumber = digit;
+            } else {
+                phoneNumber += digit;
+            }
+            phoneNumberEl.textContent = phoneNumber;
+        }
+
+        // 删除最后一个数字
+        function deleteLastDigit() {
+            if (phoneNumber.length > 1) {
+                phoneNumber = phoneNumber.slice(0, -1);
+            } else {
+                phoneNumber = '0';
+            }
+            phoneNumberEl.textContent = phoneNumber;
+        }
+
+        // 连接到SIP服务器
+        function connectToSipServer() {
+            const server = sipServerInput.value;
+            const username = sipUsernameInput.value;
+            const password = sipPasswordInput.value;
+
+            if (!server || !username || !password) {
+                alert('请填写完整的SIP服务器信息');
+                return;
+            }
+
+            log('正在连接到SIP服务器...');
+            connectBtn.disabled = true;
+            connectBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i><span>连接中...</span>';
+            connectionStatus.classList.remove('hidden');
+            statusIndicator.className = 'w-2 h-2 rounded-full bg-yellow-500';
+            statusText.textContent = '正在连接...';
+
+            // 配置JsSIP
+            const configuration = {
+                sockets: new JsSIP.WebSocketInterface(server),
+                uri: `sip:${username}@${server.split('@')[1] || server.split('/')[2]}`,
+                password: password,
+                session_timers: false
+            };
+
+            // 创建SIP用户代理
+            const ua = new JsSIP.UA(configuration);
+
+            // 注册事件监听
+            ua.on('connected', () => {
+                log('与SIP服务器建立连接');
+                statusIndicator.className = 'w-2 h-2 rounded-full bg-green-500';
+                statusText.textContent = '已连接';
+            });
+
+            ua.on('registered', () => {
+                log('成功注册到SIP服务器');
+                isConnected = true;
+                connectBtn.innerHTML = '<i class="fa fa-sign-out"></i><span>断开连接</span>';
+                connectBtn.classList.remove('bg-primary');
+                connectBtn.classList.add('bg-gray-600');
+                dialPad.classList.remove('hidden');
+            });
+
+            ua.on('registrationFailed', (error) => {
+                log(`注册失败: ${error.message}`);
+                statusIndicator.className = 'w-2 h-2 rounded-full bg-red-500';
+                statusText.textContent = '注册失败';
+                connectBtn.disabled = false;
+                connectBtn.innerHTML = '<i class="fa fa-plug"></i><span>连接到SIP服务器</span>';
+            });
+
+            ua.on('unregistered', () => {
+                log('已从SIP服务器注销');
+                isConnected = false;
+                statusIndicator.className = 'w-2 h-2 rounded-full bg-gray-500';
+                statusText.textContent = '已断开连接';
+                connectBtn.disabled = false;
+                connectBtn.innerHTML = '<i class="fa fa-plug"></i><span>连接到SIP服务器</span>';
+                connectBtn.classList.remove('bg-gray-600');
+                connectBtn.classList.add('bg-primary');
+                dialPad.classList.add('hidden');
+            });
+
+            ua.on('disconnected', () => {
+                log('与SIP服务器断开连接');
+                isConnected = false;
+                statusIndicator.className = 'w-2 h-2 rounded-full bg-gray-500';
+                statusText.textContent = '已断开连接';
+                connectBtn.disabled = false;
+                connectBtn.innerHTML = '<i class="fa fa-plug"></i><span>连接到SIP服务器</span>';
+                connectBtn.classList.remove('bg-gray-600');
+                connectBtn.classList.add('bg-primary');
+                dialPad.classList.add('hidden');
+            });
+
+            // 来电处理
+            ua.on('newRTCSession', (data) => {
+                const incomingCall = data.session;
+
+                // 仅处理来电
+                if (incomingCall.direction === 'incoming') {
+                    log(`收到来自 ${incomingCall.remote_identity.uri.user} 的来电`);
+
+                    // 显示来电界面
+                    dialPad.classList.add('hidden');
+                    callStatus.classList.remove('hidden');
+                    callingNumberEl.textContent = `来电: ${incomingCall.remote_identity.uri.user}`;
+                    isInCall = true;
+
+                    // 接听来电
+                    incomingCall.answer({
+                        mediaConstraints: {
+                            audio: true,
+                            video: false
+                        }
+                    });
+
+                    // 通话开始
+                    incomingCall.on('confirmed', () => {
+                        log('通话已接通');
+                        callStartTime = Date.now();
+                        startCallTimer();
+                    });
+
+                    // 通话结束
+                    incomingCall.on('ended', () => {
+                        log('通话已结束');
+                        endCall();
+                    });
+
+                    session = incomingCall;
+                }
+            });
+
+            // 保存用户代理实例
+            window.sipUA = ua;
+
+            // 启动用户代理
+            ua.start();
+        }
+
+        // 断开SIP连接
+        function disconnectFromSipServer() {
+            if (window.sipUA) {
+                log('正在断开与SIP服务器的连接...');
+                window.sipUA.stop();
+            }
+        }
+
+        // 拨打电话
+        function makeCall() {
+            if (!isConnected) return;
+
+            const numberToCall = phoneNumber;
+            if (numberToCall === '0') {
+                alert('请输入要拨打的号码');
+                return;
+            }
+
+            log(`正在拨打 ${numberToCall}...`);
+
+            // 显示通话界面
+            dialPad.classList.add('hidden');
+            callStatus.classList.remove('hidden');
+            callingNumberEl.textContent = `正在拨打: ${numberToCall}`;
+            isInCall = true;
+
+            // 配置媒体约束
+            const mediaConstraints = {
+                audio: true,
+                video: false
+            };
+
+            // 创建SIP URI
+            const target = `sip:${numberToCall}@${sipServerInput.value.split('@')[1] || sipServerInput.value.split('/')[2]}`;
+
+            // 发起呼叫
+            session = window.sipUA.call(target, {
+                mediaConstraints: mediaConstraints
+            });
+
+            // 通话开始
+            session.on('confirmed', () => {
+                log('通话已接通');
+                callingNumberEl.textContent = `正在通话: ${numberToCall}`;
+                callStartTime = Date.now();
+                startCallTimer();
+            });
+
+            // 通话结束
+            session.on('ended', () => {
+                log('通话已结束');
+                endCall();
+            });
+
+            // 通话失败
+            session.on('failed', (error) => {
+                log(`呼叫失败: ${error.message}`);
+                endCall();
+            });
+        }
+
+        // 结束通话
+        function endCall() {
+            if (session) {
+                session.terminate();
+                session = null;
+            }
+
+            isInCall = false;
+            clearInterval(callTimer);
+            callStatus.classList.add('hidden');
+            dialPad.classList.remove('hidden');
+            callDurationEl.textContent = '00:00';
+        }
+
+        // 开始通话计时器
+        function startCallTimer() {
+            clearInterval(callTimer);
+
+            callTimer = setInterval(() => {
+                const now = Date.now();
+                const duration = Math.floor((now - callStartTime) / 1000);
+                const minutes = Math.floor(duration / 60).toString().padStart(2, '0');
+                const seconds = (duration % 60).toString().padStart(2, '0');
+                callDurationEl.textContent = `${minutes}:${seconds}`;
+            }, 1000);
+        }
+
+        // 切换静音状态
+        function toggleMute() {
+            if (!session || !session.connection) return;
+
+            isMuted = !isMuted;
+            const audioTracks = session.connection.getSenders().filter(sender =>
+                sender.track && sender.track.kind === 'audio'
+            );
+
+            audioTracks.forEach(track => {
+                track.track.enabled = !isMuted;
+            });
+
+            muteBtn.innerHTML = isMuted
+                ? '<i class="fa fa-microphone-slash text-xl text-red-500"></i>'
+                : '<i class="fa fa-microphone text-xl text-gray-700"></i>';
+        }
+
+        // 切换扬声器状态
+        function toggleSpeaker() {
+            if (!session || !session.connection) return;
+
+            const audioElement = document.querySelector('audio');
+            if (!audioElement) return;
+
+            if (audioElement.srcObject) {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioContext.createMediaStreamSource(audioElement.srcObject);
+                const destination = audioContext.createMediaStreamDestination();
+
+                // 如果有扬声器设备，切换到扬声器
+                navigator.mediaDevices.enumerateDevices().then(devices => {
+                    const speakers = devices.find(device =>
+                        device.kind === 'audiooutput' && device.label.includes('Speaker')
+                    );
+
+                    if (speakers && audioElement.setSinkId) {
+                        audioElement.setSinkId(speakers.deviceId)
+                            .then(() => log('已切换到扬声器'))
+                            .catch(error => log(`切换扬声器失败: ${error.message}`));
+                    }
+                });
+            }
+        }
+
+        // 事件监听
+        connectBtn.addEventListener('click', () => {
+            if (isConnected) {
+                disconnectFromSipServer();
+            } else {
+                connectToSipServer();
+            }
+        });
+
+        digitBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const digit = btn.getAttribute('data-digit');
+                updatePhoneNumber(digit);
+
+                // 添加按钮按下效果
+                btn.classList.add('button-press');
+                setTimeout(() => btn.classList.remove('button-press'), 100);
+            });
+        });
+
+        deleteBtn.addEventListener('click', deleteLastDigit);
+        callBtn.addEventListener('click', makeCall);
+        hangupBtn.addEventListener('click', endCall);
+        endCallBtn.addEventListener('click', endCall);
+        muteBtn.addEventListener('click', toggleMute);
+        speakerBtn.addEventListener('click', toggleSpeaker);
+
+        // 初始化日志
+        log('欢迎使用SIP网络电话');
+        log('请填写SIP服务器信息并连接');
+    </script>
+</body>
+</html>

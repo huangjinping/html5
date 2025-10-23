@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圆形区域摄像头拍摄</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            /* 自定义工具类 */
+            .content-auto {
+                content-visibility: auto;
+            }
+            .mask-circle {
+                mask-image: radial-gradient(circle, black 50%, transparent 50%);
+                -webkit-mask-image: radial-gradient(circle, black 50%, transparent 50%);
+            }
+            .overlay-pattern {
+                background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+                background-size: 20px 20px;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-dark text-light min-h-screen flex flex-col overflow-x-hidden">
+    <!-- 顶部导航 -->
+    <header class="bg-dark/80 backdrop-blur-md border-b border-white/10 fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-video-camera text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold">CircleCam</h1>
+            </div>
+            <button id="helpBtn" class="p-2 rounded-full hover:bg-white/10 transition-colors">
+                <i class="fa fa-question text-white/70"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="flex-1 flex flex-col items-center justify-center pt-16 pb-24 px-4 relative">
+        <!-- 摄像头容器 -->
+        <div class="relative w-full max-w-2xl aspect-square rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 border border-white/10 mb-8 group">
+            <!-- 视频元素 -->
+            <video id="video" class="w-full h-full object-cover" autoplay playsinline></video>
+
+            <!-- 圆形遮罩层 - 外部遮罩（黑色半透明） -->
+            <div class="absolute inset-0 bg-black/70 overlay-pattern">
+                <!-- 圆形透明区域将通过mask实现 -->
+                <div id="circleMask" class="absolute inset-0 mask-circle bg-transparent border-4 border-primary/30 animate-pulse"></div>
+
+                <!-- 提示文字 -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <p class="text-white/80 text-center mb-2 max-w-xs">请将拍摄对象对准圆形区域</p>
+                    <div class="w-16 h-1 bg-primary/50 rounded-full mt-2 animate-ping"></div>
+                </div>
+            </div>
+
+            <!-- 加载状态 -->
+            <div id="loadingIndicator" class="absolute inset-0 bg-dark/90 flex items-center justify-center z-10">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                    <p class="mt-4 text-white/70">正在启动摄像头...</p>
+                </div>
+            </div>
+
+            <!-- 错误提示 -->
+            <div id="errorMessage" class="absolute inset-0 bg-dark/90 flex items-center justify-center z-10 hidden">
+                <div class="text-center px-6">
+                    <i class="fa fa-exclamation-triangle text-amber-500 text-4xl mb-4"></i>
+                    <p class="text-white/90 mb-2">无法访问摄像头</p>
+                    <p class="text-white/60 text-sm" id="errorDetails">请确保已授予摄像头权限并尝试刷新页面</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div class="flex flex-wrap gap-4 justify-center w-full max-w-md">
+            <button id="startBtn" class="flex-1 min-w-[120px] bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-full shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:pointer-events-none">
+                <i class="fa fa-play"></i>
+                <span>开始</span>
+            </button>
+            <button id="captureBtn" class="flex-1 min-w-[120px] bg-secondary hover:bg-secondary/90 text-white font-medium py-3 px-6 rounded-full shadow-lg shadow-secondary/20 flex items-center justify-center gap-2 transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:pointer-events-none" disabled>
+                <i class="fa fa-circle"></i>
+                <span>拍摄</span>
+            </button>
+            <button id="resetBtn" class="flex-1 min-w-[120px] bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-6 rounded-full flex items-center justify-center gap-2 transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:pointer-events-none" disabled>
+                <i class="fa fa-refresh"></i>
+                <span>重置</span>
+            </button>
+        </div>
+
+        <!-- 拍摄结果 -->
+        <div id="resultContainer" class="mt-8 w-full max-w-2xl hidden">
+            <h2 class="text-xl font-semibold mb-4 text-center">拍摄结果</h2>
+            <div class="relative w-full aspect-square rounded-xl overflow-hidden border border-white/10">
+                <img id="resultImage" class="w-full h-full object-cover" src="" alt="拍摄结果">
+            </div>
+            <div class="flex justify-center mt-4">
+                <button id="downloadBtn" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-full flex items-center gap-2 transition-all">
+                    <i class="fa fa-download"></i>
+                    <span>保存图片</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 帮助弹窗 -->
+    <div id="helpModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-dark border border-white/10 rounded-xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">使用帮助</h3>
+                <button id="closeHelpBtn" class="text-white/50 hover:text-white">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4 text-white/80">
+                <p><i class="fa fa-info-circle text-primary mr-2"></i>点击"开始"按钮以启动摄像头</p>
+                <p><i class="fa fa-info-circle text-primary mr-2"></i>将拍摄对象对准中央圆形区域</p>
+                <p><i class="fa fa-info-circle text-primary mr-2"></i>准备就绪后点击"拍摄"按钮捕获图像</p>
+                <p><i class="fa fa-info-circle text-primary mr-2"></i>可以通过"重置"按钮重新拍摄</p>
+                <p><i class="fa fa-info-circle text-primary mr-2"></i>拍摄完成后可下载保存图片</p>
+            </div>
+            <div class="mt-6">
+                <button id="gotItBtn" class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg transition-colors">
+                    明白了
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark/80 backdrop-blur-md border-t border-white/10 py-4 px-4 text-center text-white/50 text-sm">
+        <p>CircleCam © 2023 - 带圆形遮罩的摄像头拍摄工具</p>
+    </footer>
+
+    <script>
+        // 获取DOM元素
+        const video = document.getElementById('video');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorDetails = document.getElementById('errorDetails');
+        const startBtn = document.getElementById('startBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultImage = document.getElementById('resultImage');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const helpBtn = document.getElementById('helpBtn');
+        const helpModal = document.getElementById('helpModal');
+        const closeHelpBtn = document.getElementById('closeHelpBtn');
+        const gotItBtn = document.getElementById('gotItBtn');
+
+        // 变量初始化
+        let stream = null;
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+
+        // 帮助弹窗控制
+        function openHelpModal() {
+            helpModal.classList.remove('hidden');
+            // 添加动画效果
+            setTimeout(() => {
+                helpModal.querySelector('div').classList.add('scale-100');
+                helpModal.querySelector('div').classList.remove('scale-95');
+            }, 10);
+
+        }
+
+        function closeHelpModal() {
+            helpModal.classList.add('hidden');
+        }
+
+        helpBtn.addEventListener('click', openHelpModal);
+        closeHelpBtn.addEventListener('click', closeHelpModal);
+        gotItBtn.addEventListener('click', closeHelpModal);
+
+        // 启动摄像头
+        async function startCamera() {
+            try {
+                // 显示加载状态
+                loadingIndicator.classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+
+                // 请求摄像头权限
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 1280 },
+                        facingMode: 'environment' // 优先使用后置摄像头
+                    }
+                });
+
+                // 将流分配给视频元素
+                video.srcObject = stream;
+
+                // 等待视频准备就绪
+                await new Promise(resolve => {
+                    video.onloadedmetadata = resolve;
+                });
+
+                // 隐藏加载状态
+                loadingIndicator.classList.add('hidden');
+
+                // 更新按钮状态
+                startBtn.disabled = true;
+                captureBtn.disabled = false;
+                resetBtn.disabled = false;
+
+                // 设置canvas尺寸与视频一致
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+
+            } catch (err) {
+                // 显示错误信息
+                loadingIndicator.classList.add('hidden');
+                errorMessage.classList.remove('hidden');
+                errorDetails.textContent = err.message || '请确保已授予摄像头权限并尝试刷新页面';
+                console.error('摄像头访问错误:', err);
+
+                // 重置按钮状态
+                startBtn.disabled = false;
+                captureBtn.disabled = true;
+                resetBtn.disabled = true;
+            }
+        }
+
+        // 捕获图像
+        function captureImage() {
+            if (!stream) return;
+
+            // 在canvas上绘制视频帧
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // 创建圆形裁剪区域
+            ctx.save();
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(canvas.width, canvas.height) / 2;
+
+            // 清除圆形外的区域
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.restore();
+
+            // 获取图像数据URL
+            const imageUrl = canvas.toDataURL('image/png');
+
+            // 显示结果
+            resultImage.src = imageUrl;
+            resultContainer.classList.remove('hidden');
+
+            // 平滑滚动到结果区域
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // 添加拍摄成功动画
+            resultContainer.classList.add('animate-pulse');
+            setTimeout(() => {
+                resultContainer.classList.remove('animate-pulse');
+            }, 1000);
+        }
+
+        // 重置摄像头
+        function resetCamera() {
+            // 停止所有轨道
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+
+            // 重置UI
+            resultContainer.classList.add('hidden');
+            video.srcObject = null;
+            startBtn.disabled = false;
+            captureBtn.disabled = true;
+            resetBtn.disabled = true;
+        }
+
+        // 下载图片
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'circle-capture.png';
+            link.href = resultImage.src;
+            link.click();
+
+            // 添加下载反馈动画
+            downloadBtn.classList.add('bg-green-500');
+            setTimeout(() => {
+                downloadBtn.classList.remove('bg-green-500');
+            }, 1000);
+        }
+
+        // 绑定按钮事件
+        startBtn.addEventListener('click', startCamera);
+        captureBtn.addEventListener('click', captureImage);
+        resetBtn.addEventListener('click', resetCamera);
+        downloadBtn.addEventListener('click', downloadImage);
+
+        // 页面加载时显示帮助提示
+        window.addEventListener('load', () => {
+            setTimeout(openHelpModal, 1000);
+        });
+    </script>
+</body>
+</html>
