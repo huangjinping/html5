@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>视频播放完成跳转（增强版）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+        }
+
+        video {
+            width: 100%;
+            max-width: 900px;
+            height: 300px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        #progress {
+            margin: 10px 0;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .error {
+            color: #ff4444;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>请观看完视频</h2>
+    <div id="progress">播放进度：0%</div>
+    <div id="error" class="error"></div>
+
+    <video id="videoPlayer"  autoplay muted>
+<!--        <source src="your-video.mp4" type="video/mp4">-->
+<!--        <source src="your-video.ogg" type="video/ogg">-->
+        <source src="https://www.cloudglobalpay.com/a0dd24.mov" type="video/webm">
+
+        您的浏览器不支持HTML5视频播放
+    </video>
+</div>
+
+<script>
+    // const video = document.getElementById('videoPlayer');
+    // const progressText = document.getElementById('progress');
+    // const errorText = document.getElementById('error');
+    // // 目标跳转地址
+    // const targetUrl = './mpVideoSuccess.html';
+    // video.src = 'https://www.cloudglobalpay.com/a0dd243d47.mp4';
+    // // 监听播放进度
+    // video.addEventListener('timeupdate', function () {
+    //     // 计算播放进度百分比
+    //     const progress = (video.currentTime / video.duration) * 100;
+    //     progressText.textContent = `播放进度：${Math.round(progress)}%`;
+    // });
+    //
+    // // 播放完成跳转
+    // video.addEventListener('ended', function () {
+    //     // alert('视频播放完成，即将跳转！');
+    //     window.location.href = targetUrl;
+    // });
+    //
+    //
+    // // 错误处理
+    // video.addEventListener('error', function () {
+    //     errorText.textContent = '视频加载失败，请检查视频地址！';
+    //     console.error('视频错误：', video.error);
+    // });
+    //
+    // // 禁止手动跳过（可选）
+    // video.addEventListener('seeked', function () {
+    //     if (video.currentTime > video.duration - 2) {
+    //         video.currentTime = video.duration - 2;
+    //     }
+    // });
+</script>
+</body>
+</html>

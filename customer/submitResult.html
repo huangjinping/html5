@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Atención al cliente</title>
+    <script src="./js/url.js"></script>
+    <script src="./js/Md5ch.js"></script>
+    <script src="./js/jquery-2.1.1.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./css/uploadImg.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/toast.css">
+    <link rel="stylesheet" href="./css/loading.css">
+    <link rel="stylesheet" href="./css/AllColor.css">
+</head>
+
+<body>
+    <div class="loading">
+
+    </div>
+    <div class="ToastBox" id="toastBox">
+        <div class="content" id=toast>
+
+        </div>
+    </div>
+    <div class="appContainer">
+        <div class="zix">
+            <div class="reeContent">
+            </div>
+        </div>
+        <div class="tous">
+            <div class="ImgBox">
+                <img src="./img/ts.png" alt="">
+                <div id="toususTitle" class="entirety">Enviado con éxito</div>
+            </div>
+            <div id="line"></div>
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 20px;">Por favor nos comunica con el medio de abajo si su problema es urgente：</div>
+            <div class="tsCon">
+                <div>whatsapp:<a class="whatsapp" href=""></a></div>
+                <div>
+                    <!-- <div>Servicio de atención al cliente en línea:<a class="Kef entirety" href="javascript:void(0)">Haga clic para ponerse en contacto con nosotros</a></div> -->
+                </div>
+                <div>Número de contacto:<a class="repayMobile" href=""></a></div>
+            </div>
+
+        </div>
+
+        <div class="reButton backdrop" id="reButton1" style="color: #fff;">
+            Volver
+        </div>
+        <div class="maxBox2">
+            <div class="maxBoxContent">
+                <img class="sk" style="width: 120px;" src="./img/sk.png" alt="">
+                <div class="textDiv">¿Hemos resuelto su problema?</div>
+                <div class="buttonRow0">
+                    <div class="rbutton">
+                        Sí
+                    </div>
+                    <div class="lbutton">
+                        No
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var qmStr = "2e515eb029fcfe879405638b3ef287ca"
+    var workOrderId = locationObj.workOrderId
+
+    // if (locationObj.type == 1) {
+    //     $(".tous").show()
+    //     getTs()
+    // } else {
+        if (locationObj.aiType == 1 || locationObj.aiType == 0) {
+            $(".tous").show()
+            getTs()
+        }
+        else {
+            $(".zix").show()
+            getZx()
+        }
+    // }
+    function getZx() {
+        $(".loading").show()
+        let formObj = {
+            workOrderId
+        }
+        let keys = Object.keys(formObj);
+        let str = ""
+        keys.sort();
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i];
+            let value = formObj[key];
+            if (i == keys.length - 1) {
+                str += key + '=' + value
+            } else {
+                str += key + '=' + value + '&'
+            }
+        }
+        formObj.sign = md5(str + qmStr)
+        $.ajax({
+            headers: {
+                apiName: "93cbf364580047c64a0226fc7dd5a67414cc127f89b40c004ea77874c528828a",
+                "client-id": locationObj.appssid,
+            },
+            type: 'POST',
+            url: baseUrl + "/api/app/anon/cs/speakArts",
+            data: JSON.stringify(formObj),
+            contentType: "application/json",
+            dataType: "json",
+            success: function (res) {
+                console.log(res)
+                $(".loading").hide()
+                if (res.code != 1000) {
+                    console.log(2, res.msg)
+                    $(".ToastBox").show()
+                    $("#toast").html(res.msg)
+                    setTimeout(() => {
+                        $(".ToastBox").hide()
+                    }, 3000)
+                } else {
+                    console.log(res)
+                    $(".reeContent").html(res.data.speakArts[0])
+
+                }
+            },
+            fail: function (res) {
+                $(".loading").hide()
+            }
+        });
+    }
+
+    function getTs() {
+        $(".loading").show()
+        let formObj = {
+            appssid: locationObj.appssid
+        }
+        let keys = Object.keys(formObj);
+        let str = ""
+        keys.sort();
+        for (let i = 0; i < keys.length; i++) {
+            
+            let key = keys[i];
+            let value = formObj[key];
+            if (i == keys.length - 1) {
+                str += key + '=' + value
+            } else {
+                str += key + '=' + value + '&'
+            }
+        }
+        formObj.sign = md5(str + qmStr)
+        $.ajax({
+            headers: {
+                apiName: "8938becb6c2ec5aabc337295d6cf54b95950e8fc1d5929caa30779569337196d",
+                "client-id": locationObj.appssid,
+            },
+            type: 'POST',
+            url: baseUrl + "/api/app/anon/cs/appValues",
+            data: JSON.stringify(formObj),
+            contentType: "application/json",
+            dataType: "json",
+            success: function (res) {
+                console.log(res)
+                $(".loading").hide()
+                if (res.code != 1000) {
+                    console.log(2, res.msg)
+                    $(".ToastBox").show()
+                    $("#toast").html(res.msg)
+                    setTimeout(() => {
+                        $(".ToastBox").hide()
+                    }, 3000)
+                } else {
+                    console.log(res.data.resultMap)
+                    $('.whatsapp').attr('href', `whatsapp://send?phone=${res.data.resultMap.repayWhatsApp}`)
+                    $(".whatsapp").html(res.data.resultMap.repayWhatsApp)
+                    $('.repayMobile').attr('href', `tel:${res.data.resultMap.repayMobile}`)
+                    $('.repayMobile').html(res.data.resultMap.repayMobile)
+                    // $('.Kef').attr('href',kfUrl+res.data.resultMap.crispKey)
+
+                }
+            },
+            fail: function (res) {
+                $(".loading").hide()
+            }
+        });
+    }
+
+    function buttonQf(resolveStatus) {
+        $(".loading").show()
+        let formObj = {
+            workOrderId,
+            resolveStatus
+        }
+        let keys = Object.keys(formObj);
+        let str = ""
+        keys.sort();
+        for (let i = 0; i < keys.length; i++) {
+            let key = keys[i];
+            let value = formObj[key];
+            if (i == keys.length - 1) {
+                str += key + '=' + value
+            } else {
+                str += key + '=' + value + '&'
+            }
+        }
+        formObj.sign = md5(str + qmStr)
+        $.ajax({
+            headers: {
+                apiName: "ee1897007bd5ec8d3836301b88243b2f",
+                "client-id": locationObj.appssid,
+            },
+            type: 'POST',
+            url: baseUrl + "/api/app/anon/cs/button",
+            data: JSON.stringify(formObj),
+            contentType: "application/json",
+            dataType: "json",
+            success: function (res) {
+                $(".loading").hide()
+                if (res.code != 1000) {
+                    $(".ToastBox").show()
+                    $("#toast").html(res.msg)
+                    setTimeout(() => {
+                        $(".ToastBox").hide()
+                    }, 3000)
+                } else {
+                  
+                        window.location.href = './MPsuccess.html'
+                    
+                   
+                }
+            },
+            fail: function (res) {
+                $(".loading").hide()
+            }
+        });
+    }
+    // massage框
+    $(".reButton").click(function () {
+        if(locationObj.aiType == '1') {
+            $(".maxBox2").show()
+        }
+        else {
+            window.location.href = './MPsuccess.html'
+        }
+    })
+    // 是解决问题
+    $('.rbutton').click(function () {
+        buttonQf(1)
+    })
+    // 没有解决问题
+    $('.lbutton').click(function () {
+        buttonQf(0)
+    })
+
+    function onBackPressed() {
+        if(locationObj.aiType !== '1') {
+            window.location.href = './MPsuccess.html'
+            return 0
+        }
+        $(".maxBox2").show()
+        return 0;
+    }
+
+
+</script>
+
+</html>

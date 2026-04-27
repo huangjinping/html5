@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按钮转图片并上传</title>
+    <!-- 引入jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- 引入html2canvas（用于将DOM元素转为图片） -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        /* 示例按钮样式 */
+        #targetBtn {
+            padding: 15px 30px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 20px;
+        }
+
+        #convertAndUploadBtn {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 20px;
+        }
+
+        .preview-container {
+            margin: 20px;
+            display: none;
+        }
+
+        #previewImg {
+            max-width: 400px;
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        .status {
+            margin: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<!-- 要转为图片的目标按钮 -->
+<button id="targetBtn">这是要转为图片的按钮</button>
+
+<!-- 触发转换并上传的按钮 -->
+<button id="convertAndUploadBtn">将按钮转为图片并上传</button>
+
+<!-- 图片预览区域 -->
+<div class="preview-container" id="previewContainer">
+    <h4>生成的图片预览：</h4>
+    <img id="previewImg" alt="按钮生成的图片">
+</div>
+
+<!-- 状态提示 -->
+<div id="status" class="status"></div>
+
+<script>
+    $(document).ready(function () {
+        // 点击按钮：转换元素为图片并上传
+        $('#convertAndUploadBtn').on('click', function () {
+            const $this = $(this);
+            $this.prop('disabled', true).text('处理中...');
+            showStatus('正在将按钮转为图片，请稍候...', 'success');
+
+            // 1. 获取要转换的目标元素（这里是id为targetBtn的按钮）
+            const targetElement = document.getElementById('targetBtn');
+
+            // 2. 使用html2canvas将DOM元素转为canvas
+            html2canvas(targetElement, {
+                useCORS: true,        // 解决跨域图片问题
+                allowTaint: true,     // 允许跨域图片污染canvas
+                scale: 2,             // 2倍分辨率，生成的图片更清晰
+                logging: false        // 关闭控制台日志
+            }).then(function (canvas) {
+                // 3. 将canvas转为Blob对象（方便上传）
+                canvas.toBlob(function (blob) {
+                    // 显示预览图片
+                    const imgUrl = URL.createObjectURL(blob);
+                    $('#previewImg').attr('src', imgUrl);
+                    $('#previewContainer').show();
+
+                    // 4. 上传生成的图片
+                    uploadImage(blob, $this);
+                }, 'image/png'); // 指定生成PNG格式图片
+            }).catch(function (error) {
+                showStatus('转换图片失败：' + error.message, 'error');
+                $this.prop('disabled', false).text('将按钮转为图片并上传');
+                console.error('转换失败', error);
+            });
+        });
+
+        /**
+         * 上传图片到指定接口
+         * @param {Blob} blob - 图片的Blob对象
+         * @param {jQuery} $btn - 触发按钮的jQuery对象
+         */
+        function uploadImage(blob, $btn) {
+            showStatus('正在上传图片，请稍候...', 'success');
+
+            // 创建FormData，封装要上传的图片
+            const formData = new FormData();
+            // 给Blob对象命名，接口需要file参数
+            formData.append('attachment', blob, 'button-image.png');
+            formData.append('appssid','06');
+            formData.append('userId','812');
+
+            // 发送上传请求
+            $.ajax({
+                url: 'https://bjst.ultracreditosmx.com/api/app/image/uploadFileAndSave',
+                type: 'POST',
+                data: formData,
+                processData: false, // 必须false，否则jQuery会处理FormData导致上传失败
+                contentType: false, // 必须false，让浏览器自动设置Content-Type
+                dataType: 'json',
+                headers: {
+                    "client-id": "06",
+                    "apiName": "655896977f55f174faaeb58b97b52fc3c0c16a5bda88f0093a46dcc3f57764b6",
+                    'token': '33f5b030-ae6f-404d-8871-5cd24e583b90' // 这里添加你需要的header参数
+                },
+                timeout: 30000, // 30秒超时
+                success: function (response) {
+                    showStatus('图片上传成功！返回数据：' + JSON.stringify(response), 'success');
+                    $btn.prop('disabled', false).text('将按钮转为图片并上传');
+                    console.log('上传成功', response);
+                },
+                error: function (xhr, status, error) {
+                    let errorMsg = '上传失败：';
+                    if (xhr.status === 0) {
+                        errorMsg += '网络错误或接口无法访问';
+                    } else if (xhr.responseJSON) {
+                        errorMsg += JSON.stringify(xhr.responseJSON);
+                    } else {
+                        errorMsg += error || status;
+                    }
+                    showStatus(errorMsg, 'error');
+                    $btn.prop('disabled', false).text('将按钮转为图片并上传');
+                    console.error('上传失败', xhr, status, error);
+                }
+            });
+        }
+
+        /**
+         * 显示状态提示
+         * @param {string} message - 提示信息
+         * @param {string} type - 类型：success/error
+         */
+        function showStatus(message, type) {
+            const $status = $('#status');
+            $status.text(message).removeClass('success error').addClass(type).show();
+        }
+    });
+</script>
+</body>
+</html>

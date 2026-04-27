@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>前端采集 + 云端活体检测</title>
+    <style>
+        body {
+            padding: 20px;
+            font-family: system-ui;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        #video {
+            width: 100%;
+            border-radius: 8px;
+            background: #000;
+        }
+        #canvas {
+            display: none;
+        }
+        .btn {
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn:disabled {
+            background: #ccc;
+        }
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .live { color: green; }
+        .fake { color: red; }
+    </style>
+</head>
+<body>
+
+<h2>前端采集 + 云端活体检测</h2>
+<video id="video" autoplay playsinline></video>
+<canvas id="canvas" width="640" height="480"></canvas>
+
+<button class="btn" id="startBtn">开始检测</button>
+<div class="result" id="result"></div>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const startBtn = document.getElementById('startBtn');
+    const resultDom = document.getElementById('result');
+
+    // 1. 打开摄像头
+    async function openCamera() {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: 640, height: 480, facingMode: 'user' }
+        });
+        video.srcObject = stream;
+        return new Promise(resolve => {
+            video.onloadedmetadata = resolve;
+        });
+    }
+
+    // 2. 截取一帧图像并转 base64
+    function captureFrame() {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        return canvas.toDataURL('image/jpeg', 0.8);
+    }
+
+    // 3. 上传图像到云端接口
+    async function detectLiveness() {
+        startBtn.disabled = true;
+        startBtn.innerText = '检测中...';
+        resultDom.innerText = '';
+
+        try {
+            const base64 = captureFrame();
+            // 发送给后端接口
+            const res = await fetch('http://127.0.0.1:5000/api/liveness', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image: base64 })
+            });
+
+            const data = await res.json();
+            if (data.live) {
+                resultDom.className = 'result live';
+                resultDom.innerText = '✅ 活体';
+            } else {
+                resultDom.className = 'result fake';
+                resultDom.innerText = '❌ 非活体 / 照片';
+            }
+        } catch (err) {
+            resultDom.innerText = '请求失败：' + err.message;
+        } finally {
+            startBtn.disabled = false;
+            startBtn.innerText = '开始检测';
+        }
+    }
+
+    // 初始化
+    (async () => {
+        try {
+            await openCamera();
+            startBtn.onclick = detectLiveness;
+        } catch (e) {
+            resultDom.innerText = '摄像头异常：' + e.message;
+        }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.min.js"></script>
+<video id="video" autoplay muted playsinline></video>
+<script>
+  // 加载模型
+  // await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+  // await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+  // 替换本地路径为 CDN 路径
+  await faceapi.nets.tinyFaceDetector.loadFromUri('https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/');
+  await faceapi.nets.faceLandmark68Net.loadFromUri('https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/');
+
+  // 实时检测人脸关键点
+  const video = document.getElementById('video');
+  navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+    video.srcObject = stream;
+    setInterval(async () => {
+      const detections = await faceapi.detectSingleFace(video).withFaceLandmarks();
+      if (detections) {
+        // 分析关键点变化（如眨眼：眼睛关键点距离变化）
+        const eyeRatio = calculateEyeAspectRatio(detections.landmarks);
+        if (eyeRatio < 0.2) console.log('检测到眨眼，活体通过');
+      }
+    }, 100);
+  });
+</script>

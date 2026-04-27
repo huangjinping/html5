@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>BlazeFace 极简活体识别</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: #f0f2f5; }
+        #container { position: relative; margin-top: 20px; border: 5px solid #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        video, canvas { position: absolute; top: 0; left: 0; }
+        canvas { z-index: 10; }
+        #status { margin-top: 500px; font-size: 20px; font-weight: bold; color: #333; }
+        .success { color: #2ecc71 !important; }
+        .hint { color: #3498db; }
+    </style>
+</head>
+<body>
+
+<h2>活体识别：请根据提示摇头</h2>
+
+<div id="container" style="width: 640px; height: 480px;">
+    <video id="video" width="640" height="480" autoplay muted playsinline></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+</div>
+
+<div id="status">正在加载模型...</div>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const statusDiv = document.getElementById('status');
+
+    let model;
+    let livenessStep = 'START'; // 状态机: START -> LOOK_LEFT -> LOOK_RIGHT -> SUCCESS
+
+    // 1. 初始化摄像头
+    async function setupCamera() {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        return new Promise((resolve) => video.onloadedmetadata = resolve);
+    }
+
+    // 2. 核心逻辑：检测与判断
+    async function detect() {
+        const predictions = await model.estimateFaces(video, false);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (predictions.length > 0) {
+            for (let i = 0; i < predictions.length; i++) {
+                const pred = predictions[i];
+                const points = pred.landmarks; // [右眼, 左眼, 鼻尖, 嘴, 右耳, 左耳]
+
+                // 绘制关键点（可选，调试用）
+                ctx.fillStyle = "#00FF00";
+                points.forEach(p => ctx.fillRect(p[0], p[1], 4, 4));
+
+                // --- 活体判断算法 ---
+                // 原理：计算鼻尖点(Index 2) 在两耳(Index 4, 5) 之间的比例
+                const rightEarX = points[4][0];
+                const leftEarX = points[5][0];
+                const noseX = points[2][0];
+
+                // 归一化比例：0.5 表示在中间，越接近 1 表示越向左转，越接近 0 表示越向右转
+                const headTurnRatio = (noseX - rightEarX) / (leftEarX - rightEarX);
+
+                updateLivenessState(headTurnRatio);
+            }
+        }
+
+        requestAnimationFrame(detect);
+    }
+
+    // 3. 简单的状态机逻辑
+    function updateLivenessState(ratio) {
+        if (livenessStep === 'SUCCESS') return;
+
+        if (livenessStep === 'START') {
+            statusDiv.innerText = "请向【左】转头";
+            statusDiv.className = "hint";
+            if (ratio > 0.7) livenessStep = 'LOOK_LEFT'; // 比例偏向一侧
+        }
+        else if (livenessStep === 'LOOK_LEFT') {
+            statusDiv.innerText = "完成！现在向【右】转头";
+            if (ratio < 0.3) livenessStep = 'LOOK_RIGHT';
+        }
+        else if (livenessStep === 'LOOK_RIGHT') {
+            statusDiv.innerText = "🎉 验证成功：是活人！";
+            statusDiv.className = "success";
+            livenessStep = 'SUCCESS';
+        }
+    }
+
+    // 入口
+    (async () => {
+        await setupCamera();
+        statusDiv.innerText = "模型加载中...";
+        model = await blazeface.load();
+        statusDiv.innerText = "请正对摄像头";
+        detect();
+    })();
+</script>
+</body>
+</html>

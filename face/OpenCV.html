@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>OpenCV.js WASM 活体识别 Demo</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+        }
+        #video {
+            width: 640px;
+            height: 480px;
+            border: 2px solid #ccc;
+        }
+        #canvas {
+            display: none; /* 隐藏处理画布，只看视频 */
+        }
+        .result {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .live {
+            color: green;
+        }
+        .fake {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h3>OpenCV.js + WASM 活体识别（纹理/翻拍检测）</h3>
+<video id="video" autoplay playsinline></video>
+<canvas id="canvas" width="640" height="480"></canvas>
+<div class="result" id="result">加载中...</div>
+
+<!-- 引入 OpenCV.js WASM 版本 -->
+<script async src="https://docs.opencv.org/4.8.0/opencv.js" onload="onOpenCvReady()"></script>
+
+<script>
+    let video, canvas, ctx, cv;
+    let isCvReady = false;
+    const FPS = 15;
+
+    // 1. OpenCV 加载完成回调
+    function onOpenCvReady() {
+        cv = window.cv;
+        isCvReady = true;
+        document.getElementById("result").innerText = "OpenCV 加载完成，启动摄像头...";
+        startCamera();
+    }
+
+    // 2. 启动摄像头
+    async function startCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { width: 640, height: 480, facingMode: "user" }
+            });
+            video = document.getElementById("video");
+            video.srcObject = stream;
+            canvas = document.getElementById("canvas");
+            ctx = canvas.getContext("2d");
+
+            // 开始检测循环
+            setInterval(detectLiveness, 1000 / FPS);
+        } catch (err) {
+            document.getElementById("result").innerText = "摄像头权限被拒绝：" + err.message;
+        }
+    }
+
+    // 3. 核心：活体检测逻辑（OpenCV 纹理分析）
+    function detectLiveness() {
+        if (!isCvReady || !video) return;
+
+        // 1. 把视频帧画到画布
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // 2. 转为 OpenCV Mat 格式
+        let src = cv.imread(canvas);
+        let gray = new cv.Mat();
+        let laplacian = new cv.Mat();
+
+        // 3. 灰度化 + 边缘锐化（拉普拉斯算子）
+        cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
+        cv.Laplacian(gray, laplacian, cv.CV_64F);
+
+        // 4. 计算方差 → 纹理清晰度（照片翻拍方差低，真人高）
+        let mean = new cv.Mat();
+        let stddev = new cv.Mat();
+        cv.meanStdDev(laplacian, mean, stddev);
+        let variance = Math.pow(stddev.data64F[0], 2);
+
+        // 5. 判定阈值（可根据场景调整）
+        let isLive = variance > 200;
+        showResult(isLive, variance);
+
+        // 6. 释放内存（必须！防止崩溃）
+        src.delete(); gray.delete(); laplacian.delete(); mean.delete(); stddev.delete();
+    }
+
+    // 4. 展示结果
+    function showResult(isLive, variance) {
+        const resultDom = document.getElementById("result");
+        if (isLive) {
+            resultDom.className = "result live";
+            resultDom.innerText = `✅ 活体检测通过 | 纹理方差：${variance.toFixed(2)}`;
+        } else {
+            resultDom.className = "result fake";
+            resultDom.innerText = `❌ 疑似照片/翻拍 | 纹理方差：${variance.toFixed(2)}`;
+        }
+    }
+</script>
+</body>
+</html>

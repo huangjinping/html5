@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas播放帧数组</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        #canvasPlayer {
+            border: 2px solid #333;
+            background-color: #000;
+            display: block;
+            margin: 20px auto;
+        }
+        .controls {
+            text-align: center;
+            margin: 10px 0;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .status {
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+        }
+        .progress-bar {
+            width: 640px;
+            height: 10px;
+            background-color: #eee;
+            margin: 10px auto;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+<h2 style="text-align: center;">Canvas帧数组播放器</h2>
+
+<canvas id="canvasPlayer" width="640" height="360"></canvas>
+
+<div class="progress-bar">
+    <div id="progressFill" class="progress-fill"></div>
+</div>
+
+<div class="controls">
+    <button id="loadFramesBtn">加载示例帧</button>
+    <button id="playBtn" disabled>播放</button>
+    <button id="pauseBtn" disabled>暂停</button>
+    <button id="resetBtn" disabled>重置</button>
+    <select id="fpsSelector">
+        <option value="15">15 FPS</option>
+        <option value="24" selected>24 FPS</option>
+        <option value="30">30 FPS</option>
+        <option value="60">60 FPS</option>
+    </select>
+</div>
+
+<div id="status" class="status">准备就绪</div>
+
+<script>
+    $(document).ready(function() {
+        // 获取DOM元素
+        const canvas = document.getElementById('canvasPlayer');
+        const ctx = canvas.getContext('2d');
+        const progressFill = document.getElementById('progressFill');
+
+        // 全局变量
+        let framesArray = [];      // 存储帧数据的数组
+        let currentFrame = 0;      // 当前播放的帧索引
+        let isPlaying = false;     // 播放状态
+        let playInterval = null;   // 播放定时器
+        let fps = 24;              // 默认帧率
+
+        // 更新帧率
+        $('#fpsSelector').change(function() {
+            fps = parseInt($(this).val());
+            if (isPlaying) {
+                stopPlayback();
+                startPlayback();
+            }
+            $('#status').text(`帧率已设置为: ${fps} FPS`);
+        });
+
+        // 加载示例帧数据
+        $('#loadFramesBtn').click(function() {
+            generateSampleFrames();
+        });
+
+        // 播放按钮
+        $('#playBtn').click(function() {
+            startPlayback();
+        });
+
+        // 暂停按钮
+        $('#pauseBtn').click(function() {
+            stopPlayback();
+        });
+
+        // 重置按钮
+        $('#resetBtn').click(function() {
+            resetPlayer();
+        });
+
+        // 生成示例帧数据
+        function generateSampleFrames() {
+            $('#status').text('正在生成示例帧数据...');
+            $('#loadFramesBtn').prop('disabled', true);
+
+            // 清空之前的帧数组
+            framesArray = [];
+            currentFrame = 0;
+
+            // 设置帧总数（根据帧率生成2秒的动画）
+            const totalFrames = fps * 2;
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // 逐帧生成
+            for (let i = 0; i < totalFrames; i++) {
+                // 创建离屏Canvas生成帧内容
+                const frameCanvas = document.createElement('canvas');
+                frameCanvas.width = width;
+                frameCanvas.height = height;
+                const frameCtx = frameCanvas.getContext('2d');
+
+                // 绘制背景（渐变色动画）
+                const hue = (i * 3) % 360; // 颜色渐变
+                frameCtx.fillStyle = `hsl(${hue}, 80%, 50%)`;
+                frameCtx.fillRect(0, 0, width, height);
+
+                // 绘制移动的圆形
+                const circleX = (i / totalFrames) * width;
+                const circleY = height/2 + Math.sin(i * 0.2) * height/4;
+                frameCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                frameCtx.beginPath();
+                frameCtx.arc(circleX, circleY, 30, 0, Math.PI * 2);
+                frameCtx.fill();
+
+                // 绘制帧信息
+                frameCtx.fillStyle = '#000';
+                frameCtx.font = 'bold 20px Arial';
+                frameCtx.fillText(`帧: ${i+1}/${totalFrames}`, 20, 40);
+                frameCtx.fillText(`FPS: ${fps}`, 20, 70);
+
+                // 将帧转换为ImageData或Blob存储
+                // 方式1：存储ImageData（内存占用小，绘制快）
+                const imageData = frameCtx.getImageData(0, 0, width, height);
+                framesArray.push(imageData);
+
+                // 方式2：存储Blob（适合网络传输后的帧数据）
+                // frameCanvas.toBlob(blob => {
+                //     framesArray.push(blob);
+                // }, 'image/png');
+            }
+
+            // 更新UI状态
+            $('#status').text(`已生成 ${framesArray.length} 帧数据`);
+            $('#playBtn').prop('disabled', false);
+            $('#resetBtn').prop('disabled', false);
+            $('#loadFramesBtn').prop('disabled', false);
+
+            // 显示第一帧
+            if (framesArray.length > 0) {
+                drawFrame(0);
+            }
+        }
+
+        // 开始播放
+        function startPlayback() {
+            if (framesArray.length === 0 || isPlaying) return;
+
+            isPlaying = true;
+            $('#playBtn').prop('disabled', true);
+            $('#pauseBtn').prop('disabled', false);
+            $('#status').text(`播放中 - FPS: ${fps}`);
+
+            // 设置播放间隔
+            const intervalTime = 1000 / fps;
+            playInterval = setInterval(() => {
+                // 绘制下一帧
+                currentFrame++;
+
+                // 循环播放
+                if (currentFrame >= framesArray.length) {
+                    currentFrame = 0;
+                    // 或者停止播放：stopPlayback(); return;
+                }
+
+                drawFrame(currentFrame);
+
+                // 更新进度条
+                updateProgress();
+            }, intervalTime);
+        }
+
+        // 停止播放
+        function stopPlayback() {
+            if (!isPlaying) return;
+
+            isPlaying = false;
+            clearInterval(playInterval);
+            $('#playBtn').prop('disabled', false);
+            $('#pauseBtn').prop('disabled', true);
+            $('#status').text(`已暂停 - 当前帧: ${currentFrame+1}/${framesArray.length}`);
+        }
+
+        // 重置播放器
+        function resetPlayer() {
+            stopPlayback();
+            currentFrame = 0;
+            drawFrame(0);
+            updateProgress();
+            $('#status').text('已重置');
+        }
+
+        // 绘制指定帧
+        function drawFrame(index) {
+            if (index < 0 || index >= framesArray.length) return;
+
+            const frameData = framesArray[index];
+
+            // 处理不同类型的帧数据
+            if (frameData instanceof ImageData) {
+                // 直接绘制ImageData
+                ctx.putImageData(frameData, 0, 0);
+            }
+            else if (frameData instanceof Blob) {
+                // 处理Blob类型的帧数据
+                const img = new Image();
+                img.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                    URL.revokeObjectURL(img.src); // 释放内存
+                };
+                img.src = URL.createObjectURL(frameData);
+            }
+            else if (frameData instanceof HTMLCanvasElement) {
+                // 处理Canvas类型的帧数据
+                ctx.drawImage(frameData, 0, 0);
+            }
+        }
+
+        // 更新进度条
+        function updateProgress() {
+            const progress = (currentFrame / framesArray.length) * 100;
+            progressFill.style.width = `${progress}%`;
+        }
+
+        // 清理资源
+        $(window).on('beforeunload', function() {
+            stopPlayback();
+            framesArray = [];
+        });
+    });
+</script>
+</body>
+</html>

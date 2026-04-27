@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube 视频禁止快进 + 播放完成跳转</title>
+  <style>
+    /* 可选：隐藏原生控制栏（配合自定义控制，强化快进限制） */
+    /* 若隐藏原生控制栏，需自己实现播放/暂停按钮，否则用户无法操作 */
+    .youtube-player {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+<!-- 用于渲染 YouTube 播放器的容器 -->
+<div id="youtube-player" class="youtube-player"></div>
+
+<!-- 引入 YouTube IFrame Player API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+  // 全局播放器实例
+  let player;
+  // 记录上一次的播放进度（用于检测快进）
+  let lastCurrentTime = 0;
+  // 进度检测间隔（毫秒，越小越精准，建议 500ms）
+  const CHECK_INTERVAL = 500;
+  // 允许的进度偏差（秒，避免正常播放的微小跳变误判）
+  const ALLOWED_DEVIATION = 1;
+  // 播放完成后跳转的目标页面
+  const TARGET_URL = "https://www.example.com/";
+
+  // YouTube API 加载完成后初始化播放器
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('youtube-player', {
+      height: '450', // 播放器高度
+      width: '800',  // 播放器宽度
+      videoId: 'HZf26r_DplA', // 替换为你的 YouTube 视频 ID（视频URL中v=后的字符串）
+      playerVars: {
+        'controls': 0, // 1=显示原生控制栏，0=隐藏（需自定义控制）
+        'disablekb': 1, // 禁用键盘控制（防止方向键快进）
+        'fs': 0, // 禁用全屏（全屏后无法监控进度）
+        'rel': 0, // 播放完成后不显示相关视频
+        'modestbranding': 1, // 隐藏 YouTube 品牌标识（可选）
+        'autoplay': 0, // 禁用自动播放（浏览器政策限制，需用户手动触发）
+        'playsinline': 1 // 移动端内联播放（避免跳转到 YouTube App）
+      },
+      events: {
+        'onReady': onPlayerReady, // 播放器就绪事件
+        'onStateChange': onPlayerStateChange // 播放状态变化事件
+      }
+    });
+  }
+
+  // 播放器就绪后启动进度监控
+  function onPlayerReady(event) {
+    // 可选：绑定播放按钮（解决自动播放限制）
+    // event.target.playVideo(); // 需用户交互触发，否则浏览器会阻止
+
+    // 启动进度监控，检测快进行为
+    setInterval(checkSeekBehavior, CHECK_INTERVAL);
+  }
+
+  // 监控播放进度，禁止快进
+  function checkSeekBehavior() {
+    if (!player) return;
+
+    // 获取当前播放进度（秒）
+    const currentTime = player.getCurrentTime();
+    // 获取播放状态（1=正在播放，0=已结束，-1=未开始，2=暂停）
+    const playerState = player.getPlayerState();
+
+    // 仅在播放中检测（排除暂停/未开始/结束状态）
+    if (playerState === YT.PlayerState.PLAYING) {
+      // 计算进度差值（当前进度 - 上一次进度）
+      const timeDiff = currentTime - lastCurrentTime;
+
+      // 判定快进：差值远大于检测间隔（说明手动拖拽了进度条）
+      if (timeDiff > CHECK_INTERVAL / 1000 + ALLOWED_DEVIATION) {
+        // 强制回退到上一次的进度（禁止快进）
+        player.seekTo(lastCurrentTime, true);
+        console.log('检测到快进行为，已强制回退');
+      }
+
+      // 更新上一次进度（仅当正常播放时）
+      lastCurrentTime = currentTime;
+    } else if (playerState === YT.PlayerState.PAUSED) {
+      // 暂停时更新进度（避免恢复播放后误判）
+      lastCurrentTime = currentTime;
+    }
+  }
+
+  // 监听播放状态变化，完成后跳转
+  function onPlayerStateChange(event) {
+    // 状态码 0 = 视频播放完成
+    if (event.data === YT.PlayerState.ENDED) {
+      console.log('视频播放完成，跳转至目标页面');
+      // 跳转到新页面（可替换为 location.replace 避免返回）
+      window.location.href = TARGET_URL;
+    }
+  }
+
+  // 可选：页面卸载时销毁播放器（避免内存泄漏）
+  window.addEventListener('beforeunload', () => {
+    if (player) {
+      player.destroy();
+      player = null;
+    }
+  });
+</script>
+</body>
+</html>

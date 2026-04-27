@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>截取Body为图片</title>
+    <!-- 引入html2canvas库（CDN方式） -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* 示例样式，模拟页面内容 */
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .demo-box {
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(45deg, #4285f4, #34a853);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        #screenshotBtn {
+            padding: 10px 20px;
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #screenshotBtn:hover {
+            background: #3367d6;
+        }
+        #preview {
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: white;
+            display: none; /* 初始隐藏预览区域 */
+        }
+        #preview img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<h1>页面截图示例</h1>
+<div class="demo-box">测试截图区域</div>
+<p>这是body内的普通文本内容</p>
+
+<!-- 截图触发按钮 -->
+<button id="screenshotBtn">截取Body为图片</button>
+
+<!-- 图片预览区域 -->
+<div id="preview">
+    <h3>截图预览：</h3>
+    <img id="screenshotImg" alt="截图预览">
+    <br>
+    <a id="downloadLink" download="body截图.png">下载图片</a>
+</div>
+
+<script>
+    // 获取DOM元素
+    const screenshotBtn = document.getElementById('screenshotBtn');
+    const preview = document.getElementById('preview');
+    const screenshotImg = document.getElementById('screenshotImg');
+    const downloadLink = document.getElementById('downloadLink');
+
+    // 截图核心逻辑
+    screenshotBtn.addEventListener('click', async () => {
+        try {
+            // 1. 截取body元素（可替换为其他元素，如document.getElementById('target')）
+            const canvas = await html2canvas(document.body, {
+                // 配置项（可选）
+                scale: window.devicePixelRatio, // 适配高清屏，保证截图清晰度
+                useCORS: true, // 允许跨域图片（如页面中有外链图片时需要）
+                logging: false, // 关闭控制台日志
+                backgroundColor: '#ffffff' // 截图背景色（默认透明，body默认白底可设为#fff）
+            });
+
+            // 2. 将Canvas转换为图片URL（base64格式）
+            const imgUrl = canvas.toDataURL('image/png'); // 可选image/jpeg，质量可通过第二个参数设置（0-1）
+
+            // 3. 展示预览并设置下载链接
+            screenshotImg.src = imgUrl;
+            downloadLink.href = imgUrl;
+            preview.style.display = 'block';
+
+            // 可选：如果需要直接下载（无需预览），可触发链接点击
+            // downloadLink.click();
+
+        } catch (error) {
+            console.error('截图失败：', error);
+            alert('截图失败，请重试！');
+        }
+    });
+</script>
+</body>
+</html>

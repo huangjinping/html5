@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Labour</title>
+    <link rel="stylesheet" href="./css/labour.css">
+    <script src="./js/url.js"></script>
+    <script src="./js/Md5ch.js"></script>
+    <script src="./js/jquery-2.1.1.min.js"></script>
+</head>
+
+<body>
+    <div class="box">
+        <a class="item Kef" href="javascript:">Servicio de atención al cliente en línea</a>
+
+        <div class="item">
+            <p>Atención al cliente</p>
+            <hr>
+            <h5 class="">Tel.</h5>
+            <div class="active mobiles">
+                <a href="#"></a>
+
+            </div>
+            <h5 class="">Whatsapp</h5>
+            <div class="active whatsapp">
+                <a href="#"></a>
+
+            </div>
+            <h5 class="">E-mail</h5>
+            <div class="active email">
+                <a href="#"></a>
+
+            </div>
+
+        </div>
+        <div class="item">
+            <p>Recopilación de quejas</p>
+            <h5 class="complain">Tel.</h5>
+            <div class="active">
+                <a class="repayMobile" href="#"></a>
+            </div>
+            <h5>Whatsapp</h5>
+            <div class="active">
+                <a class="repayWhatsApp" href="#"></a>
+            </div>
+        </div>
+        <div class="item foot">
+            <p class="juheNotice"></p>
+        </div>
+
+
+    </div>
+</body>
+
+
+<script>
+    function onBackPressed() {
+        window.location.href = './MPsuccess.html'
+        return 0;
+    }
+    // 传值
+
+    let myObject = locationObj
+    console.log(myObject, '1')
+    // 电话
+    let mobiles = ''
+    // whatsapp
+    let whatsapp = ''
+    // 邮箱
+    let email = ''
+    // 投诉电话
+    let repayMobile = ''
+    // 投诉邮箱
+    let repayWhatsApp = ''
+    // 
+    // -----密钥--------------------------------------------------------------
+    let keys = Object.keys(myObject);
+    let str = ""
+    keys.sort();
+    for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        let value = myObject[key];
+        if (i == keys.length - 1) {
+            str += key + '=' + value
+        } else {
+            str += key + '=' + value + '&'
+        }
+    }
+    myObject.sign = md5(str + "2e515eb029fcfe879405638b3ef287ca")
+
+    // -----------------------------------------------------------------------
+
+    $.ajax({
+        headers: {
+            'client-id': myObject.appSsid,
+            'apiName': "8938becb6c2ec5aabc337295d6cf54b95950e8fc1d5929caa30779569337196d",
+        },
+        type: 'POST',
+        url: baseUrl + "/api/app/anon/cs/appValues",
+        data: JSON.stringify(myObject),
+        contentType: "application/json",
+        dataType: "json",
+        success: function (res) {
+            if (res.code != 1000) {
+                console.log(2, res.msg)
+                setTimeout(() => {
+
+                }, 3000)
+            } else {
+                console.log(res.data)
+                let Acquire = res.data.resultMap
+
+                // ----------------------------------------
+                // email邮箱
+                for (let i = 0; i < Acquire.emails.length; i++) {
+                    emaillist = Acquire.emails[i]
+
+                    var strs = new Array();
+                    strs = emaillist.value.split(";"); //字符分割 
+                    for (i = 0; i < strs.length; i++) {
+                        email += '<a href="mailto:' + strs[i] + '">' + strs[i] + '</a>'
+                    }
+
+                }
+                // mobiles电话
+                for (let i = 0; i < Acquire.mobiles.length; i++) {
+                    mobileslist = Acquire.mobiles[i]
+
+                    var strs = new Array();
+                    strs = mobileslist.value.split(";"); //字符分割 
+                    for (i = 0; i < strs.length; i++) {
+                        mobiles += '<a href="tel:' + strs[i] + '">' + strs[i] + '</a>'
+                    }
+
+
+                }
+                // whatsapp
+                for (let i = 0; i < Acquire.whatsapps.length; i++) {
+                    whatsappslist = Acquire.whatsapps[i]
+
+                    var strs = new Array();
+                    strs = whatsappslist.value.split(";"); //字符分割 
+                    console.log(strs, '??')
+                    for (i = 0; i < strs.length; i++) {
+                        whatsapp += '<a href="whatsapp://send?phone=' + strs[i] + '">' + strs[i] + '</a>'
+                    }
+
+                }
+                $('.mobiles').html(mobiles)
+                $('.whatsapp').html(whatsapp)
+                $('.email').html(email)
+                $('.repayMobile').html(Acquire.repayMobile)
+                $('.repayMobile').attr('href', `tel:${Acquire.repayMobile}`)
+                $('.repayWhatsApp').html(Acquire.repayWhatsApp)
+                $('.repayWhatsApp').attr('href', `whatsapp://send?phone=${Acquire.repayWhatsApp}`)
+                $('.juheNotice').html(res.data.juheNotice)
+                $('.Kef').attr('href', kfUrl + res.data.resultMap.crispKey)
+                // 电话
+                // ----------------------------------------
+            }
+        },
+        fail: function (res) {
+            console.log(res)
+        }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// console.log(array, list)
+
+
+
+
+</script>
+
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Loading...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+        /* 旋转容器（中心点）- 放大容器尺寸适配大半径 */
+        .loader-spinner {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            animation: spin 3s linear infinite; /* 3秒一圈，快速旋转 */
+        }
+        /* 彩色圆点基础样式 - 紧凑排列 */
+        .loader-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* 圆点自身轻微缩放动画，增强动感 */
+            animation: pulse 1.2s ease-in-out infinite alternate;
+        }
+        /* 5个圆点紧凑排列（旋转半径加大到60px，是原来的2倍） */
+        .dot-1 {
+            background-color: #ff7f00; /* 橙色 */
+            transform: translate(-50%, -50%) rotate(0deg) translateX(60px);
+            animation-delay: 0s;
+        }
+        .dot-2 {
+            background-color: #ffdd00; /* 黄色 */
+            transform: translate(-50%, -50%) rotate(60deg) translateX(60px);
+            animation-delay: 0.2s;
+        }
+        .dot-3 {
+            background-color: #0099ff; /* 蓝色 */
+            transform: translate(-50%, -50%) rotate(120deg) translateX(60px);
+            animation-delay: 0.4s;
+        }
+        .dot-4 {
+            background-color: #00cc66; /* 绿色 */
+            transform: translate(-50%, -50%) rotate(180deg) translateX(60px);
+            animation-delay: 0.6s;
+        }
+        .dot-5 {
+            background-color: #9933ff; /* 紫色 */
+            transform: translate(-50%, -50%) rotate(240deg) translateX(60px);
+            animation-delay: 0.8s;
+        }
+        /* 核心：整体旋转动画（3秒一圈） */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* 圆点呼吸缩放动画（增强视觉效果） */
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) rotate(var(--initial-rotate)) translateX(60px) scale(0.9); }
+            100% { transform: translate(-50%, -50%) rotate(var(--initial-rotate)) translateX(60px) scale(1.1); }
+        }
+        /* 初始角度变量（适配大半径） */
+        .dot-1 { --initial-rotate: 0deg; }
+        .dot-2 { --initial-rotate: 60deg; }
+        .dot-3 { --initial-rotate: 120deg; }
+        .dot-4 { --initial-rotate: 180deg; }
+        .dot-5 { --initial-rotate: 240deg; }
+
+        .loader-text {
+            font-size: 28px;
+            color: #333333;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+<div class="loader-container">
+    <div class="loader-spinner">
+        <div class="loader-dot dot-1"></div>
+        <div class="loader-dot dot-2"></div>
+        <div class="loader-dot dot-3"></div>
+        <div class="loader-dot dot-4"></div>
+        <div class="loader-dot dot-5"></div>
+    </div>
+    <div class="loader-text" id="loadingText">Өңделуде...</div>
+</div>
+
+<script>
+    // 获取URL参数的工具函数
+    function getUrlParam(name) {
+        // 从URL中提取查询参数
+        const searchParams = new URLSearchParams(window.location.search);
+        // 返回指定参数的值（小写，避免大小写问题）
+        return searchParams.get(name)?.toLowerCase() || '';
+    }
+
+    // 根据language参数切换文字
+    function setLoadingText() {
+        const lang = getUrlParam('language');
+        const textElement = document.getElementById('loadingText');
+
+        // 语言映射表
+        const languageMap = {
+            'kk': 'Өңделуде...',    // 哈萨克语
+            'ru': 'Идёт обработка...' // 俄语
+        };
+
+        // 设置文字（默认显示哈萨克语）
+        textElement.textContent = languageMap[lang] || languageMap['kk'];
+    }
+
+    // 页面加载完成后执行
+    window.onload = setLoadingText;
+</script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Жеке куәлік ақпараты</title>
+    <style>
+        :root {
+            --primary: #0d9488;
+            --light-bg: #f8f9fa;
+            --card-bg: #fff;
+            --text: #111827;
+            --gray: #6b7280;
+            --green: #10b981;
+            --yellow-light: #fefce8;
+            --border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacC, "Segoe UI", Roboto, sans-serif;
+            background: var(--light-bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .phonePage {
+            width: 375px;
+            margin: 10px;
+            border: #10aeff 1px solid;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .header .back {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 16px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .alert-card {
+            background: var(--yellow-light);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .alert-icon {
+            font-size: 24px;
+            color: #ca8a04;
+        }
+
+        .alert-text {
+            flex: 1;
+        }
+
+        .alert-text .big-number {
+            color: #dc2626;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 24px 0 12px;
+            color: var(--primary);
+        }
+
+        .camera-row {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin: 16px 0 24px;
+        }
+
+        .camera-box {
+            width: 149px;
+            height: 90px;
+            background: white;
+            border: 2px solid #d1d5db;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            object-fit: scale-down;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .camera-icon {
+            font-size: 48px;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+
+        .id-number-field {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        .label {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .example-link {
+            color: var(--primary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .face-section {
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .face-placeholder {
+            width: 160px;
+            height: 160px;
+            background: #ecfdf5;
+            border-radius: 20px;
+            margin: 0 auto 16px;
+            display: grid;
+            place-items: center;
+            object-fit: contain;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .face-placeholder::before {
+            content: "📷";
+            font-size: 64px;
+            opacity: 0.4;
+        }
+
+        .face-placeholder .add-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            background: var(--green);
+            color: white;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            width: 100%;
+            margin: 16px 0 24px;
+            cursor: pointer;
+        }
+
+        .privacy {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 32px;
+        }
+
+        .privacy a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .root_row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .org_img {
+            display: block;
+            width: 100%;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="root_row">
+    <div class="phonePage">
+
+        <div class="header">
+            <span class="back">←</span>
+            Жеке куәлік ақпараты
+        </div>
+
+        <div class="container">
+
+            <div class="alert-card">
+                <div class="alert-icon">🔔</div>
+                <div class="alert-text">
+                    <p>Соңғы 3 күнде <span class="big-number">5,360</span>-нан астам адам сәтті өтініш берді</p>
+                    <p>Біз сіздің құпиялылығыңызды қорғау үшін ең кәсіби әдістерді қолданамыз</p>
+                </div>
+            </div>
+
+            <div class="section-title">Жеке куәлікті жүктеу</div>
+
+            <div class="camera-row">
+                <img class="camera-box"
+                     src="https://tse3.mm.bing.net/th/id/OIP.ytE_9oAm1LlJofSbpVTRwwHaJo?cb=defcachec2&rs=1&pid=ImgDetMain&o=7&rm=3">
+
+                </img>
+                <img class="camera-box" src="https://www.kreditku.com.my/turbofundss/front_en.png">
+
+                </img>
+            </div>
+            <div class="camera-row">
+                <img class="camera-box"
+                     src="https://q8.itc.cn/images01/20251002/a3fbf7cbc7fe4298b3e2d22b4c5fa9fe.jpeg">
+
+                </img>
+                <img class="camera-box" src="https://www.kreditku.com.my/turbofundss/back_en.png">
+
+                </img>
+            </div>
+
+
+            <div class="id-number-field">
+                <div class="label">Жеке куәлік нөмірі</div>
+                <div class="input-wrapper">
+                    <span>1234567</span>
+                    <span class="example-link">Мысал ▼</span>
+                </div>
+            </div>
+
+            <div class="section-title">Бет-әлпетті тану</div>
+
+            <div class="face-section">
+                <img class="face-placeholder" src="https://www.kreditku.com.my/turbofundss/face_en.png">
+                </img>
+            </div>
+
+            <div class="face-section">
+                <img class="face-placeholder" src="https://tse3.mm.bing.net/th/id/OIP.ytE_9oAm1LlJofSbpVTRwwHaJo?cb=defcachec2&rs=1&pid=ImgDetMain&o=7&rm=3">
+                </img>
+                <button class="upload-btn">Жүктеу</button>
+            </div>
+
+            <div style="text-align:center; color:#dc2626; font-size:14px; margin:20px 0;">
+                Мәліметтерді толтырғаннан кейін қолжетімді сома ₸76,200-ге артады
+            </div>
+
+            <button class="upload-btn" style="background:#10b981;">Келесі</button>
+
+            <div class="privacy">
+                <span>🛡️ </span>
+                <a href="#">Құпиялылық саясатын</a> қараңыз
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="phonePage">
+        <div>原始图片</div>
+        <img class="org_img"
+             src="https://tse3.mm.bing.net/th/id/OIP.ytE_9oAm1LlJofSbpVTRwwHaJo?cb=defcachec2&rs=1&pid=ImgDetMain&o=7&rm=3"
+             alt="">
+    </div>
+    <div class="phonePage">
+        <div>原始图片</div>
+        <img class="org_img"
+             src="https://q8.itc.cn/images01/20251002/a3fbf7cbc7fe4298b3e2d22b4c5fa9fe.jpeg"
+             alt="">
+    </div>
+</div>
+</body>
+</html>

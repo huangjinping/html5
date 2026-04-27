@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>BlazeFace 极简活体识别</title>
+    <script src="js/tf.min.js"></script>
+    <script src="js/blazeface.min.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: #f0f2f5; margin: 0; padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); }
+        h2 { margin: 8px 0 12px; font-size: 18px; text-align: center; }
+        #container { position: relative; width: min(92vw, 640px); aspect-ratio: 4 / 3; border: 5px solid #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background: #000; }
+        video, canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        video { object-fit: cover; }
+        canvas { z-index: 10; }
+        #status { margin-top: 14px; font-size: 16px; font-weight: 700; color: #333; text-align: center; }
+        .success { color: #2ecc71 !important; }
+        .hint { color: #3498db; }
+    </style>
+</head>
+<body>
+
+<h2>活体识别：请根据提示摇头 + 点头</h2>
+
+<div id="container">
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="canvas"></canvas>
+</div>
+
+<div id="status">正在加载模型...</div>
+
+<script>
+
+
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const statusDiv = document.getElementById('status');
+    const container = document.getElementById('container');
+
+    let model;
+    let livenessStep = 'START'; // 状态机: START -> LOOK_LEFT -> LOOK_RIGHT -> NOD -> SUCCESS
+    let nodPhase = 'WAIT_DOWN';
+    let nodBaselineNoseY = null;
+
+    // 1. 初始化摄像头
+    async function setupCamera() {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: 'user',
+                width: { ideal: 640 },
+                height: { ideal: 480 }
+            }
+        });
+        video.srcObject = stream;
+        await new Promise((resolve) => video.onloadedmetadata = resolve);
+
+        const w = video.videoWidth || 640;
+        const h = video.videoHeight || 480;
+        canvas.width = w;
+        canvas.height = h;
+        container.style.aspectRatio = `${w} / ${h}`;
+    }
+
+    // 2. 核心逻辑：检测与判断
+    async function detect() {
+        const predictions = await model.estimateFaces(video, false);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (predictions.length > 0) {
+            const pred = predictions[0];
+            const points = pred.landmarks; // [右眼, 左眼, 鼻尖, 嘴, 右耳, 左耳]
+
+            // 绘制关键点（可选，调试用）
+            ctx.fillStyle = "#00FF00";
+            points.forEach(p => ctx.fillRect(p[0], p[1], 4, 4));
+
+            // --- 活体判断算法 ---
+            // 原理：计算鼻尖点(Index 2) 在两耳(Index 4, 5) 之间的比例
+            const rightEarX = points[4][0];
+            const leftEarX = points[5][0];
+            const noseX = points[2][0];
+
+            // 归一化比例：0.5 表示在中间，越接近 1 表示越向左转，越接近 0 表示越向右转
+            const headTurnRatio = (noseX - rightEarX) / (leftEarX - rightEarX);
+
+            updateLivenessState(headTurnRatio, points);
+        }
+
+        requestAnimationFrame(detect);
+    }
+
+    // 3. 简单的状态机逻辑
+    function updateLivenessState(ratio, points) {
+        if (livenessStep === 'SUCCESS') return;
+
+        if (livenessStep === 'START') {
+            statusDiv.innerText = "请向【左】转头";
+            statusDiv.className = "hint";
+            if (ratio > 0.7) livenessStep = 'LOOK_LEFT'; // 比例偏向一侧
+        }
+        else if (livenessStep === 'LOOK_LEFT') {
+            statusDiv.innerText = "完成！现在向【右】转头";
+            if (ratio < 0.3) livenessStep = 'LOOK_RIGHT';
+        }
+        else if (livenessStep === 'LOOK_RIGHT') {
+            statusDiv.innerText = "完成！现在请【点头】一次";
+            if (ratio > 0.45 && ratio < 0.55) {
+                livenessStep = 'NOD';
+                nodPhase = 'WAIT_DOWN';
+                nodBaselineNoseY = null;
+            }
+        }
+        else if (livenessStep === 'NOD') {
+            if (!points || points.length < 4) return;
+
+            const rightEye = points[0];
+            const leftEye = points[1];
+            const nose = points[2];
+            const mouth = points[3];
+
+            const eyeY = (rightEye[1] + leftEye[1]) / 2;
+            const mouthY = mouth[1];
+            const faceScale = Math.max(1, Math.abs(mouthY - eyeY));
+
+            if (nodBaselineNoseY === null) nodBaselineNoseY = nose[1];
+
+            const delta = (nose[1] - nodBaselineNoseY) / faceScale;
+
+            if (nodPhase === 'WAIT_DOWN') {
+                if (delta > 0.18) nodPhase = 'WAIT_UP';
+            } else if (nodPhase === 'WAIT_UP') {
+                if (delta < 0.08) {
+                    statusDiv.innerText = "🎉 验证成功：是活人！";
+                    statusDiv.className = "success";
+                    livenessStep = 'SUCCESS';
+                }
+            }
+        }
+    }
+
+    // 入口
+    (async () => {
+        await setupCamera();
+        statusDiv.innerText = "模型加载中...";
+        // model = await blazeface.load();
+
+        async function loadOfflineModel() {
+            // 关键点：在 load 方法中传入本地 model.json 的路径
+            return await blazeface.load({
+                modelUrl: './models/model.json'
+            });
+        }
+
+        model = await loadOfflineModel();
+        console.log("本地模型加载成功");
+
+        statusDiv.innerText = "请正对摄像头";
+
+
+
+        detect();
+    })();
+</script>
+</body>
+</html>

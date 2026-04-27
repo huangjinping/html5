@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>动作活体检测</title>
+</head>
+<body>
+<video id="video" width="640" height="480" autoplay playsinline></video>
+<button onclick="startDetection()">开始活体检测</button>
+<script>
+    const video = document.getElementById('video');
+    let mediaRecorder;
+    let recordedChunks = [];
+
+    async function startCamera() {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+    }
+
+    async function startDetection() {
+        startCamera();
+        mediaRecorder = new MediaRecorder(video.srcObject);
+        mediaRecorder.start();
+        recordedChunks = [];
+
+        mediaRecorder.ondataavailable = event => {
+            recordedChunks.push(event.data);
+        };
+
+        // 提示用户执行动作
+        alert('请执行点头动作');
+        setTimeout(() => {
+            mediaRecorder.stop();
+            sendVideoToBackend();
+        }, 5000); // 假设用户有5秒时间执行动作
+    }
+
+    function sendVideoToBackend() {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const formData = new FormData();
+        formData.append('video', blob);
+
+        fetch('/api/action-liveness-check', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.liveness) {
+                    alert('活体检测通过');
+                } else {
+                    alert('活体检测未通过');
+                }
+            })
+            .catch(error => console.error('请求失败:', error));
+    }
+
+    startCamera();
+</script>
+</body>
+</html>

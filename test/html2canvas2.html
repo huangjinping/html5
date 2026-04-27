@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>截取Body为图片（右侧悬浮下载）</title>
+    <!-- 引入html2canvas库 -->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>-->
+    <script src="html2canvas.min.js"></script>
+    <style>
+        /* 页面基础样式 */
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            min-height: 100vh; /* 保证body高度铺满屏幕 */
+        }
+
+        .demo-box {
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(45deg, #4285f4, #34a853);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        #screenshotBtn {
+            padding: 10px 20px;
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #screenshotBtn:hover {
+            background: #3367d6;
+        }
+
+        /* 右侧悬浮下载层样式 */
+        .download-float {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            width: 200px;
+            display: none; /* 初始隐藏 */
+        }
+
+        .download-float img {
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .download-float a {
+            display: block;
+            text-align: center;
+            padding: 8px 0;
+            background: #4285f4;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .download-float a:hover {
+            background: #3367d6;
+        }
+    </style>
+</head>
+<body>
+<h1>页面截图示例</h1>
+<div class="demo-box">测试截图区域</div>
+<p>这是body内的普通文本内容</p>
+
+<!-- 截图触发按钮 -->
+<button id="screenshotBtn">截取Body为图片</button>
+
+<!-- 右侧悬浮下载层 -->
+<div class="download-float" id="downloadFloat">
+    <img id="floatImg" alt="截图预览">
+    <a id="floatDownloadLink" download="body截图.png">下载图片</a>
+</div>
+
+
+<script>
+    // 获取DOM元素
+    const screenshotBtn = document.getElementById('screenshotBtn');
+    const downloadFloat = document.getElementById('downloadFloat');
+    const floatImg = document.getElementById('floatImg');
+    const floatDownloadLink = document.getElementById('floatDownloadLink');
+
+    // 截图核心逻辑
+    screenshotBtn.addEventListener('click', async () => {
+        try {
+            // 1. 截取body元素
+            const canvas = await html2canvas(document.body, {
+                scale: window.devicePixelRatio, // 高清屏适配
+                useCORS: true, // 允许跨域图片
+                logging: false,
+                backgroundColor: '#ffffff'
+            });
+
+            // 2. 转换为图片URL
+            const imgUrl = canvas.toDataURL('image/png');
+
+            // 3. 填充悬浮层内容并显示
+            floatImg.src = imgUrl;
+            floatDownloadLink.href = imgUrl;
+            downloadFloat.style.display = 'block';
+
+        } catch (error) {
+            console.error('截图失败：', error);
+            alert('截图失败，请重试！');
+        }
+    });
+
+    // 监听下载链接点击，完成后移除悬浮层
+    floatDownloadLink.addEventListener('click', () => {
+        // 延迟移除（确保下载触发完成）
+        setTimeout(() => {
+            downloadFloat.style.display = 'none'; // 隐藏悬浮层
+            // 可选：清空图片URL释放内存
+            floatImg.src = '';
+            floatDownloadLink.href = '';
+        }, 500);
+    });
+</script>
+</body>
+</html>

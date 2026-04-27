@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>BlazeFace 活体检测 - 最终兼容版</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface@0.0.7"></script>
+
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: #f0f2f5; padding: 20px; }
+        .view-box { position: relative; width: 640px; height: 480px; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+        video, canvas { position: absolute; top: 0; left: 0; width: 640px; height: 480px; transform: scaleX(-1); }
+        #status { margin-top: 20px; padding: 15px; width: 610px; text-align: center; font-size: 19px; font-weight: bold; border-radius: 8px; background: #fff; border-left: 6px solid #95a5a6; }
+        .success { border-left-color: #2ecc71 !important; color: #2ecc71; }
+        .active { border-left-color: #3498db !important; color: #3498db; }
+        .error { border-left-color: #e74c3c !important; color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+<h2>活体识别：请正对摄像头</h2>
+<div class="view-box">
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="canvas"></canvas>
+</div>
+<div id="status">正在加载底层引擎...</div>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const statusDiv = document.getElementById('status');
+
+    let model;
+    let step = 0; // 0:正对, 1:左转, 2:右转, 3:成功
+
+    async function init() {
+        try {
+            // A. 环境检查
+            if (typeof blazeface === 'undefined') {
+                throw new Error("BlazeFace 脚本未加载，请检查网络连接");
+            }
+
+            statusDiv.innerText = "正在请求摄像头权限...";
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            await new Promise(r => video.onloadedmetadata = r);
+
+            // B. 直接加载模型 (避开 createDetector 接口)
+            statusDiv.innerText = "正在下载 AI 模型权重...";
+            model = await blazeface.load();
+
+            statusDiv.innerText = "√ 准备就绪：请正对屏幕中心";
+            statusDiv.className = "active";
+            detect();
+        } catch (err) {
+            statusDiv.innerText = "初始化失败: " + err.message;
+            statusDiv.className = "error";
+            console.error(err);
+        }
+    }
+
+    async function detect() {
+        if (step === 3) return;
+
+        // C. 执行检测
+        // returnTensors: false 提高性能
+        const predictions = await model.estimateFaces(video, false);
+
+        ctx.clearRect(0, 0, 640, 480);
+
+        if (predictions.length > 0) {
+            // 独立版数据结构: predictions[0].landmarks
+            // [0:右眼, 1:左眼, 2:鼻尖, 3:嘴, 4:右耳, 5:左耳]
+            const landmarks = predictions[0].landmarks;
+
+            draw(landmarks);
+
+            const noseX = landmarks[2][0];
+            const rEarX = landmarks[4][0];
+            const lEarX = landmarks[5][0];
+
+            // 计算比例
+            const ratio = (noseX - rEarX) / (lEarX - rEarX);
+            updateLiveness(ratio);
+        } else {
+            if (step !== 3) statusDiv.innerText = "未检测到人脸，请靠近一点";
+        }
+
+        requestAnimationFrame(detect);
+    }
+
+    function updateLiveness(ratio) {
+        // 阈值判定
+        if (step === 0 && ratio > 0.4 && ratio < 0.6) {
+            statusDiv.innerText = "√ 已定位！请缓慢向【左】侧转头";
+            step = 1;
+        } else if (step === 1 && ratio > 0.8) {
+            statusDiv.innerText = "好，请缓慢向【右】侧转头";
+            step = 2;
+        } else if (step === 2 && ratio < 0.2) {
+            statusDiv.innerText = "🎉 验证成功：是活人！";
+            statusDiv.className = "success";
+            step = 3;
+        }
+    }
+
+    function draw(landmarks) {
+        ctx.fillStyle = "#00FF00";
+        // 绘制关键点辅助 (2鼻尖, 4右耳, 5左耳)
+        [2, 4, 5].forEach(i => {
+            ctx.beginPath();
+            ctx.arc(landmarks[i][0], landmarks[i][1], 5, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>

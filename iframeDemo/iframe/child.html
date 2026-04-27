@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>iframe 子页面</title>
+    <style>
+        body { background: #f5f5f5; padding: 20px; }
+    </style>
+</head>
+<body>
+<h2 id="childTitle">iframe 子页面</h2>
+<button onclick="callParentFunction()">调用父页面函数</button>
+<button onclick="modifyParentDOM()">修改父页面 DOM</button>
+<button onclick="changeUrl()">跳转到外站点</button>
+
+<script>
+    // 供父页面调用的子页面函数（暴露给父页面）
+    function childSayHello(msg) {
+        alert(`子页面收到父页面消息：${msg}`);
+    }
+
+    // 1. 调用父页面的函数
+    function callParentFunction() {
+        // 格式：parent.父页面函数名(参数) 或 top.父页面函数名(参数)
+        // parent：直接父页面；top：最顶层父页面（多层 iframe 时用）
+        parent.parentReceiveMsg('来自 iframe 子页面的问候');
+    }
+
+    function  changeUrl(){
+        window.location.href="https://www.baidu.com";
+    }
+
+    // 2. 修改父页面的 DOM
+    function modifyParentDOM() {
+        // 访问父页面的 DOM 元素（通过 parent.document）
+        const parentTitle = parent.document.querySelector('h1');
+        parentTitle.style.color = 'blue';
+        parentTitle.textContent = 'iframe 子页面修改了我的标题！';
+    }
+</script>
+</body>
+</html>

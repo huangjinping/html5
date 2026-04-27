@@ -1,0 +1,16 @@
+:root {
+  --main-bg-color: #015fad;
+  --font-color: #fff ;
+}
+
+.entirety {
+  color: #000 !important;
+}
+.backdrop {
+  background-color: var(--main-bg-color) !important;
+  color: var(--font-color) !important;
+}
+.faqbackdrop {
+  background-color: var(--main-bg-color) !important;
+  color: var(--font-color);
+}

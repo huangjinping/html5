@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>TF.js 活体检测</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.14.0"></script>
+    <!-- 活体模型 -->
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/anti-spoofing"></script>
+</head>
+<body>
+<video id="video" autoplay playsinline width="320"></video>
+<canvas id="canvas" width="320" height="240"></canvas>
+<div id="result">活体分数：--</div>
+
+<script>
+    let model;
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 1. 打开摄像头
+    async function setupCamera() {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: 320, height: 240, facingMode: 'user' }
+        });
+        video.srcObject = stream;
+        return new Promise(resolve => {
+            video.onloadedmetadata = () => resolve(video);
+        });
+    }
+
+    // 2. 加载活体模型
+    async function loadModel() {
+        model = await tf.loadGraphModel(
+            './modules'
+        );
+    }
+
+    // 3. 实时预测
+    async function detect() {
+        ctx.drawImage(video, 0, 0, 320, 240);
+        // 简化：直接整图送入（实际应先crop人脸）
+        const tensor = tf.browser.fromPixels(canvas)
+            .resizeNearestNeighbor([128, 128])
+            .toFloat()
+            .div(255.0)
+            .expandDims(0);
+
+        const predictions = await model.predict(tensor).data();
+        const score = predictions[0]; // 0～1
+        document.getElementById('result').innerText =
+            `活体分数：${score.toFixed(2)} ${score > 0.5 ? '（真人）' : '（假体）'}`;
+
+        tf.dispose(tensor);
+        requestAnimationFrame(detect);
+    }
+
+    // 启动
+    (async () => {
+        await setupCamera();
+        await loadModel();
+        detect();
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>TensorFlow.js 活体识别演示 | 动作指令 + 防伪检测</title>
+    <!-- 加载 TensorFlow.js 核心库 (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+    <!-- 加载 modern-face-api (基于 TensorFlow.js 的人脸检测与关键点库) -->
+    <script src="https://cdn.jsdelivr.net/npm/modern-face-api@0.22.5/dist/face-api.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #1a2a3a 0%, #0f1a24 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .card {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.15);
+            overflow: hidden;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #FFFFFF, #B0E0FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .sub {
+            text-align: center;
+            color: #b8d0e8;
+            margin-bottom: 28px;
+            font-size: 0.85rem;
+            border-bottom: 1px dashed rgba(255,255,255,0.2);
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+            padding-bottom: 6px;
+        }
+
+        .video-container {
+            position: relative;
+            background: #000000;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            margin-bottom: 24px;
+            aspect-ratio: 4 / 3;
+            width: 100%;
+        }
+
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);  /* 镜像效果，更自然 */
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        .status-panel {
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .liveness-badge {
+            background: #2c3e4e;
+            border-radius: 32px;
+            padding: 6px 16px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #c0e0ff;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .liveness-badge span:first-child {
+            font-weight: normal;
+            opacity: 0.7;
+        }
+
+        .instruction {
+            background: #1e2f3c;
+            border-radius: 40px;
+            padding: 10px 18px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #FFE6B0;
+            text-align: center;
+            flex: 1;
+            font-family: monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        button {
+            background: #2c4b63;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        button:hover {
+            background: #3e6a8a;
+            transform: scale(1.02);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .reset-btn {
+            background: #5a3c2c;
+        }
+
+        .reset-btn:hover {
+            background: #7a5038;
+        }
+
+        .info {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 24px;
+            color: #7e9ab0;
+        }
+
+        .action-log {
+            background: #07121b80;
+            border-radius: 20px;
+            padding: 10px 16px;
+            margin-top: 16px;
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: #c0e0ff;
+            max-height: 70px;
+            overflow-y: auto;
+        }
+
+        .fake-warning {
+            color: #ffb347;
+            font-weight: bold;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>✨ 活体识别 · 多模态检测</h1>
+    <div style="text-align: center;">
+        <div class="sub">🔐 TensorFlow.js + modern-face-api | 动作指令 + 防伪分析</div>
+    </div>
+
+    <div class="video-container">
+        <video id="webcam" autoplay playsinline muted></video>
+        <canvas id="overlayCanvas"></canvas>
+    </div>
+
+    <div class="status-panel">
+        <div class="liveness-badge">
+            <span>🔍 活体状态:</span>
+            <span id="liveStatusText">⏳ 等待检测</span>
+        </div>
+        <div class="instruction" id="actionInstruction">
+            🎯 请正对摄像头，等待模型加载...
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button id="startBtn">▶ 启动摄像头 & 开始检测</button>
+        <button id="resetActionBtn" class="reset-btn">🔄 重置动作序列</button>
+    </div>
+    <div class="action-log" id="actionLog">
+        📋 [系统] 页面已加载。点击「启动摄像头」开始体验。
+    </div>
+    <div class="info">
+        ⚡ 技术栈: TensorFlow.js + modern-face-api (人脸检测+68关键点)<br>
+        🧪 活体策略: 眨眼检测 + 张嘴检测 + 摇头感知 + 基础防伪得分 (回放/照片提醒)
+    </div>
+</div>
+
+<script>
+    // ----------------------------------------------
+    // 1. 全局变量与配置
+    // ----------------------------------------------
+    let video = document.getElementById('webcam');
+    let canvas = document.getElementById('overlayCanvas');
+    let ctx = canvas.getContext('2d');
+
+    let isModelLoaded = false;
+    let detectionInterval = null;       // requestAnimationFrame ID
+    let isDetecting = false;
+
+    // 动作序列管理 (模拟活体动作指令)
+    const actionsSequence = ['BLINK', 'MOUTH_OPEN', 'HEAD_TURN'];   // 眨眼 -> 张嘴 -> 轻微转头 (摇头)
+    let currentActionIndex = 0;
+    let actionCompleted = false;         // 当前动作是否已完成
+    let lastActionTriggerTime = 0;
+    let antiSpoofingScore = 0.5;         // 0~1 真人倾向性 (基础启发式)
+    let lastFaceBox = null;               // 用于头部晃动检测
+
+    // 状态标志
+    let livenessPassed = false;           // 是否全部动作通过
+    let blinkDetectedFlag = false;
+    let mouthOpenFlag = false;
+    let headMoveDetectedFlag = false;
+
+    // 关键指标辅助 (眨眼/张嘴判断阈值)
+    let leftEyeRatio = 0;
+    let rightEyeRatio = 0;
+    let mouthAspectRatio = 0;
+    let previousNoseX = null;
+    let headTurnAccumulated = false;
+
+    // DOM 元素
+    const liveStatusSpan = document.getElementById('liveStatusText');
+    const actionInstructionDiv = document.getElementById('actionInstruction');
+    const actionLogDiv = document.getElementById('actionLog');
+
+    // 辅助log
+    function addLog(msg, isWarning = false) {
+        const logEntry = document.createElement('div');
+        logEntry.innerHTML = `📌 ${new Date().toLocaleTimeString()} - ${msg}`;
+        if (isWarning) logEntry.style.color = "#ffb56b";
+        actionLogDiv.appendChild(logEntry);
+        actionLogDiv.scrollTop = actionLogDiv.scrollHeight;
+        while(actionLogDiv.children.length > 12) actionLogDiv.removeChild(actionLogDiv.firstChild);
+    }
+
+    // 更新UI状态
+    function updateUI() {
+        if (livenessPassed) {
+            liveStatusSpan.innerHTML = '✅ 活体验证通过';
+            liveStatusSpan.style.color = "#a0ffa0";
+            actionInstructionDiv.innerHTML = '🎉 认证成功！所有动作已完成';
+        } else if (currentActionIndex < actionsSequence.length) {
+            let actionText = '';
+            switch(actionsSequence[currentActionIndex]) {
+                case 'BLINK': actionText = '😉 请眨眼一下'; break;
+                case 'MOUTH_OPEN': actionText = '😲 请张开嘴巴'; break;
+                case 'HEAD_TURN': actionText = '🔄 请轻轻左右摇头'; break;
+                default: actionText = '请配合动作';
+            }
+            actionInstructionDiv.innerHTML = `🎭 当前动作 [${currentActionIndex+1}/${actionsSequence.length}] : ${actionText}`;
+            if(antiSpoofingScore < 0.4) {
+                liveStatusSpan.innerHTML = `⚠️ 疑似非活体 (照片/屏幕) 得分:${antiSpoofingScore.toFixed(2)}`;
+                liveStatusSpan.style.color = "#ffaa66";
+            } else {
+                liveStatusSpan.innerHTML = `👤 人脸检测中 | 防伪分:${antiSpoofingScore.toFixed(2)}`;
+                liveStatusSpan.style.color = "#b8f2ff";
+            }
+        } else {
+            if(!livenessPassed) {
+                livenessPassed = true;
+                addLog("✅ 所有活体动作已成功完成！验证通过。", false);
+                liveStatusSpan.innerHTML = '✅ 活体验证通过';
+                actionInstructionDiv.innerHTML = '🏆 验证成功！您是真实用户';
+            }
+        }
+    }
+
+    // --------------------------------------------------
+    // 2. 眨眼检测 (基于眼睛关键点纵宽比)
+    // 人脸关键点索引: 左眼区域 36-41, 右眼区域 42-47
+    // 简单纵宽比: (上眼睑-下眼睑) 归一化
+    function computeEyeAspectRatio(landmarks, leftEyeIndices, rightEyeIndices) {
+        function getDistance(p1, p2) {
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            return Math.sqrt(dx*dx + dy*dy);
+        }
+        // 左眼: 取上下关键点 (例如 37-41 垂直距离 / 水平宽度)
+        const leftUpper = landmarks[leftEyeIndices[1]];   // 上眼睑
+        const leftLower = landmarks[leftEyeIndices[4]];   // 下眼睑
+        const leftCorner1 = landmarks[leftEyeIndices[0]];
+        const leftCorner2 = landmarks[leftEyeIndices[3]];
+        const leftVertical = getDistance(leftUpper, leftLower);
+        const leftHorizontal = getDistance(leftCorner1, leftCorner2);
+        const leftEAR = leftVertical / (leftHorizontal + 0.001);
+
+        const rightUpper = landmarks[rightEyeIndices[1]];
+        const rightLower = landmarks[rightEyeIndices[4]];
+        const rightCorner1 = landmarks[rightEyeIndices[0]];
+        const rightCorner2 = landmarks[rightEyeIndices[3]];
+        const rightVertical = getDistance(rightUpper, rightLower);
+        const rightHorizontal = getDistance(rightCorner1, rightCorner2);
+        const rightEAR = rightVertical / (rightHorizontal + 0.001);
+        return (leftEAR + rightEAR) / 2;
+    }
+
+    // 张嘴检测 (嘴部纵横比 MAR)
+    function computeMouthAspectRatio(landmarks, mouthIndices) {
+        // 嘴部关键点: 61, 62, 63, 64, 65, 66, 67, 68? 根据face-api 68点: 61-68 是嘴唇周围
+        // 取上嘴唇中心 (62) 下嘴唇中心 (66) 以及左右嘴角 (60, 64)
+        const upperLip = landmarks[62];
+        const lowerLip = landmarks[66];
+        const leftCorner = landmarks[60];
+        const rightCorner = landmarks[64];
+        const vertical = Math.hypot(upperLip.x - lowerLip.x, upperLip.y - lowerLip.y);
+        const horizontal = Math.hypot(leftCorner.x - rightCorner.x, leftCorner.y - rightCorner.y);
+        return vertical / (horizontal + 0.001);
+    }
+
+    // 摇头/转头检测: 根据鼻尖 x 位移相对人脸宽度的变化
+    function detectHeadTurn(faceBox, noseX) {
+        if(!lastFaceBox || !previousNoseX) {
+            lastFaceBox = faceBox;
+            previousNoseX = noseX;
+            return false;
+        }
+        const faceWidth = faceBox.width;
+        if(faceWidth < 5) return false;
+        const deltaX = Math.abs(noseX - previousNoseX);
+        const normalizedDelta = deltaX / faceWidth;
+        // 如果鼻尖横向移动超过人脸宽度的 8% 视为摇头动作
+        const isTurn = normalizedDelta > 0.08;
+        if(isTurn) {
+            addLog("🔄 检测到头部转动 (左右摇头动作)", false);
+        }
+        // 更新历史
+        lastFaceBox = faceBox;
+        previousNoseX = noseX;
+        return isTurn;
+    }
+
+    // 简单的启发式防伪(低配版): 结合眨眼频率、张嘴变化等, 增加照片攻击弱感知
+    // 真实场景可以叠加 TensorFlow.js 防伪模型，此处加入微弱的反光逻辑提醒
+    function updateAntiSpoofHeuristic(blinkRecently, mouthChanged, headMoved) {
+        let baseScore = 0.5;
+        if(blinkRecently) baseScore += 0.2;
+        if(mouthChanged) baseScore += 0.15;
+        if(headMoved) baseScore += 0.15;
+        // 如果没有任何动作持续低于阈值，降低防伪分
+        if(!blinkRecently && !mouthChanged && !headMoved) baseScore -= 0.05;
+        baseScore = Math.min(0.98, Math.max(0.15, baseScore));
+        antiSpoofingScore = antiSpoofingScore * 0.7 + baseScore * 0.3;
+        if(antiSpoofingScore < 0.35) {
+            addLog("⚠️ 防伪分偏低，可能存在照片/屏幕回放攻击，请注意！", true);
+        }
+    }
+
+    // 动作状态重置
+    function resetActionSequence() {
+        currentActionIndex = 0;
+        livenessPassed = false;
+        blinkDetectedFlag = false;
+        mouthOpenFlag = false;
+        headMoveDetectedFlag = false;
+        actionCompleted = false;
+        previousNoseX = null;
+        lastFaceBox = null;
+        addLog("🔄 动作序列已重置，请重新配合活体检测。", false);
+        updateUI();
+    }
+
+    // 记录动作完成
+    function advanceAction() {
+        if(livenessPassed) return;
+        if(currentActionIndex < actionsSequence.length) {
+            addLog(`✅ 动作 " ${actionsSequence[currentActionIndex]} " 验证通过！`, false);
+            currentActionIndex++;
+            if(currentActionIndex >= actionsSequence.length) {
+                livenessPassed = true;
+                addLog("🎉 全部活体动作完成，身份验证通过！", false);
+                updateUI();
+                return;
+            }
+            // 重置当前动作相关标志
+            if(actionsSequence[currentActionIndex] === 'BLINK') blinkDetectedFlag = false;
+            if(actionsSequence[currentActionIndex] === 'MOUTH_OPEN') mouthOpenFlag = false;
+            if(actionsSequence[currentActionIndex] === 'HEAD_TURN') headMoveDetectedFlag = false;
+            updateUI();
+        }
+    }
+
+    // ----------------------------------------------
+    // 3. 核心检测循环 (从视频流中检测人脸+关键点)
+    // ----------------------------------------------
+    async function startDetectionLoop() {
+        if(!isModelLoaded) {
+            addLog("模型未加载完成，请稍后再试...", true);
+            return;
+        }
+        if(isDetecting) return;
+        isDetecting = true;
+
+        async function detectFrame() {
+            if(!isDetecting) return;
+            if(!video || video.readyState !== 4) {
+                requestAnimationFrame(detectFrame);
+                return;
+            }
+
+            // 使用 modern-face-api 检测单个人脸 + 68 关键点 (性能优先)
+            let detection = null;
+            try {
+                detection = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
+                    .withFaceLandmarks();
+            } catch(e) {
+                // 偶尔错误继续执行
+                requestAnimationFrame(detectFrame);
+                return;
+            }
+
+            // 清空canvas并绘制
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if(canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+            }
+
+            if(detection && detection.landmarks) {
+                const landmarks = detection.landmarks;
+                const landmarksPositions = landmarks.positions;
+                const box = detection.detection.box;
+                const nose = landmarksPositions[30];  // 鼻尖索引 30
+
+                // 绘制人脸框 + 关键点(简洁)
+                ctx.strokeStyle = "#00ffcc";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(box.x, box.y, box.width, box.height);
+                // 绘制简单关键点 (眼睛、嘴巴轮廓)
+                ctx.fillStyle = "#ffd966";
+                for(let i=0; i<landmarksPositions.length; i+=5) {
+                    ctx.beginPath();
+                    ctx.arc(landmarksPositions[i].x, landmarksPositions[i].y, 1.5, 0, 2*Math.PI);
+                    ctx.fill();
+                }
+
+                // 获取眼部与嘴部指标 (68关键点索引)
+                // 左眼36-41，右眼42-47，嘴部48-67
+                const leftEyeIdx = [36,37,38,39,40,41];
+                const rightEyeIdx = [42,43,44,45,46,47];
+                const mouthIdx = [48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67];
+
+                // 获取眼睛比例 (眨眼检测)
+                const eyeEAR = computeEyeAspectRatio(landmarksPositions, leftEyeIdx, rightEyeIdx);
+                // 正常眼睛EAR 0.2~0.3，眨眼时下降到0.1以下
+                const isBlinking = eyeEAR < 0.18;
+                // 嘴部纵横比
+                const mar = computeMouthAspectRatio(landmarksPositions, mouthIdx);
+                const isMouthOpen = mar > 0.35;   // 张嘴阈值
+
+                // 转头检测: 利用鼻尖X与上一帧位移
+                let headTurn = false;
+                if(box && nose) {
+                    headTurn = detectHeadTurn(box, nose.x);
+                }
+
+                // 动作序列逻辑判断 (非阻塞)
+                if(!livenessPassed && currentActionIndex < actionsSequence.length) {
+                    const currentAction = actionsSequence[currentActionIndex];
+                    if(currentAction === 'BLINK' && isBlinking && !blinkDetectedFlag) {
+                        blinkDetectedFlag = true;
+                        advanceAction();
+                    }
+                    else if(currentAction === 'MOUTH_OPEN' && isMouthOpen && !mouthOpenFlag) {
+                        mouthOpenFlag = true;
+                        advanceAction();
+                    }
+                    else if(currentAction === 'HEAD_TURN' && headTurn && !headMoveDetectedFlag) {
+                        headMoveDetectedFlag = true;
+                        advanceAction();
+                    }
+                }
+
+                // 更新启发式防伪分: 利用眨眼/张嘴/摇头历史动态
+                let blinkRecent = isBlinking;
+                let mouthRecent = isMouthOpen;
+                let headRecent = headTurn;
+                updateAntiSpoofHeuristic(blinkRecent, mouthRecent, headRecent);
+
+                // 额外在canvas上显示实时防伪分
+                ctx.font = "bold 16px 'Segoe UI'";
+                ctx.fillStyle = "#E0FFC0";
+                ctx.shadowBlur = 0;
+                ctx.fillText(`🛡️ 防伪分: ${antiSpoofingScore.toFixed(2)}`, box.x+5, box.y-8);
+                ctx.fillText(`😉 眨眼: ${isBlinking?"✓":"-"}  👄 张嘴: ${isMouthOpen?"✓":"-"}`, box.x+5, box.y+box.height+18);
+
+                // 显示活体动作提示（跟随人脸）
+                if(!livenessPassed && currentActionIndex < actionsSequence.length) {
+                    ctx.fillStyle = "#fff6b0";
+                    ctx.font = "bold 14px monospace";
+                    let actionHint = "";
+                    if(actionsSequence[currentActionIndex] === 'BLINK') actionHint = "😉 请眨眼";
+                    if(actionsSequence[currentActionIndex] === 'MOUTH_OPEN') actionHint = "😲 请张嘴";
+                    if(actionsSequence[currentActionIndex] === 'HEAD_TURN') actionHint = "↻ 左右摇头";
+                    ctx.fillText(actionHint, box.x + box.width/2 - 40, box.y - 18);
+                }
+
+                // 防伪分过低时在画布上警示
+                if(antiSpoofingScore < 0.4) {
+                    ctx.fillStyle = "#ffaa66";
+                    ctx.font = "bold 20px system-ui";
+                    ctx.fillText("⚠️ 疑似照片/屏幕攻击", box.x + 20, box.y + box.height/2);
+                }
+
+            } else {
+                // 无人脸
+                ctx.fillStyle = "#ffffffaa";
+                ctx.font = "16px system-ui";
+                ctx.fillText("😔 未检测到人脸，请面对摄像头", 50, 80);
+                // 降低防伪分
+                antiSpoofingScore = Math.max(0.2, antiSpoofingScore - 0.01);
+            }
+
+            updateUI();
+            requestAnimationFrame(detectFrame);
+        }
+
+        detectFrame();
+    }
+
+    // 停止检测
+    function stopDetection() {
+        isDetecting = false;
+    }
+
+    // 初始化摄像头
+    async function initCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "user" } });
+            video.srcObject = stream;
+            await new Promise((resolve) => {
+                video.onloadedmetadata = () => {
+                    video.play();
+                    resolve();
+                };
+            });
+            addLog("📷 摄像头已启动，准备就绪。", false);
+            return true;
+        } catch(err) {
+            addLog("❌ 无法访问摄像头，请检查权限。" + err.message, true);
+            return false;
+        }
+    }
+
+    // 加载modern-face-api模型 (tinyFaceDetector + 68点关键点)
+    async function loadModels() {
+        addLog("⏳ 正在加载 AI 模型 (TensorFlow.js + modern-face-api)...", false);
+        try {
+            // 使用cdn模型路径 (官方提供预训练模型)
+            const MODEL_URL = 'https://cdn.jsdelivr.net/npm/modern-face-api@0.22.5/weights';
+            await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+            await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+            isModelLoaded = true;
+            addLog("✅ 人脸检测及关键点模型加载成功！", false);
+            updateUI();
+        } catch(e) {
+            addLog("❌ 模型加载失败，请检查网络或CDN。错误："+e.message, true);
+            isModelLoaded = false;
+        }
+    }
+
+    // 完整启动流程
+    async function fullStart() {
+        if(!isModelLoaded) {
+            await loadModels();
+        }
+        const camOk = await initCamera();
+        if(camOk && isModelLoaded) {
+            if(detectionInterval) cancelAnimationFrame(detectionInterval);
+            startDetectionLoop();
+            addLog("🚀 活体检测引擎已启动，请配合屏幕指令完成眨眼、张嘴、转头动作。", false);
+            // 重置序列
+            resetActionSequence();
+        }
+    }
+
+    // 页面绑定按钮事件
+    document.getElementById('startBtn').addEventListener('click', () => {
+        if(isDetecting) {
+            addLog("检测已在运行中，如需重置请先刷新或点击重置动作。", false);
+            return;
+        }
+        fullStart();
+    });
+    document.getElementById('resetActionBtn').addEventListener('click', () => {
+        resetActionSequence();
+        blinkDetectedFlag = false;
+        mouthOpenFlag = false;
+        headMoveDetectedFlag = false;
+        previousNoseX = null;
+        lastFaceBox = null;
+        addLog("重置动作序列，但摄像头及检测持续运行。请按新指令完成动作。", false);
+        updateUI();
+    });
+
+    // 预加载模型 (后台加载，提前预热)
+    (async function preload() {
+        await loadModels();
+        // 页面就绪提示
+        addLog("🎯 模型已就绪，点击「启动摄像头 & 开始检测」体验活体识别。", false);
+    })();
+</script>
+</body>
+</html>

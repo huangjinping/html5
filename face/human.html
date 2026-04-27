@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Human 活体检测 - 修复版</title>
+    <style>
+        body { background: #222; color: white; padding: 20px; text-align: center; }
+        #container { position: relative; display: inline-block; }
+        #video { width: 100%; max-width: 720px; border-radius: 10px; }
+        #canvas { position: absolute; left: 0; top: 0; pointer-events: none; }
+        #status { margin-top: 10px; font-size: 16px; }
+    </style>
+</head>
+
+<body>
+<h2>Human 活体 + 防伪检测</h2>
+<div id="container">
+    <video id="video" autoplay playsinline muted></video>
+    <canvas id="canvas"></canvas>
+</div>
+<div id="status">加载模型中...</div>
+
+<!-- 核心库 -->
+<script src="https://cdn.jsdelivr.net/npm/@vladmandic/human@3.1.0/dist/human.js"></script>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const status = document.getElementById('status');
+    const ctx = canvas.getContext('2d');
+
+    // ==============================================
+    // ✅ 正确模型路径（修复 modelpath error）
+    // ==============================================
+    const human = new Human.Human({
+        modelBasePath: "https://cdn.jsdelivr.net/npm/@vladmandic/human-models/models/",
+        wasmPath: "https://cdn.jsdelivr.net/npm/@vladmandic/human@3.1.0/dist/",
+
+        // 开启活体 + 防伪
+        face: {
+            enabled: true,
+            detector: true,
+            mesh: true,
+            liveness: true,    // 活体
+            antispoof: true,   // 防伪
+            age: true,
+            gender: true,
+            emotion: true
+        },
+        body: false,
+        hand: false,
+        object: false,
+    });
+
+    // 画布自适应
+    function resize() {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+    }
+
+    // 启动摄像头
+    async function camera() {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'user', width: 720, height: 560 }
+        });
+        video.srcObject = stream;
+        return new Promise(r => video.onloadedmetadata = r);
+    }
+
+    // 检测循环
+    async function detect() {
+        if (video.readyState === 4) {
+            const res = await human.detect(video);
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            human.draw.canvas(video, canvas);
+            human.draw.face(canvas, res.face);
+
+            if (res.face[0]) {
+                const f = res.face[0];
+                status.innerText =
+                    `活体: ${f.liveness?.toFixed(2) || 0} | ` +
+                    `防伪: ${f.antispoof?.toFixed(2) || 0} | ` +
+                    `年龄: ${f.age | 0}`;
+            }
+        }
+        requestAnimationFrame(detect);
+    }
+
+    // 启动
+    (async () => {
+        try {
+            await human.load();
+            status.innerText = "模型加载完成，打开摄像头";
+            await camera();
+            resize();
+            detect();
+        } catch (e) {
+            status.innerText = "错误：" + e.message;
+        }
+    })();
+</script>
+</body>
+</html>

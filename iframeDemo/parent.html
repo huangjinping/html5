@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>父页面</title>
+    <style>
+        iframe { width: 800px; height: 300px; border: 1px solid #ccc; margin: 20px 0; }
+        button { margin: 5px; padding: 8px 16px; }
+    </style>
+</head>
+<body>
+<h1>父页面</h1>
+<button onclick="callChildFunction()">调用 iframe 子页面函数</button>
+<button onclick="modifyChildDOM()">修改 iframe 子页面 DOM</button>
+
+<!-- 嵌入 iframe，指定子页面地址 -->
+<iframe id="myIframe" src="iframe/child.html"></iframe>
+
+<script>
+    // 获取 iframe 元素
+    const myIframe = document.getElementById('myIframe');
+
+    // 注意：必须等待 iframe 加载完成后才能交互，否则会报错
+    myIframe.onload = function() {
+        console.log("iframe 加载完成，可以通信了");
+    };
+
+    // 1. 调用 iframe 子页面的函数
+    function callChildFunction() {
+        // 格式：iframeElement.contentWindow.子页面函数名(参数)
+        myIframe.contentWindow.childSayHello('来自父页面的问候');
+    }
+
+    // 2. 修改 iframe 子页面的 DOM
+    function modifyChildDOM() {
+        // 访问子页面的 DOM 元素（通过 contentDocument）
+        const childTitle = myIframe.contentDocument.getElementById('childTitle');
+        childTitle.style.color = 'red';
+        childTitle.textContent = '父页面修改了我的标题！';
+    }
+
+    // 供子页面调用的父页面函数（暴露给子页面）
+    function parentReceiveMsg(msg) {
+        alert(`父页面收到 iframe 消息：${msg}`);
+    }
+
+    // 封装监听iframe URL变化的函数
+    function listenIframeUrlChange(iframe, callback) {
+        // 监听iframe加载完成（页面跳转/刷新触发）
+        iframe.onload = function() {
+            callback(iframe.contentWindow.location.href);
+
+            // 监听popstate事件（前端路由变化触发，如history.pushState）
+            iframe.contentWindow.addEventListener('popstate', function() {
+                callback(iframe.contentWindow.location.href);
+            });
+
+            // 监听hashchange事件（URL哈希变化，如#xxx）
+            iframe.contentWindow.addEventListener('hashchange', function() {
+                callback(iframe.contentWindow.location.href);
+            });
+        };
+    }
+
+    // 调用监听函数
+    listenIframeUrlChange(myIframe, function(newUrl) {
+        console.log('iframe URL更新：', newUrl);
+        // 这里写URL变化后的业务逻辑
+    });
+</script>
+</body>
+</html>

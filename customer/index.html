@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="./js/url.js"></script>
+    <script src="./js/jquery-2.1.1.min.js"></script>
+    <!-- <script src="./js/bootstrap.min.js"></script> -->
+    <script src="./js/Md5ch.js"></script>
+    <link rel="stylesheet" href="./css/uploadImg.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/toast.css">
+    <link rel="stylesheet" href="./css/AllColor.css">
+    <title>Atención al cliente</title>
+</head>
+
+<body>
+
+    <div class="loading">
+
+    </div>
+    <div class="ToastBox" id="toastBox">
+        <div class="content" id=toast>
+
+        </div>
+    </div>
+    <div class="appContainer">
+        <div class="customRow1">
+            <div class="labelRow">
+                <span class="labelIcon backdrop"></span>
+                <span class="labelText">Escriba su pregunta </span>
+                <span class="labelText2 entirety">(al menos 10 caracteres)</span>
+            </div>
+            <div>
+                <textarea class="input5" required="required" oninvalid="setCustomValidity('Por favor, introduzca');"
+                    oninput="setCustomValidity('');" class="textarea1" name="" id="" cols="30" rows="10"
+                    placeholder="Escriba su pregunta…" maxlength="500"
+                    onkeyup="this.value=this.value.replace(/^\s+/,'')"></textarea>
+            </div>
+            <div class="minSpan">
+                <span id="zs">0/500</span>
+            </div>
+        </div>
+        <div class="labelRow">
+            <span class="labelIcon backdrop"></span>
+            <span class="labelText">Subir fotos</span>
+            <span id="zs2">0/6</span>
+        </div>
+
+        <!-- 多图上传 -->
+        <div class="img-box full" style="margin-bottom: 30px;">
+            <section class=" img-section">
+
+                <div class="z_photo upimg-div clear">
+
+                    <section class="z_file fl">
+
+                        <img src="./img/a11.png" class="add-img">
+
+                        <input type="file" name="file" id="file" class="file" value=""
+                            accept="image/jpg,image/jpeg,image/png,image/bmp" />
+                    </section>
+                </div>
+            </section>
+        </div>
+        <div id="buttonX" class="buttonC2">
+            Enviar la pregunta
+        </div>
+    </div>
+    <script>
+        var input5 = document.getElementsByClassName('input5')[0]
+        var buttonX = document.getElementById('buttonX')
+        var submitAcitve = false
+        document.addEventListener("input", function (event) {
+            let Line_feed = input5.value.trim()
+
+            if (Line_feed.length >= 10) {
+                $('#buttonX').addClass('backdrop')
+                buttonX.style.color = "#fff"
+                submitAcitve = true
+            } else {
+                $('#buttonX').removeClass('backdrop')
+                buttonX.style.color = "#fff"
+                submitAcitve = false
+            }
+            if (Line_feed.length >= 500) {
+                zs.innerHTML = '500/500'
+                return
+            }
+            zs.innerHTML = Line_feed.length + '/500'
+        })
+        // --------------------------------------------------------------------------------------------
+        let fileListArr = []
+        let fileCodeArr = []
+        var zs2 = document.getElementById("zs2")
+        $(function () {
+            var delParent;
+            var imgIndex;
+            /*点击图片的文本框*/
+            $(".file").change(function () {
+                $('.boxtime').fadeIn("slow")
+                $(".loading").show()
+                var idFile = $(this).attr("id")
+                var file = document.getElementById(idFile)
+                var imgContainer = $(this).parents(".z_photo") //存放图片的父亲元素
+                fileList = file.files; //获取的图片文件
+                var imgArr = [];
+                //遍历得到的图片文件
+                var numUp = imgContainer.find(".up-section").length;
+                zs2.innerHTML = fileListArr.length + "/6"
+                fileListArr.push(fileList[0])
+                zs2.innerHTML = fileListArr.length + "/6"
+                for (var i = 0; i < fileList.length; i++) {
+                    var imgUrl = window.URL.createObjectURL(fileList[i]);
+                    imgArr.push(imgUrl);
+                    var $section = $(`
+            <section class='up-section fl'>
+            </section>
+            `);
+                    $('.z_file').before($section)
+                    var $mask1 = $("<div class='mask1'>")
+                    var $img0 = $("<img class='close-upimg'  data-id=" + i + " >").on("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        imgIndex = $(this).attr('data-id');
+                        delParent = $(this).parent();
+                        var numUp = delParent.siblings().length;
+                        let indexx = numUp - 1
+                        fileListArr.splice(indexx, 1)
+                        zs2.innerHTML = fileListArr.length + "/6"
+                        if (numUp < 7) {
+                            delParent.parent().find(".z_file").show();
+                        }
+                        delParent.remove()
+                    });
+                    $img0.attr("src", "./img/a7.png").appendTo($section);
+
+                    var $img = $("<img class='up-img' style='position:absolute'>");
+                    $img.attr("src", imgArr[i]);
+                    $img.appendTo($section);
+                }
+                var formData = new FormData();
+                formData.append("attachment", fileList[0])
+                $.ajax({
+                    headers: {
+                        "apiName": "655896977f55f174faaeb58b97b52fc3c0c16a5bda88f0093a46dcc3f57764b6",
+                        "client-id": locationObj.appSsid
+                    },
+                    type: 'post',
+                    url: baseUrl + "/api/app/anon/cs/uploadImage", //上传文件的请求路径必须是绝对路劲
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                }).success(function (res) {
+                    $(".loading").hide()
+                    if (res.code != 1000) {
+                        $mask1.appendTo($section);
+                        $(".ToastBox").show()
+                        $("#toast").html(res.msg)
+                        setTimeout(() => {
+                            $(".ToastBox").hide()
+
+                        }, 3000)
+                    } else {
+                        $('.boxtime').fadeOut("slow")
+                        fileCodeArr.push(res.data)
+                    }
+
+                }).error(function () {
+                    $mask1.appendTo($section);
+                    $(".ToastBox").show()
+                    $("#toast").html("error")
+                    setTimeout(() => {
+                        $(".ToastBox").hide()
+                    }, 3000)
+                    $('.loading').hide()
+                });
+                numUp = imgContainer.find(".up-section").length;
+                if (numUp >= 6) {
+                    $(this).parent().hide();
+                }
+                //input内容清空
+                $(this).val("");
+            });
+
+        })
+        // -------------------------------------------------------------------------------
+        var qmStr = "2e515eb029fcfe879405638b3ef287ca"
+        var workOrderId = ""
+        var missNum = ""
+        var type = ""
+        var formObj = {
+        }
+        formObj =JSON.parse(JSON.stringify(locationObj))
+
+        let submitClick = false
+        buttonX.onclick = function () {
+            if (!submitAcitve || submitClick) {
+                if (!submitAcitve) {
+                    $(".ToastBox").show()
+                    $("#toast").html("Escriba su pregunta (al menos 10 caracteres)")
+                    setTimeout(() => {
+                        $(".ToastBox").hide()
+                    }, 2000)
+                }
+                return
+            }
+            $(".loading").show()
+            submitClick = true
+            let arr = []
+            fileListArr.forEach(item => {
+                fileCodeArr.forEach(item2 => {
+                    if (item.name == item2.fileName) {
+                        arr.push(item2.fileCode)
+                    }
+                })
+            })
+            let fileCodeStr = arr.join(",")
+            formObj.attachments = fileCodeStr
+            delete formObj.appSsid;
+            formObj.appssid=locationObj.appSsid
+
+            Key()
+            formObj.remark = $(".input5").val()
+
+            $.ajax({
+                headers: {
+                    apiName: "ccce7ab3dcebdb600cfaf2895fab79fe358f7d1fcc71792d1134f90901370b3f",
+                    "client-id": locationObj.appSsid,
+                },
+                type: 'POST',
+                url: baseUrl + "/api/app/anon/cs/submitOrder",
+                data: JSON.stringify(formObj),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (res) {
+                    // console.log(res, '?')
+                    submitClick = false
+                    $(".loading").hide()
+                    if (res.code != 1000) {
+                        delete formObj.remark;
+                        delete formObj.sign;
+                        $(".ToastBox").show()
+                        $("#toast").html(res.msg)
+                        setTimeout(() => {
+                            $(".ToastBox").hide()
+                        }, 3000)
+                    } else {
+                        missNum = res.data.missNum
+                        workOrderId = res.data.workOrderId
+                        aiType = res.data.aiType
+                        window.location.href = `./submitResult.html?aiType=${aiType}&workOrderId=${workOrderId}&missNum=${missNum}&appssid=${locationObj.appSsid}&mobile=${locationObj.mobile}`
+                    }
+                },
+                fail: function (res) {
+                    delete formObj.sign;
+                    delete formObj.remark;
+                    submitClick = false
+                    $(".loading").hide()
+
+                }
+            });
+        }
+        //    var qmStr = "2e515eb029fcfe879405638b3ef287ca"
+        function Key() {
+            for (let i in formObj) {
+                if (formObj[i] == 'undefined') {
+                    delete formObj[i]
+                }
+            }
+            let keys = Object.keys(formObj);
+            let str = ""
+            keys.sort();
+            for (let i = 0; i < keys.length; i++) {
+                let key = keys[i];
+                let value = formObj[key];
+                if (i == keys.length - 1) {
+                    str += key + '=' + value
+                } else {
+                    str += key + '=' + value + '&'
+                }
+            }
+            console.log("md5参数",str + qmStr)
+            formObj.sign = md5(str + qmStr)
+        }
+
+
+    </script>
+</body>
+<style>
+    .up-section {
+        position: relative;
+    }
+
+    .boxtime {
+        z-index: 99999999999999999999;
+    }
+</style>
+
+</html>

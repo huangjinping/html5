@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片上传示例</title>
+    <!-- 引入 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .upload-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        #fileInput {
+            margin: 10px 0;
+        }
+
+        #uploadBtn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #uploadBtn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .preview {
+            margin-top: 20px;
+            max-width: 300px;
+            display: none;
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="upload-container">
+    <h3>图片上传</h3>
+    <!-- 文件选择框 -->
+    <input type="file" id="fileInput" accept="image/*">
+
+    <!-- 图片预览区域 -->
+    <img id="previewImg" class="preview" alt="预览图">
+
+    <!-- 上传按钮 -->
+    <button id="uploadBtn" disabled>上传图片</button>
+
+    <!-- 上传状态提示 -->
+    <div id="status" class="status"></div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // 1. 选择图片后预览并启用上传按钮
+        $('#fileInput').on('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // 验证文件类型是否为图片
+            if (!file.type.startsWith('image/')) {
+                showStatus('请选择有效的图片文件！', 'error');
+                return;
+            }
+
+            // 显示图片预览
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                $('#previewImg').attr('src', event.target.result).show();
+                $('#uploadBtn').prop('disabled', false);
+                $('#status').hide();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // 2. 点击上传按钮执行上传逻辑
+        $('#uploadBtn').on('click', function () {
+            const fileInput = $('#fileInput')[0];
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showStatus('请先选择要上传的图片！', 'error');
+                return;
+            }
+
+            // 创建 FormData 对象（用于传输文件）
+            const formData = new FormData();
+            // formData.append('file', file); // 'file' 是接口要求的文件参数名，需确认是否正确
+            formData.append('appssid', '06');
+            // 禁用上传按钮防止重复点击
+            $(this).prop('disabled', true);
+            showStatus('正在上传，请稍候...', 'success');
+
+
+            formData.append("attachment", file)
+            $.ajax({
+                headers: {
+                    "apiName": "655896977f55f174faaeb58b97b52fc3c0c16a5bda88f0093a46dcc3f57764b6",
+                    "client-id": "06"
+                },
+                type: 'post',
+                url: "https://bjst.ultracreditosmx.com/api/app/anon/cs/uploadImage", //上传文件的请求路径必须是绝对路劲
+
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (e) {
+                    console.log("------success--------------");
+                    console.log(e)
+
+                },
+                error: function (e) {
+                    console.log("-----------error---------");
+                    console.log(e)
+                }
+            })
+
+
+            //
+            // // 发送上传请求
+            // $.ajax({
+            //     url: 'https://bjst.ultracreditosmx.com/api/app/cust/saveImage',
+            //     type: 'POST',
+            //     data: formData,
+            //     processData: false, // 必须false，否则jQuery会处理FormData导致上传失败
+            //     contentType: false, // 必须false，让浏览器自动设置正确的Content-Type
+            //     dataType: 'json',
+            //     headers: {
+            //         'token':'33f5b030-ae6f-404d-8871-5cd24e583b90',
+            //         'client-id': '06' // 这里添加你需要的header参数
+            //     },
+            //     timeout: 30000, // 30秒超时
+            //     success: function(response) {
+            //         // 上传成功处理
+            //         showStatus('图片上传成功！返回数据：' + JSON.stringify(response), 'success');
+            //         console.log('上传成功', response);
+            //     },
+            //     error: function(xhr, status, error) {
+            //         // 上传失败处理
+            //         let errorMsg = '上传失败：';
+            //         if (xhr.status === 0) {
+            //             errorMsg += '网络错误或接口无法访问';
+            //         } else if (xhr.responseJSON) {
+            //             errorMsg += JSON.stringify(xhr.responseJSON);
+            //         } else {
+            //             errorMsg += error || status;
+            //         }
+            //         showStatus(errorMsg, 'error');
+            //         console.error('上传失败', xhr, status, error);
+            //         // 重新启用上传按钮
+            //         $('#uploadBtn').prop('disabled', false);
+            //     }
+            // });
+        });
+
+        // 辅助函数：显示状态提示
+        function showStatus(message, type) {
+            const statusEl = $('#status');
+            statusEl.text(message).removeClass('success error').addClass(type).show();
+        }
+    });
+</script>
+</body>
+</html>

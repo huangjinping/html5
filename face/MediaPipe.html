@@ -1,0 +1,70 @@
+<video id="video" autoplay playsinline style="width:100%;"></video>
+<canvas id="canvas" width="640" height="480" style="position:absolute;top:0;left:0;"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs" type="module"></script>
+<script type="module">
+    import { FaceLandmarker, FilesetResolver } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs';
+
+    let faceLandmarker;
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 初始化 MediaPipe
+    async function initMediaPipe() {
+        const filesetResolver = await FilesetResolver.forVisionTasks(
+            'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm'
+        );
+        faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
+            baseOptions: { modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task' },
+            runningMode: 'VIDEO',
+            numFaces: 1
+        });
+    }
+
+    // 启动摄像头
+    async function startCamera() {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+        video.srcObject = stream;
+        await new Promise(resolve => video.onloadedmetadata = resolve);
+        video.play();
+        requestAnimationFrame(detect);
+    }
+
+    // 动作检测（示例：眨眼检测）
+    let lastBlinkTime = 0;
+    function detectLandmarks(results) {
+        if (!results.faceLandmarks.length) return;
+        const landmarks = results.faceLandmarks[0];
+        const leftEye = landmarks[159]; // 左眼关键点
+        const rightEye = landmarks[386]; // 右眼关键点
+        const eyeHeight = Math.abs(leftEye.y - rightEye.y);
+        const currentTime = Date.now();
+        // 眨眼判定：高度低于阈值且间隔>300ms
+        if (eyeHeight < 0.02 && currentTime - lastBlinkTime > 300) {
+            console.log('检测到眨眼动作');
+            lastBlinkTime = currentTime;
+        }
+    }
+
+    // 实时检测
+    function detect() {
+        if (!faceLandmarker || !video) return;
+        const results = faceLandmarker.detectForVideo(video, performance.now());
+        detectLandmarks(results);
+        // 绘制结果（可选）
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (results.faceLandmarks.length) {
+            // 绘制关键点（简化示例）
+            results.faceLandmarks[0].forEach(landmark => {
+                const x = landmark.x * canvas.width;
+                const y = landmark.y * canvas.height;
+                ctx.fillRect(x, y, 2, 2);
+            });
+        }
+        requestAnimationFrame(detect);
+    }
+
+    // 初始化并启动
+    initMediaPipe().then(startCamera);
+</script>

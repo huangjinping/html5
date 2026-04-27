@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/ua-parser-js@1.0.37/dist/ua-parser.min.js"></script>
+
+
+
+</head>
+<body>
+
+<script>
+    const parser = new UAParser();
+    const result = parser.getResult();
+    console.log("浏览器：", result.browser); // { name: "Chrome", version: "118.0.0.0" }
+    console.log("操作系统：", result.os);     // { name: "Android", version: "13" }
+    console.log("设备：", result.device);
+</script>
+</body>
+</html>

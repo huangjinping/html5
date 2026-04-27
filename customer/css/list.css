@@ -1,0 +1,160 @@
+@charset "UTF-8";
+*{
+  padding: 0;
+  margin: 0;
+}
+.box {
+  margin: 23px 15px;
+}
+.head {
+  display: flex;
+  align-items: center;
+}
+.head span {
+  margin-right: 10px;
+}
+.labelIcon {
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background: #046db6;
+  border-radius: 3px;
+  margin-right: 4px;
+}
+.list , .type{
+  margin: 0px 10px;
+}
+.type {
+  display: flex;
+  justify-content: space-between;
+  margin: 18px 10px;
+}
+.complain , .consult {
+  cursor: pointer;
+  font-size: 14px;
+  position: relative;
+  width: 45%;
+  text-align: center;
+  padding: 12px 0px;
+  border-radius: 9px;
+  border: 1px solid #999999;
+}
+.complain:hover , .consult:hover {
+  border-radius: 9px;border: 1px solid #000;
+}
+.faq {
+  text-align: left;
+}
+.select {
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 0px;
+  right: 0px;
+}
+h1 {
+  margin: 0;
+  line-height: 2;
+  text-align: center;
+}
+
+h2 {
+  margin: 0 0 0.5em;
+  font-weight: normal;
+}
+
+input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+.row {
+  display: flex;
+}
+.row .col {
+  flex: 1;
+}
+
+
+/* Accordion styles */
+.tabs {
+  border-radius: 8px;
+  overflow: hidden;
+
+}
+
+.tab {
+  width: 100%;
+  color: #046db6;
+  overflow: hidden;
+  margin-bottom: 14px;
+  border-radius: 8px ;
+}
+.tab-label {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: #d3e3fd;
+  font-weight: bold;
+  cursor: pointer;
+  /* Icon */
+  font-size: 16px;
+  font-weight: 400;
+
+}
+.problem {
+  position: absolute;
+  top: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  transform: translateY(-50%);
+}
+.faq {
+  padding-left: 30px;
+}
+.tab-label::after {
+  content: "❯";
+  width: 1em;
+  height: 1em;
+  text-align: center;
+  transition: all 0.35s;
+}
+.tab-content {
+  max-height: 0;
+  padding: 0 1em;
+  /* color: #999999; */
+  /* background: #F4F3F3; */
+  transition: all 0.35s;
+}
+.tab-close {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1em;
+  font-size: 0.75em;
+  cursor: pointer;
+}
+
+
+
+input:checked + .tab-label::after {
+  transform: rotate(90deg);
+}
+input:checked ~ .tab-content {
+  max-height: 100vh;
+  padding: 1em;
+}
+.btn {
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    height: 44px;
+    background: #046eb6;
+    line-height: 44px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 22px;
+}
